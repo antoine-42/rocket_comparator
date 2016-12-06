@@ -1,0 +1,111 @@
+
+<html>
+    <head>
+    	<link rel="stylesheet" type="text/css" href="style.css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+        <!--<link rel="shortcut icon" href="assets/logo/favicon.ico" type="image/x-icon">
+        <meta name="HandheldFriendly" content="true" />-->
+        <meta charset="utf-8" />
+        <title>Rocket Scale</title>
+    </head>
+    <body>
+        <div id="comp_wrap">
+            <canvas id="rocket_comp_background" width="300" height="300"></canvas>
+            <div id="rocket_comp_window">
+                <p>please enable Javascript</p>
+            </div>
+            <div id="background_legend">
+                <h3 id="legend_active">Active</h3>
+                <h3 id="legend_retired">Retired</h3>
+                <h3 id="legend_dev">In Development</h3>
+                <h3 id="legend_cancelled">Cancelled</h3>
+            </div>
+        </div>
+
+        <i id="expand_button" class="material-icons setting_status_switch_button">keyboard_arrow_left</i>
+
+        <div id="settings_window">
+            <i id="collapse_button" class="material-icons setting_status_switch_button">keyboard_arrow_right</i>
+            <form id="settings_form">
+                <h1>Settings</h1>
+                <div id="settings_wrap">
+                    <div id="static_settings">
+                        <div id="button_container">
+                            <button type="button" id="remove_all_rocket_button">Remove all rockets</button>
+                            <button type="button" id="add_all_rocket_button">Add all rockets</button>
+                            <button type="button" id="reset_button">Reset</button>
+                            <button type="button" id="share_button">Share current configuration</button>
+                        </div>
+                        <div id="selec_div_container">
+                            <div class="selec_div">
+                                <p>Add all rockets that are:</p>
+                                <select name="add_rockets_dropdown" id="add_rockets_dropdown">
+                                    <option value="none">-</option>
+                                    <option value="status=0">Active</option>
+                                    <option value="status=1">Retired</option>
+                                    <option value="status=2">In developpment</option>
+                                    <option value="status=3">Cancelled</option>
+                                </select>
+                            </div>
+                            <div class="selec_div">
+                                <p>Sort according to:</p>
+                                <select name="sorting_method_dropdown" id="sorting_method_dropdown">
+                                    <option value="height">Height</option>
+                                    <option value="family">Familly</option>
+                                    <option value="date">First launch date</option>
+                                    <option value="payload">Maximum payload</option>
+                                    <option value="cost">Launch cost</option>
+                                </select>
+                                <div class="static_checkbox_div">
+                                    <input type="checkbox" class="checkbox" id="descending_sort_checkbox"/>
+                                    <label for="descending_sort_checkbox">Descending</label>
+                                </div>
+                            </div>
+                            <div class="selec_div">
+                                <p>Background:</p>
+                                <select name="background_dropdown" id="background_dropdown">
+                                    <option value="default">Default</option>
+                                    <option value="status">Status</option>
+                                    <option value="none">None</option>
+                                </select>
+                                <div class="static_checkbox_div" id="status_legend_checkbox_div">
+                                    <input type="checkbox" class="checkbox" id="status_legend_checkbox"/>
+                                    <label for="status_legend_checkbox">Hide Legend</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="static_checkboxes_container">
+                            <div class="static_checkbox_div">
+                                <input type="checkbox" id="imperial_checkbox"/>
+                                <label for="imperial_checkbox">Imperial units</label>
+                            </div>
+                            <div class="static_checkbox_div">
+                                <input type="checkbox" id="dark_theme_checkbox"/>
+                                <label for="dark_theme_checkbox">Dark theme</label>
+                            </div>
+                            <div class="static_checkbox_div">
+                                <input type="checkbox" class="checkbox" id="high_res_checkbox"/>
+                                <label for="high_res_checkbox">High resolution pictures</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="object_selection">
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div id="share_box">
+            <h1>Share</h1>
+            <i id="close_share_button" class="material-icons">close</i>
+            <form id="share_form">
+                <p id="share_form_text">Link: </p>
+                <input type="text" name="share_link" id="share_link"/>
+                <i id="copy_share_button" class="material-icons" title="Copy URL">content_copy</i>
+            </form>
+        </div>
+    </body>
+    <script type="text/javascript" src="rocket.json"></script>
+    <script type="text/javascript" src="script.js"></script>
+</html>

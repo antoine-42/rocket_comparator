@@ -1,0 +1,336 @@
+body{
+    width: 100%;
+    margin: 0;
+    overflow-y: hidden;
+    background-color: #E4E4E4;
+    color: #202020;
+    font-family: arial;
+    font-size: 1em;
+}
+
+a:link {
+    color: #0063AF;
+    text-decoration: none;
+}
+a:visited {
+    color: #4A1268;
+    text-decoration: none;
+}
+a:hover {
+    text-decoration: underline;
+}
+
+
+button{
+    padding: 7px 15px;
+    margin: 5px 5px;
+    border: none;
+    background-color: #DDDDDD;
+    font-size: 17px;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    transition-duration: 0.1s;
+}
+button:hover {
+    background-color: #FFFFFF;
+    box-shadow: 0px 0px 14px 2px rgba(0,0,0,0.75);
+}
+
+select{
+    margin: 0 1em;
+    background-color: #FFFFFF;
+    color: #202020;
+    border: none;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    font-size: 1em;
+    transition-duration: 0.1s;
+}
+select:hover, select:focus{
+    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.75);
+}
+
+input[type="checkbox"] {
+    margin-left: 0;
+}
+
+input[type="text"] {
+    width: 170px;
+    border: none;
+    padding: 4px;
+    background-color: #FFFFFF;
+    color: #202020;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+}
+
+
+.material-icons, button, select, input[type="checkbox"], label{
+    cursor: pointer;
+}
+
+
+
+#comp_wrap{
+    height: 100%;
+}
+
+#rocket_comp_background{
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}
+
+#rocket_comp_window{
+    height: 85%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    margin-left: 50px;
+}
+
+.rocket_wrap{
+    height: 100%;/*need this for firefox, 100% makes this div behave as if the image was at its original size*/
+    display: flex;
+    align-items: flex-end;
+}
+.new_decade{
+    border-left: solid;
+    border-left-width: 2px;
+    border-left-color: rgba(32, 32, 32, 0.7);
+}
+.decade_block{
+    display: none;
+    position: absolute;
+    font-size: 2em;
+    margin: 20px 10px;
+}
+.comp_img{
+    padding: 0 17px;
+}
+
+.comp_desc{
+    position: absolute;
+    text-align: center;
+    display: none;
+}
+.comp_desc p{
+    margin-bottom: 0;
+}
+
+
+
+.setting_status_switch_button{
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+#expand_button{
+    font-size: 150px;
+    display: none;
+    position: fixed;
+}
+#collapse_button{
+    font-size: 150px;
+}
+
+
+
+#settings_window{
+    height: 100%;
+    width: 35vw;
+    min-width: 600px;
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 10;
+    background-color: #F5F5F5;
+    box-shadow: 22px 0px 51px 25px rgba(0,0,0,0.89);
+}
+#settings_window h1{
+    align-self: center;
+    margin: 0.3em 0;
+}
+
+#settings_form{
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-flow: column;
+    justify-content: space-between;
+}
+
+#static_settings{
+    margin: 0 0 20px;
+    padding: 10px 20px 0;
+}
+
+#selec_div_container{
+    margin: 1em 0;
+}
+#selec_div_container p{
+    display: inline-block;
+    margin: 0;
+}
+.selec_div{
+    margin: 0.75em 0;
+}
+
+#status_legend_checkbox_label{
+    display: none;
+}
+
+#static_checkboxes_container, #button_container{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 90%;
+}
+#static_checkboxes_container, #button_container, #selec_div_container{
+    margin: 1.5em 0;
+}
+
+.static_checkbox_div{
+    margin-right: 1.5em;
+    display: inline-block;
+}
+
+
+#settings_wrap{
+    overflow: auto;
+    height: 95vh;
+}
+#object_selection{
+    margin-top: 2em;
+    padding: 0 10px 20px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+#rocket_selection{
+    -moz-column-count: 2;/*fuck this shit*/
+    -webkit-column-count: 2;
+    column-count: 2;
+    margin: 1em 0;
+}
+
+.selec_header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.title_button_group{
+    white-space: nowrap;
+}
+.title_button_group i{
+    margin: 0 0.3em;
+}
+
+
+#object_selection h2{
+    margin: 0;
+    font-size: 1.6em;
+}
+
+#object_selection h3{
+    margin: 0 1em 0 0;
+    font-size: 1.4em;
+}
+.selec_country{
+    margin: 2em 0;
+}
+#China_selec_country{
+    margin: 0 0 2em;
+}
+
+#object_selection h4{
+    margin: 0 1em 0 0;
+    font-size: 1.1em;
+}
+.selec_manufacturer{
+    margin: 1em 0;
+}
+
+#object_selection h5{
+    margin: 0;
+    font-size: 1em;
+}
+.selec_family{
+    margin: 0.7em 0;
+}
+
+#object_selection h6{
+    margin: 0;
+    font-size: 0.8em;
+}
+.selec_name{
+    margin: 0.7em 0;
+}
+
+
+.checkbox_container{
+    -moz-column-count: 2;/*seriously fuck this shit*/
+    -webkit-column-count: 2;
+    column-count: 2;
+}
+.rocket_checkbox{
+}
+
+
+#background_legend{
+    display: none;
+    position: fixed;
+    left: 70px;
+    top: 20px;
+    background-color: #E4E4E4;
+    box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.75);
+}
+
+#background_legend h3{
+    padding: 7px 15px;
+    margin: 0;
+}
+#legend_active{
+}
+#legend_retired{
+    background-color: rgba(196, 19, 0, 0.3);
+}
+#legend_dev{
+    background-color: rgba(0, 110, 255, 0.3);
+}
+#legend_cancelled{
+    background-color: rgba(0, 0, 0, 0.3);
+}
+
+
+
+#share_box{
+    top: 45px;
+    right: 37vw;
+    position: absolute;
+    display: none;
+    padding: 20px;
+    z-index: 20;
+    background-color: #F5F5F5;
+    box-shadow: 0px 0px 26px 3px rgba(0,0,0,0.75);
+}
+#share_box h1{
+    margin-top: 0;
+}
+#share_form{
+    margin-bottom: 0;
+    display: flex;
+    align-items: center;
+}
+#share_form_text{
+    margin-top: 0.2em;
+    margin-bottom: 0;
+}
+#share_link{
+    margin: 0 10px;
+}
+#close_share_button{
+    top: 10px;
+    right: 10px;
+    position: absolute;
+    font-size: 48px;
+}
