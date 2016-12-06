@@ -27,12 +27,12 @@ button{
     border: none;
     background-color: #DDDDDD;
     font-size: 17px;
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 5px 0px black;
     transition-duration: 0.1s;
 }
 button:hover {
     background-color: #FFFFFF;
-    box-shadow: 0px 0px 14px 2px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 14px 2px black;
 }
 
 select{
@@ -40,12 +40,12 @@ select{
     background-color: #FFFFFF;
     color: #202020;
     border: none;
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 5px 0px black;
     font-size: 1em;
     transition-duration: 0.1s;
 }
 select:hover, select:focus{
-    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 10px 1px black;
 }
 
 input[type="checkbox"] {
@@ -58,7 +58,16 @@ input[type="text"] {
     padding: 4px;
     background-color: #FFFFFF;
     color: #202020;
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 5px 0px black;
+}
+
+i{
+    transition-duration: 0.1s;
+    border-radius: 50%;
+}
+i:hover {
+    color: #000000;
+    background-color: rgba(0, 0, 0, 0.2);
 }
 
 
@@ -122,14 +131,22 @@ input[type="text"] {
     position: absolute;
     top: 0;
     right: 0;
+    width: 100px;
+    height: 100px;
+    margin: 20px;
 }
 #expand_button{
     font-size: 150px;
     display: none;
     position: fixed;
+    align-items: center;
+    justify-content: center;
 }
 #collapse_button{
     font-size: 150px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 
@@ -143,7 +160,7 @@ input[type="text"] {
     right: 0;
     z-index: 10;
     background-color: #F5F5F5;
-    box-shadow: 22px 0px 51px 25px rgba(0,0,0,0.89);
+    box-shadow: 22px 0px 51px 25px black;
 }
 #settings_window h1{
     align-self: center;
@@ -282,7 +299,7 @@ input[type="text"] {
     left: 70px;
     top: 20px;
     background-color: #E4E4E4;
-    box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 9px 0px black;
 }
 
 #background_legend h3{
@@ -311,7 +328,7 @@ input[type="text"] {
     padding: 20px;
     z-index: 20;
     background-color: #F5F5F5;
-    box-shadow: 0px 0px 26px 3px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 26px 3px black;
 }
 #share_box h1{
     margin-top: 0;
@@ -327,6 +344,13 @@ input[type="text"] {
 }
 #share_link{
     margin: 0 10px;
+}
+#copy_share_button{
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 #close_share_button{
     top: 10px;

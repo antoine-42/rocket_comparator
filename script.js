@@ -827,11 +827,26 @@ function create_title_button_group(type, value){
 }
 //creates a single button
 function create_title_button(type, value, action){
+    var title_text = '';
+    switch (action) {
+        case 'add':
+            title_text = 'Add all';
+            break;
+        case 'remove':
+            title_text = 'Remove all';
+            break;
+        case 'expand_less':
+            title_text = 'Hide';
+            break;
+        default:
+            break;
+    }
+
     var curr_button = document.createElement('i');
     curr_button.innerHTML = action;
     curr_button.className = 'material-icons';
     curr_button.id = value + '-' + type + '-' + action;
-    curr_button.title = 'Add all';
+    curr_button.title = title_text;
     curr_button.addEventListener('click', apply_all_rocket_param);
     return curr_button;
 }

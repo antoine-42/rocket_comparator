@@ -16,27 +16,32 @@ a:hover {
 button{
     background-color: #404040;
     color: #DDDDDD;
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 5px 0px black;
 }
 button:hover {
     background-color: #000000;
-    box-shadow: 0px 0px 14px 2px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 14px 2px black;
 }
 
 select{
     background-color: #404040;
     color: #DDDDDD;
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 5px 0px black;
 }
 select:hover, select:focus{
     background-color: #000000;
-    box-shadow: 0px 0px 10px 1px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 10px 1px black;
 }
 
 input[type="text"] {
     background-color: #404040;
     color: #DDDDDD;
-    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 5px 0px black;
+}
+
+i:hover{
+    color: #FFFFFF;
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 
@@ -55,7 +60,7 @@ input[type="text"] {
 
 #background_legend{
     background-color: #202020;
-    box-shadow: 0px 0px 9px 0px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 9px 0px black;
 }
 
 #legend_active{
@@ -74,5 +79,5 @@ input[type="text"] {
 
 #share_box{
     background-color: #202020;
-    box-shadow: 0px 0px 26px 3px rgba(0,0,0,0.75);
+    box-shadow: 0px 0px 26px 3px black;
 }
