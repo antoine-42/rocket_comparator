@@ -14,6 +14,10 @@ for (var i = 0; i < json_rockets.rockets.length; i++) {
 for (var i = 0; i < json_rockets.rockets.length; i++) {
     json_rockets.rockets[i].status = parseInt(json_rockets.rockets[i].status);
 }
+//parse the strings into bools in the json array
+for (var i = 0; i < json_rockets.rockets.length; i++) {
+    json_rockets.rockets[i].high_res = json_rockets.rockets[i].high_res === '1';
+}
 //parse the strings into dates in the json array
 for (var i = 0; i < json_rockets.rockets.length; i++) {
     json_rockets.rockets[i].date = new Date(json_rockets.rockets[i].date);
@@ -623,12 +627,14 @@ reset_button.addEventListener('click', reset_everything);
 
 
 
+var use_high_res = false;
 function on_picture_res_change(){
-
+    use_high_res = !use_high_res;
+    update_rockets();
 }
 var high_res_checkbox = document.getElementById('high_res_checkbox');
+high_res_checkbox.addEventListener('click', on_picture_res_change);
 
-//I hate americans sometimes
 //obvious, also adds commas because you're going to get huge numbers with this stupid system
 function kg_to_pounds(good_unit){
     var bad_unit = good_unit*2.2046;
@@ -637,16 +643,13 @@ function kg_to_pounds(good_unit){
 //raw_payload: payload in kg. outputs a shorter number or a longer one if you like stupid unit systems.
 function get_payload(raw_payload){
     if(stupid_unit_system){
-        //WHY THE FUCK IS THE ABREVIATION FOR POUND LB? IT DOESN'T SHARE ANY FUCKING LETTER
-        //FUCK THIS SHIT
         return kg_to_pounds(raw_payload) + 'lb';
     }
+
     if(raw_payload > 1000){
         return Math.round(raw_payload/1000 * 10) / 10 + 't'
     }
-    else {
-        return raw_payload + 'kg'
-    }
+    return raw_payload + 'kg'
 }
 
 //returns a useable date strings
@@ -725,7 +728,15 @@ function update_rockets(){
 
         //puts the description at the right place
         curr_img.addEventListener('load', on_rocket_load);
-        curr_img.src = path;
+
+        //adds the image in the correct resolution
+        var image_path = path;
+        if(selected_rockets.rockets[i].high_res){
+            var low_res_path_table = path.split('/');
+            low_res_path_table[low_res_path_table.length -1] = 'l-' + low_res_path_table[low_res_path_table.length -1];
+            image_path = low_res_path_table.join('/');
+        }
+        curr_img.src = image_path;
 
         //places it in the document
         var wrap = document.createElement('div');

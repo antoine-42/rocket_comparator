@@ -10,9 +10,10 @@ a:visited {
     color: #A85FD3;
 }
 a:hover {
-
 }
 
+
+/*interactive stuff*/
 button{
     background-color: #404040;
     color: #DDDDDD;
@@ -51,6 +52,7 @@ i:hover{
 
 
 
+/*main window*/
 #settings_window{
     background-color: #202020;
     box-shadow: 22px 0px 51px 25px rgba(0,0,0,0.89);
@@ -58,6 +60,7 @@ i:hover{
 
 
 
+/*legend*/
 #background_legend{
     background-color: #202020;
     box-shadow: 0px 0px 9px 0px black;
@@ -77,6 +80,7 @@ i:hover{
 
 
 
+/*share box*/
 #share_box{
     background-color: #202020;
     box-shadow: 0px 0px 26px 3px black;

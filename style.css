@@ -21,6 +21,12 @@ a:hover {
 }
 
 
+/*interactive stuff*/
+.material-icons, button, select, input[type="checkbox"], label{
+    cursor: pointer;
+}
+
+
 button{
     padding: 7px 15px;
     margin: 5px 5px;
@@ -39,6 +45,7 @@ select{
     margin: 0 1em;
     background-color: #FFFFFF;
     color: #202020;
+    padding: 2px 0;
     border: none;
     box-shadow: 0px 0px 5px 0px black;
     font-size: 1em;
@@ -60,6 +67,9 @@ input[type="text"] {
     color: #202020;
     box-shadow: 0px 0px 5px 0px black;
 }
+input[type="text"]:hover, input[type="text"]:focus{
+    box-shadow: 0px 0px 10px 1px black;
+}
 
 i{
     transition-duration: 0.1s;
@@ -71,12 +81,8 @@ i:hover {
 }
 
 
-.material-icons, button, select, input[type="checkbox"], label{
-    cursor: pointer;
-}
 
-
-
+/*main window*/
 #comp_wrap{
     height: 100%;
 }
@@ -96,8 +102,8 @@ i:hover {
     margin-left: 50px;
 }
 
+/*image background*/
 .rocket_wrap{
-    height: 100%;/*need this for firefox, 100% makes this div behave as if the image was at its original size*/
     display: flex;
     align-items: flex-end;
 }
@@ -112,6 +118,7 @@ i:hover {
     font-size: 2em;
     margin: 20px 10px;
 }
+
 .comp_img{
     padding: 0 17px;
 }
@@ -127,6 +134,7 @@ i:hover {
 
 
 
+/*Settings*/
 .setting_status_switch_button{
     position: absolute;
     top: 0;
@@ -149,8 +157,6 @@ i:hover {
     justify-content: center;
 }
 
-
-
 #settings_window{
     height: 100%;
     width: 35vw;
@@ -163,18 +169,18 @@ i:hover {
     box-shadow: 22px 0px 51px 25px black;
 }
 #settings_window h1{
-    align-self: center;
+    text-align: center;
     margin: 0.3em 0;
 }
 
 #settings_form{
     height: 100%;
     margin: 0;
-    display: flex;
-    flex-flow: column;
-    justify-content: space-between;
+    overflow: auto;
 }
 
+
+/*static settings*/
 #static_settings{
     margin: 0 0 20px;
     padding: 10px 20px 0;
@@ -211,10 +217,7 @@ i:hover {
 }
 
 
-#settings_wrap{
-    overflow: auto;
-    height: 95vh;
-}
+/*selection*/
 #object_selection{
     margin-top: 2em;
     padding: 0 10px 20px 20px;
@@ -242,7 +245,7 @@ i:hover {
     margin: 0 0.3em;
 }
 
-
+/*titles*/
 #object_selection h2{
     margin: 0;
     font-size: 1.6em;
@@ -293,6 +296,8 @@ i:hover {
 }
 
 
+
+/*legend*/
 #background_legend{
     display: none;
     position: fixed;
@@ -320,6 +325,7 @@ i:hover {
 
 
 
+/*share box*/
 #share_box{
     top: 45px;
     right: 37vw;
@@ -330,6 +336,7 @@ i:hover {
     background-color: #F5F5F5;
     box-shadow: 0px 0px 26px 3px black;
 }
+
 #share_box h1{
     margin-top: 0;
 }
