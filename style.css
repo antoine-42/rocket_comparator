@@ -135,6 +135,7 @@ i:hover {
 
 
 /*Settings*/
+/*collaps/expand buttons*/
 .setting_status_switch_button{
     position: absolute;
     top: 0;
@@ -160,7 +161,7 @@ i:hover {
 #settings_window{
     height: 100%;
     width: 35vw;
-    min-width: 600px;
+    min-width: 610px;
     position: fixed;
     top: 0;
     right: 0;
@@ -223,8 +224,12 @@ i:hover {
     padding: 0 10px 20px 20px;
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
 }
+#object_selection h2{
+    text-align: center;
+}
+
 #rocket_selection{
     -moz-column-count: 2;/*fuck this shit*/
     -webkit-column-count: 2;
@@ -327,10 +332,11 @@ i:hover {
 
 /*share box*/
 #share_box{
+    position: absolute;
     top: 45px;
     right: 37vw;
-    position: absolute;
     display: none;
+    margin: 0;
     padding: 20px;
     z-index: 20;
     background-color: #F5F5F5;
@@ -364,4 +370,42 @@ i:hover {
     right: 10px;
     position: absolute;
     font-size: 48px;
+}
+
+
+
+/*mobile*/
+@media (max-width: 900px){ /*big phone/tablet*/
+    #settings_window{
+        width: 100vw;
+        min-width: 0;
+    }
+
+    #button_container{
+        width: 85%;
+    }
+    #static_checkboxes_container{
+        width: 100%;
+    }
+
+
+    #rocket_selection{
+        -moz-column-count: 2;
+        -webkit-column-count: 2;
+        column-count: 2;
+    }
+
+
+    #share_box{
+        top: 70px;
+        left: 10px;
+        right: auto;
+    }
+}
+@media (max-width: 700px){ /*phone*/
+    #rocket_selection{
+        -moz-column-count: 1;
+        -webkit-column-count: 1;
+        column-count: 1;
+    }
 }
