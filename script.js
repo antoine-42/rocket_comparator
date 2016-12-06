@@ -731,7 +731,7 @@ function update_rockets(){
 
         //adds the image in the correct resolution
         var image_path = path;
-        if(selected_rockets.rockets[i].high_res){
+        if(!use_high_res && selected_rockets.rockets[i].high_res){
             var low_res_path_table = path.split('/');
             low_res_path_table[low_res_path_table.length -1] = 'l-' + low_res_path_table[low_res_path_table.length -1];
             image_path = low_res_path_table.join('/');
