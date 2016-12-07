@@ -439,6 +439,13 @@ i:hover {
     }
 }
 @media (max-width: 700px){ /*phone*/
+    .setting_status_switch_button{
+        width: auto;
+        height: auto;
+        margin: 0;
+    }
+
+
     #rocket_selection{
         -moz-column-count: 1;
         -webkit-column-count: 1;
