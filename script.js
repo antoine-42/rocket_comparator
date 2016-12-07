@@ -26,11 +26,19 @@ for (var i = 0; i < json_rockets.rockets.length; i++) {
 //var initialisation
 var selected_rockets = JSON.parse('{"rockets" :[]}');
 
+var comp_wrap = document.getElementById('comp_wrap');
 var rocket_comp_background = document.getElementById('rocket_comp_background');
 var rocket_comp_window = document.getElementById('rocket_comp_window');
+
+
 var settings_window = document.getElementById('settings_window');
+var settings_wrap = document.getElementById('settings_wrap');
+var settings_form = document.getElementById('settings_form');
+
 var collapse_button = document.getElementById('collapse_button');
 var expand_button = document.getElementById('expand_button');
+var back_to_top_button = document.getElementById('back_to_top_button');
+
 var sorting_method_dropdown = document.getElementById('sorting_method_dropdown');
 var object_selection_window = document.getElementById('object_selection');
 
@@ -73,6 +81,32 @@ function remove_overflow()
 
     update_background_dimensions_2();
 }
+
+
+//checks if elem can be viewed in doc
+function isScrolledIntoView(elem, doc)
+{
+    var doc_rect = doc.getBoundingClientRect();
+    var doc_top = doc_rect.top;
+    var doc_bottom = doc_rect.bottom;
+
+    var elem_rect = elem.getBoundingClientRect();
+    var elem_top = elem_rect.top;
+    var elem_bottom = elem_rect.bottom;
+
+    return (elem_bottom > 0);
+}
+function check_if_display_back_to_top(){
+    var style_settings = window.getComputedStyle(settings_window);
+    if(style_settings.display != 'none'){
+        if(!isScrolledIntoView(static_settings, settings_wrap)){
+            back_to_top_button.style.display = 'inline-block';
+        }
+        else {
+            back_to_top_button.style.display = 'none';
+        }
+    }
+}
 //checks if the node is a child of the settings_window node
 function check_if_settings_is_parent(node){
     if(node.id === 'settings_window'){
@@ -86,6 +120,7 @@ function check_if_settings_is_parent(node){
     }
 }
 //makes the scrolling horizontal
+var static_settings = document.getElementById('static_settings');
 function horizontal_scroll(e){
     if(!check_if_settings_is_parent(e.target)){
         var scroll = e.deltaY;
@@ -93,6 +128,9 @@ function horizontal_scroll(e){
             scroll = scroll * 100/3
         }
         window.scrollBy(scroll, 0);
+    }
+    else {
+        check_if_display_back_to_top();
     }
 }
 //makes the event handler passive
@@ -106,6 +144,15 @@ try {
   window.addEventListener('test', null, opts);
 } catch (e) {}
 document.body.addEventListener('wheel', horizontal_scroll, supportsPassive ? { passive: true } : false);
+
+settings_form.addEventListener('scroll', check_if_display_back_to_top);
+
+
+//scroll settings to top
+function settings_scroll_to_top(){
+    settings_form.scrollTop = 0;
+}
+back_to_top_button.addEventListener('click', settings_scroll_to_top);
 
 
 //basic functions
@@ -490,6 +537,8 @@ function update_background_dimensions_2(){//fuck it i need to sleep
     rocket_comp_background.width = window_width;
     rocket_comp_background.height = window_height + 1;
 
+    comp_wrap.style.height = document.body.clientHeight + 'px';
+
     update_background_scale();
 }
 function update_background_dimensions(){
@@ -498,6 +547,8 @@ function update_background_dimensions(){
 
     rocket_comp_background.width = window_width;
     rocket_comp_background.height = window_height + 1;
+
+    comp_wrap.style.height = document.body.clientHeight + 'px';
 
     update_background_scale();
     if(!init){
@@ -595,7 +646,8 @@ background_dropdown.addEventListener('change', on_background_change);
 
 var status_legend_checkbox = document.getElementById('status_legend_checkbox');
 function switch_status_legend(){
-    hide_legend = status_legend_checkbox.checked;
+    hide_legend = !hide_legend;
+    status_legend_checkbox.checked = hide_legend;
 
     var background_legend = document.getElementById('background_legend');
     if(hide_legend){
@@ -606,6 +658,8 @@ function switch_status_legend(){
     }
 }
 status_legend_checkbox.addEventListener('click', switch_status_legend)
+var close_legend_button = document.getElementById('close_legend_button');
+close_legend_button.addEventListener('click', switch_status_legend)
 
 
 //resets the rocket selection to the default, also reset sort and background
@@ -745,7 +799,6 @@ function update_rockets(){
 
         //fuck you firefox
         rocket_comp_window_rect = rocket_comp_window.getBoundingClientRect();
-        wrap.style.height = rocket_comp_window_rect.height;
 
         wrap.appendChild(curr_img);
 
