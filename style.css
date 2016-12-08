@@ -226,6 +226,8 @@ i:hover {
 
 /*selection*/
 #object_selection{
+    box-sizing: border-box;
+    width: 100%;
     padding: 0 10px 20px 20px;
     display: flex;
     flex-direction: column;
@@ -262,23 +264,20 @@ i:hover {
 /*titles*/
 #object_selection h2{
     margin: 0;
-    font-size: 1.6em;
+    font-size: 1.8em;
 }
 
 #object_selection h3{
     margin: 0;
-    font-size: 1.4em;
+    font-size: 1.5em;
 }
 .selec_country{
-    margin: 2em 0;
-}
-#China_selec_country{
-    margin: 0 0 2em;
+    margin: 0 0 2em 0;
 }
 
 #object_selection h4{
     margin: 0;
-    font-size: 1.3em;
+    font-size: 1.2em;
 }
 .selec_header_manufacturer{
     margin-bottom: 0.5em;

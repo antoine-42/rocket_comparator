@@ -83,6 +83,13 @@ function remove_overflow()
 }
 
 
+//detects mobile browsers
+function detect_mobile(){
+    if(window.innerWidth <= 900) {
+        return true;
+    }
+    return false;
+}
 //checks if elem can be viewed in doc
 function isScrolledIntoView(elem, doc)
 {
@@ -96,7 +103,12 @@ function isScrolledIntoView(elem, doc)
 
     return (elem_bottom > 0);
 }
+//checks if the back to top button should be displayed
 function check_if_display_back_to_top(){
+    if(!detect_mobile()){
+        return;
+    }
+
     var style_settings = window.getComputedStyle(settings_window);
     if(style_settings.display != 'none'){
         if(!isScrolledIntoView(static_settings, settings_wrap)){
@@ -302,8 +314,8 @@ function remove_all_rocket(){
     update_rockets();
     update_background_dimensions();
 }
-var remove_all_rocket_button = document.getElementById('remove_all_rocket_button');
-remove_all_rocket_button.addEventListener('click', remove_all_rocket);
+var remove_all_button = document.getElementById('remove_all_button');
+remove_all_button.addEventListener('click', remove_all_rocket);
 
 //this adds all the rockets
 function add_all_rocket(){
@@ -316,8 +328,8 @@ function add_all_rocket(){
     update_rockets();
     update_background_dimensions();
 }
-var add_all_rocket_button = document.getElementById('add_all_rocket_button');
-add_all_rocket_button.addEventListener('click', add_all_rocket);
+var add_all_button = document.getElementById('add_all_button');
+add_all_button.addEventListener('click', add_all_rocket);
 
 //adds every rocket where parameter === value
 function add_rocket(parameter, value){
@@ -890,23 +902,37 @@ function elements_in_category(rocket_num, level) {
     return elements;
 }
 //creates add/remove/hide buttons
-function create_title_header(type, value){
-    var curr_header = document.createElement('div');
-    curr_header.className = 'selec_header';
-    curr_header.appendChild(create_text_node(value, 3));
-
-    //if(curr_country === 'USA' || curr_country === 'USSR / Russia' || curr_manufacturer === 'ESA'){
-    //}
-
-    var title_button_group = document.createElement('div');
-    title_button_group.className = 'title_button_group selec_header_' + type;
-
-    var buttons = ['add', 'remove', 'expand_less'];
-    for (var i = 0; i < buttons.length; i++) {
-        title_button_group.appendChild(create_title_button(type, value, buttons[i]));
+function create_title_header(type, value, show_buttons){
+    var level = 4;
+    switch (type) {
+        case 'type':
+            level = 2;
+            break;
+        case 'country':
+            level = 3;
+            break;
+        case 'manufacturer':
+            level = 4;
+            break;
+        default:
+            break;
     }
 
-    curr_header.appendChild(title_button_group);
+    var curr_header = document.createElement('div');
+    curr_header.className = 'selec_header';
+    curr_header.appendChild(create_text_node(value, level));
+
+    if(show_buttons){
+        var title_button_group = document.createElement('div');
+        title_button_group.className = 'title_button_group selec_header_' + type;
+
+        var buttons = ['add', 'remove', 'expand_less'];
+        for (var i = 0; i < buttons.length; i++) {
+            title_button_group.appendChild(create_title_button(type, value, buttons[i]));
+        }
+
+        curr_header.appendChild(title_button_group);
+    }
 
     return curr_header;
 }
@@ -972,7 +998,7 @@ function hide_rocket_param(obj){
 }
 //creates the rockets checkbox and separator
 function create_rocket_checkboxes(){
-    object_selection_window.appendChild(create_text_node('Rockets', 2));
+    object_selection_window.appendChild(create_title_header('type', 'Rockets', true));
     var rockets_selec_div = document.createElement('div');
     rockets_selec_div.id = 'rocket_selection';
 
@@ -988,7 +1014,7 @@ function create_rocket_checkboxes(){
         var curr_country_content = document.createElement('div');
         curr_country_content.id = curr_country + '_country_content';
 
-        curr_country_div.appendChild(create_title_header('country', curr_country));
+        curr_country_div.appendChild(create_title_header('country', curr_country, true));
 
         while (i < json_rockets.rockets.length && json_rockets.rockets[i].country === curr_country) {
 
@@ -1000,7 +1026,12 @@ function create_rocket_checkboxes(){
             curr_manufacturer_content.id = curr_manufacturer + '_manufacturer_content';
 
             if(curr_country === 'USA' || curr_country === 'USSR / Russia' || curr_country === 'Europe' || curr_country === 'Other'){
-                curr_manufacturer_div.appendChild(create_title_header('manufacturer', curr_manufacturer));
+                var show_buttons = false;
+                if(curr_country === 'USA' || curr_country === 'USSR / Russia' || curr_manufacturer === 'ESA'){
+                    show_buttons = true;
+                }
+
+                curr_manufacturer_div.appendChild(create_title_header('manufacturer', curr_manufacturer, show_buttons));
             }
 
             while (i < json_rockets.rockets.length && json_rockets.rockets[i].manufacturer === curr_manufacturer){
