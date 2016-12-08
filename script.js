@@ -73,7 +73,7 @@ function remove_overflow()
             max_height = curr_rect.height;
         }
     }
-    max_height = max_height + 10;
+    max_height = max_height + 20;
 
     rocket_comp_height = Math.round(100 - max_height *(100/document.body.clientHeight));
 
@@ -826,7 +826,7 @@ function update_rockets(){
         if (selected_rockets.rockets[i].country !== 'not_rocket' ) {
 
             //if USA or Russia, display manufacturer
-            if(selected_rockets.rockets[i].country === 'USA' || selected_rockets.rockets[i].country === 'USSR/Russia' || selected_rockets.rockets[i].country === 'Europe' || selected_rockets.rockets[i].country === 'Other'){
+            if(selected_rockets.rockets[i].country === 'USA' || selected_rockets.rockets[i].country === 'USSR / Russia' || selected_rockets.rockets[i].country === 'Europe' || selected_rockets.rockets[i].country === 'Other'){
                 if (i === 0 || selected_rockets.rockets[i].manufacturer !== selected_rockets.rockets[i - 1].manufacturer){
                     desc.appendChild(create_text_node(selected_rockets.rockets[i].manufacturer, 4))
                 }
@@ -865,29 +865,50 @@ function update_rockets(){
 function sub_categories_in_category(rocket_num, level) {
     var categories = ['manufacturer', 'family', 'name', 'version'];
     var curr_category = json_rockets.rockets[rocket_num][categories[level]];
-    var sub_cat_num = 1;
+    var sub_categories = 1;
     var curr_sub = json_rockets.rockets[rocket_num][categories[level + 1]]
 
     while (rocket_num < json_rockets.rockets.length && json_rockets.rockets[rocket_num][categories[level]] === curr_category) {
         if(curr_sub != json_rockets.rockets[rocket_num][categories[level + 1]]){
             curr_sub = json_rockets.rockets[rocket_num][categories[level + 1]]
-            sub_cat_num++;
+            sub_categories++;
         }
         rocket_num++;
     }
-    return sub_cat_num;
+    return sub_categories;
+}
+//retun the number of elements present in the category
+function elements_in_category(rocket_num, level) {
+    var categories = ['manufacturer', 'family', 'name', 'version'];
+    var curr_category = json_rockets.rockets[rocket_num][categories[level]];
+    var elements = 1;
+
+    while (rocket_num < json_rockets.rockets.length && json_rockets.rockets[rocket_num][categories[level]] === curr_category) {
+        elements++;
+        rocket_num++;
+    }
+    return elements;
 }
 //creates add/remove/hide buttons
-function create_title_button_group(type, value){
+function create_title_header(type, value){
+    var curr_header = document.createElement('div');
+    curr_header.className = 'selec_header';
+    curr_header.appendChild(create_text_node(value, 3));
+
+    //if(curr_country === 'USA' || curr_country === 'USSR / Russia' || curr_manufacturer === 'ESA'){
+    //}
+
     var title_button_group = document.createElement('div');
-    title_button_group.className = 'title_button_group';
+    title_button_group.className = 'title_button_group selec_header_' + type;
 
     var buttons = ['add', 'remove', 'expand_less'];
     for (var i = 0; i < buttons.length; i++) {
         title_button_group.appendChild(create_title_button(type, value, buttons[i]));
     }
 
-    return title_button_group;
+    curr_header.appendChild(title_button_group);
+
+    return curr_header;
 }
 //creates a single button
 function create_title_button(type, value, action){
@@ -967,15 +988,7 @@ function create_rocket_checkboxes(){
         var curr_country_content = document.createElement('div');
         curr_country_content.id = curr_country + '_country_content';
 
-
-        var curr_country_header = document.createElement('div');
-        curr_country_header.className = 'selec_header';
-
-        curr_country_header.appendChild(create_text_node(curr_country, 3));
-        curr_country_header.appendChild(create_title_button_group('country', curr_country));
-
-        curr_country_div.appendChild(curr_country_header);
-
+        curr_country_div.appendChild(create_title_header('country', curr_country));
 
         while (i < json_rockets.rockets.length && json_rockets.rockets[i].country === curr_country) {
 
@@ -986,16 +999,8 @@ function create_rocket_checkboxes(){
             var curr_manufacturer_content = document.createElement('div');
             curr_manufacturer_content.id = curr_manufacturer + '_manufacturer_content';
 
-            if(curr_country === 'USA' || curr_country === 'USSR/Russia' || curr_country === 'Europe' || curr_country === 'Other'){
-                var curr_manufacturer_header = document.createElement('div');
-                curr_manufacturer_header.className = 'selec_header';
-
-                curr_manufacturer_header.appendChild(create_text_node(curr_manufacturer, 4));
-                if(curr_country === 'USA' || curr_country === 'USSR/Russia' || curr_manufacturer === 'ESA'){
-                    curr_manufacturer_header.appendChild(create_title_button_group('manufacturer', curr_manufacturer));
-                }
-
-                curr_manufacturer_div.appendChild(curr_manufacturer_header);
+            if(curr_country === 'USA' || curr_country === 'USSR / Russia' || curr_country === 'Europe' || curr_country === 'Other'){
+                curr_manufacturer_div.appendChild(create_title_header('manufacturer', curr_manufacturer));
             }
 
             while (i < json_rockets.rockets.length && json_rockets.rockets[i].manufacturer === curr_manufacturer){
@@ -1004,7 +1009,7 @@ function create_rocket_checkboxes(){
                 var curr_family_div = document.createElement('div');
                 curr_family_div.className = 'selec_family';
 
-                if(sub_categories_in_category(i, 1) > 1){
+                if(elements_in_category(i, 1) > 0){
                     curr_family_div.appendChild(create_text_node(curr_family, 5));
                 }
 
@@ -1013,13 +1018,6 @@ function create_rocket_checkboxes(){
                     var curr_name = json_rockets.rockets[i].name;
                     var curr_name_div = document.createElement('div');
                     curr_name_div.className = 'selec_name';
-
-                    if(sub_categories_in_category(i, 2) > 1){
-                        curr_name_div.appendChild(create_text_node(curr_name, 6));
-                    }
-
-                    var curr_checkbox_container = document.createElement('div');
-                    curr_checkbox_container.className = 'checkbox_container';
 
                     while (i < json_rockets.rockets.length && json_rockets.rockets[i].name === curr_name){
                         var curr_id = get_id(json_rockets.rockets[i]);
@@ -1040,11 +1038,10 @@ function create_rocket_checkboxes(){
                         curr_checkbox_wrap.appendChild(curr_checkbox);
                         curr_checkbox_wrap.appendChild(curr_label);
 
-                        curr_checkbox_container.appendChild(curr_checkbox_wrap);
+                        curr_name_div.appendChild(curr_checkbox_wrap);
 
                         i++;
                     }
-                    curr_name_div.appendChild(curr_checkbox_container);
                     curr_family_div.appendChild(curr_name_div);
                 }
                 curr_manufacturer_content.appendChild(curr_family_div);

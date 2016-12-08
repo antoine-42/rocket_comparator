@@ -5,6 +5,7 @@ body{
     color: #202020;
     font-family: arial;
     font-size: 1em;
+    overflow-y: hidden;
 }
 
 a:link {
@@ -235,10 +236,14 @@ i:hover {
 }
 
 #rocket_selection{
+    margin: 1em 0;
     -moz-column-count: 2;/*fuck this shit*/
     -webkit-column-count: 2;
     column-count: 2;
-    margin: 1em 0;
+    -webkit-column-break-inside: avoid;
+}
+#rocket_selection > *{
+    page-break-inside: avoid
 }
 
 .selec_header{
@@ -261,7 +266,7 @@ i:hover {
 }
 
 #object_selection h3{
-    margin: 0 1em 0 0;
+    margin: 0;
     font-size: 1.4em;
 }
 .selec_country{
@@ -272,8 +277,11 @@ i:hover {
 }
 
 #object_selection h4{
-    margin: 0 1em 0 0;
+    margin: 0;
     font-size: 1.3em;
+}
+.selec_header_manufacturer{
+    margin-bottom: 0.5em;
 }
 .selec_manufacturer{
     margin: 1em 0;
@@ -281,26 +289,22 @@ i:hover {
 
 #object_selection h5{
     margin: 0;
-    font-size: 1.2em;
+    font-size: 1em;
 }
 .selec_family{
-    margin: 0.7em 0;
+    margin-bottom: 1.5em;
 }
 
 #object_selection h6{
-    margin: 0;
-    font-size: 0.8em;
 }
 .selec_name{
-    margin: 1em 0;
-}
-
-
-.checkbox_container{
+    margin-bottom: 1em;
     -moz-column-count: 2;/*seriously fuck this shit*/
     -webkit-column-count: 2;
     column-count: 2;
 }
+
+
 .rocket_checkbox{
 }
 
@@ -396,7 +400,7 @@ i:hover {
     .setting_status_switch_button{
         width: auto;
         height: auto;
-        margin: 30;
+        margin: 0;
     }
     #expand_button{
         font-size: 100px;
@@ -452,21 +456,17 @@ i:hover {
         margin: 0.5em 0;
     }
 
-
+    #background_legend{
+        left: 10px;
+        top: 20px;
+    }
     #share_box{
         top: 70px;
         left: 10px;
         right: auto;
     }
 }
-@media (max-width: 700px){ /*phone*/
-    .setting_status_switch_button{
-        width: auto;
-        height: auto;
-        margin: 0;
-    }
-
-
+@media (max-width: 600px){ /*phone*/
     #rocket_selection{
         -moz-column-count: 1;
         -webkit-column-count: 1;
