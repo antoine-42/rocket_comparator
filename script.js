@@ -378,22 +378,22 @@ add_rockets_dropdown.addEventListener('change', add_rocket_status);
 
 //sorting stuff
 //compare 2 objects
-compare_args(arg1, arg2){
+function compare_args(arg1, arg2){
     //string comparison using > and < is fucked up, use this instead
-    if isNaN(arg1){
+    if(isNaN(arg1)){
         var comp = arg1.localeCompare(arg2);
         return comp;
     }
-    if(curr_a_arg != curr_b_arg){
+    if(arg1 != arg2){
         //put -1 last
-        if(curr_a_arg === -1){
+        if(arg1 === -1){
             return 1;
         }
-        else if(curr_b_arg === -1){
+        else if(arg2 === -1){
             return -1;
         }
 
-        if(curr_a_arg > curr_b_arg){
+        if(arg1 > arg2){
             return 1;
         }
         return -1;
