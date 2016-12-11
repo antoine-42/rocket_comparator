@@ -55,13 +55,14 @@ var selected_list = ['soyuz2', 'proton-m', 'ariane5eca',
     'delta-iv-heavy', 'falcon-heavy1.2', 'its', 'saturn-v',
     'block1crew', 'new-glenn3stages', 'ariane64'];
 
+//other stuff
 var init = true;
 var stupid_unit_system = false;
-var rocket_comp_height = 85;
 var enable_dark_theme = false;
+var rocket_comp_height = 85;
 
 
-//removes overflow
+//removes overflow TODO: change this
 function remove_overflow()
 {
     var comp_desc = document.getElementsByClassName('comp_desc');
@@ -83,13 +84,8 @@ function remove_overflow()
 }
 
 
-//detects mobile browsers
-function detect_mobile(){
-    if(window.innerWidth <= 900) {
-        return true;
-    }
-    return false;
-}
+
+//Scroll stuff
 //checks if elem can be viewed in doc
 function isScrolledIntoView(elem, doc)
 {
@@ -104,8 +100,8 @@ function isScrolledIntoView(elem, doc)
     return (elem_bottom > 0);
 }
 //checks if the back to top button should be displayed
-function check_if_display_back_to_top(){
-    if(!detect_mobile()){
+function check_if_display_back_to_top_button(){
+    if(!detect_small_browser()){
         return;
     }
 
@@ -142,7 +138,7 @@ function horizontal_scroll(e){
         window.scrollBy(scroll, 0);
     }
     else {
-        check_if_display_back_to_top();
+        check_if_display_back_to_top_button();
     }
 }
 //makes the event handler passive
@@ -157,7 +153,7 @@ try {
 } catch (e) {}
 document.body.addEventListener('wheel', horizontal_scroll, supportsPassive ? { passive: true } : false);
 
-settings_form.addEventListener('scroll', check_if_display_back_to_top);
+settings_form.addEventListener('scroll', check_if_display_back_to_top_button);
 
 
 //scroll settings to top
@@ -167,7 +163,16 @@ function settings_scroll_to_top(){
 back_to_top_button.addEventListener('click', settings_scroll_to_top);
 
 
+
 //basic functions
+//detects mobile browsers
+function detect_small_browser(){
+    if(window.innerWidth <= 900) {
+        return true;
+    }
+    return false;
+}
+
 //creates a text node at level with text
 function create_text_node(text, level){
     var curr_header;
@@ -217,7 +222,6 @@ function find_rocket_num(rocket){
         }
     }
 }
-
 //returns the rocket with the id rocket_id
 function find_rocket(rocket_id){
     for (var i = 0; i < json_rockets.rockets.length; i++) {
@@ -288,7 +292,7 @@ function force_deactivate_rocket(rocket_id) {
 };
 
 
-//switch the display
+//switch settings
 function switch_display_settings () {
     var style_settings = window.getComputedStyle(settings_window);
     if (style_settings.getPropertyValue('display') == 'none') {
@@ -372,8 +376,32 @@ var add_rockets_dropdown = document.getElementById('add_rockets_dropdown');
 add_rockets_dropdown.addEventListener('change', add_rocket_status);
 
 
+//sorting stuff
+//compare 2 objects
+compare_args(arg1, arg2){
+    //string comparison using > and < is fucked up, use this instead
+    if isNaN(arg1){
+        var comp = arg1.localeCompare(arg2);
+        return comp;
+    }
+    if(curr_a_arg != curr_b_arg){
+        //put -1 last
+        if(curr_a_arg === -1){
+            return 1;
+        }
+        else if(curr_b_arg === -1){
+            return -1;
+        }
+
+        if(curr_a_arg > curr_b_arg){
+            return 1;
+        }
+        return -1;
+    }
+    return 0
+}
 var use_descending_order = false;
-//sorts the rockets according to the arguments in the array args starting from 0
+//sorts the rockets according to the arguments in the array args, ascending or descending
 function sort_rockets(args, descending){
     return function(a, b){
         var sort_order_mod = 1;
@@ -385,32 +413,13 @@ function sort_rockets(args, descending){
             var curr_a_arg = a[args[i]];
             var curr_b_arg = b[args[i]];
 
-            //sting comparison using > and < is fucked up, use this instead
-            //also, FUCK YOU JAVASCRIPT
-            if(isNaN(curr_a_arg)){
-                var comp = curr_a_arg.localeCompare(curr_b_arg);
-                if(comp != 0){
-                    return comp * sort_order_mod;
-                }
-            }
-            else {
-                if(curr_a_arg != curr_b_arg){
-                    //when no data, put last no matter the order
-                    if(curr_a_arg === -1){
-                        return 1;
-                    }
-                    else if(curr_b_arg === -1){
-                        return -1;
-                    }
-
-                    if(curr_a_arg > curr_b_arg){
-                        return 1 * sort_order_mod;
-                    }
-                    return -1 * sort_order_mod;
-                }
+            curr_comp = compare_args(curr_a_arg, curr_b_arg);
+            if(curr_comp != 0){
+                return curr_comp * sort_order_mod;
             }
         }
 
+        //if completely equal
         return 0;
     }
 }
@@ -433,6 +442,7 @@ json_rockets.rockets.sort(sort_rockets(sorting_args[1], false));
 
 
 
+//dark theme switch
 function dark_theme_switch(){
     enable_dark_theme = !enable_dark_theme;
 
@@ -448,6 +458,7 @@ function dark_theme_switch(){
 var dark_theme_checkbox = document.getElementById('dark_theme_checkbox');
 dark_theme_checkbox.addEventListener('click', dark_theme_switch);
 
+//loads the stylesheet
 function load_stylesheet(source){
     var stylesheet_node = document.createElement('link');
     stylesheet_node.rel = 'stylesheet';
@@ -457,6 +468,7 @@ function load_stylesheet(source){
     var head_node = document.getElementsByTagName('head')[0];
     head_node.appendChild(stylesheet_node);
 }
+//unloads the stylesheet
 function unload_stylesheet(filename){
     var link_list = document.getElementsByTagName('link');
 
