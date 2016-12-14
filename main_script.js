@@ -1,27 +1,5 @@
-//parse the strings into numbers in the json array
-for (var i = 0; i < json_rockets.rockets.length; i++) {
-    json_rockets.rockets[i].height = parseFloat(json_rockets.rockets[i].height);
-}
-for (var i = 0; i < json_rockets.rockets.length; i++) {
-    json_rockets.rockets[i].payload_leo = parseInt(json_rockets.rockets[i].payload_leo);
-}
-for (var i = 0; i < json_rockets.rockets.length; i++) {
-    json_rockets.rockets[i].payload_gto = parseInt(json_rockets.rockets[i].payload_gto);
-}
-for (var i = 0; i < json_rockets.rockets.length; i++) {
-    json_rockets.rockets[i].cost = parseInt(json_rockets.rockets[i].cost);
-}
-for (var i = 0; i < json_rockets.rockets.length; i++) {
-    json_rockets.rockets[i].status = parseInt(json_rockets.rockets[i].status);
-}
-//parse the strings into bools in the json array
-for (var i = 0; i < json_rockets.rockets.length; i++) {
-    json_rockets.rockets[i].high_res = json_rockets.rockets[i].high_res === '1';
-}
-//parse the strings into dates in the json array
-for (var i = 0; i < json_rockets.rockets.length; i++) {
-    json_rockets.rockets[i].date = new Date(json_rockets.rockets[i].date);
-}
+//main_script.js
+//functions only used on the main page
 
 //var initialisation
 var selected_rockets = JSON.parse('{"rockets" :[]}');
@@ -42,24 +20,6 @@ var back_to_top_button = document.getElementById('back_to_top_button');
 var sorting_method_dropdown = document.getElementById('sorting_method_dropdown');
 var object_selection_window = document.getElementById('object_selection');
 
-//height, family, date, payload, cost
-var sorting_args = [['height', 'country', 'family', 'manufacturer', 'name', 'payload_leo', 'payload_gto', 'version'],
-    ['country', 'manufacturer', 'family', 'name', 'payload_leo', 'payload_gto', 'version'],
-    ['date', 'country', 'family', 'manufacturer', 'name', 'payload_leo', 'payload_gto', 'version'],
-    ['payload_leo', 'payload_gto', 'country', 'family', 'manufacturer', 'name', 'version'],
-    ['cost', 'country', 'family', 'manufacturer', 'name', 'payload_leo', 'payload_gto', 'version']];
-
-//rockets that are selected by default
-var selected_list = ['soyuz2', 'proton-m', 'ariane5eca',
-    'sts-atlantis', 'atlas-v551', 'vulcan501', 'n1',
-    'delta-iv-heavy', 'falcon-heavy1.2', 'its', 'saturn-v',
-    'block1crew', 'new-glenn3stages', 'ariane64'];
-
-//other stuff
-var init = true;
-var stupid_unit_system = false;
-var enable_dark_theme = false;
-var rocket_comp_height = 85;
 
 
 //removes overflow TODO: change this
@@ -86,19 +46,6 @@ function remove_overflow()
 
 
 //Scroll stuff
-//checks if elem can be viewed in doc
-function isScrolledIntoView(elem, doc)
-{
-    var doc_rect = doc.getBoundingClientRect();
-    var doc_top = doc_rect.top;
-    var doc_bottom = doc_rect.bottom;
-
-    var elem_rect = elem.getBoundingClientRect();
-    var elem_top = elem_rect.top;
-    var elem_bottom = elem_rect.bottom;
-
-    return (elem_bottom > 0);
-}
 //checks if the back to top button should be displayed
 function check_if_display_back_to_top_button(){
     if(!detect_small_browser()){
@@ -163,75 +110,6 @@ function settings_scroll_to_top(){
 back_to_top_button.addEventListener('click', settings_scroll_to_top);
 
 
-
-//basic functions
-//detects mobile browsers
-function detect_small_browser(){
-    if(window.innerWidth <= 900) {
-        return true;
-    }
-    return false;
-}
-
-//creates a text node at level with text
-function create_text_node(text, level){
-    var curr_header;
-    if(level > 0){
-        curr_header = document.createElement('h' + level);
-    }
-    else {
-        curr_header = document.createElement('p');
-    }
-    curr_header.appendChild(document.createTextNode(text));
-    return curr_header;
-}
-//creates a link with text
-function create_link(text, link){
-    var link_p = document.createElement('p');
-
-    var link_text = document.createElement('a');
-    link_text.href = link;
-    link_text.appendChild(document.createTextNode(text));
-
-    link_p.appendChild(link_text);
-    return link_p;
-}
-//takes a path, returns an id
-function get_id(rocket){
-    var path = rocket.path;
-    var path_array = path.split('/');
-    return path_array[path_array.length - 1].split('.png')[0];
-}
-
-//finds_biggest_rocket
-function find_biggest_rocket(){
-    var biggest_rocket_height = 1;
-    for (var i = 0; i < selected_rockets.rockets.length; i++) {
-        if(selected_rockets.rockets[i].height > biggest_rocket_height){
-            biggest_rocket_height = selected_rockets.rockets[i].height;
-        }
-    }
-    return biggest_rocket_height;
-}
-
-//returns i where json_rockets.rockets[i] === rocket
-function find_rocket_num(rocket){
-    for (var i = 0; i < json_rockets.rockets.length; i++) {
-        if(json_rockets.rockets[i] === rocket){
-            return i;
-        }
-    }
-}
-//returns the rocket with the id rocket_id
-function find_rocket(rocket_id){
-    for (var i = 0; i < json_rockets.rockets.length; i++) {
-        var curr_rocket_id = get_id(json_rockets.rockets[i]);
-
-        if(curr_rocket_id === rocket_id){
-            return json_rockets.rockets[i];
-        }
-    }
-}
 
 //checks if rocket_id is active, if it is remove it if remove
 function check_if_rocket_is_active(rocket_id, remove){
@@ -335,30 +213,7 @@ function add_all_rocket(){
 var add_all_button = document.getElementById('add_all_button');
 add_all_button.addEventListener('click', add_all_rocket);
 
-//adds every rocket where parameter === value
-function add_rocket(parameter, value){
-    for (var i = 0; i < json_rockets.rockets.length; i++) {
-        if (json_rockets.rockets[i][parameter] === value) {
-            var id = get_id(json_rockets.rockets[i]);
-            force_activate_rocket(id);
-        }
-    }
 
-    update_rockets();
-    update_background_dimensions();
-}
-//removes every rocket where parameter === value
-function remove_rocket(parameter, value){
-    for (var i = 0; i < json_rockets.rockets.length; i++) {
-        if (json_rockets.rockets[i][parameter] === value) {
-            var id = get_id(json_rockets.rockets[i]);
-            force_deactivate_rocket(id);
-        }
-    }
-
-    update_rockets();
-    update_background_dimensions();
-}
 //this adds all the rockets according to their status
 function add_rocket_status(){
     if(selected === 'none'){
@@ -377,52 +232,6 @@ add_rockets_dropdown.addEventListener('change', add_rocket_status);
 
 
 //sorting stuff
-//compare 2 objects
-function compare_args(arg1, arg2){
-    //string comparison using > and < is fucked up, use this instead
-    if(isNaN(arg1)){
-        var comp = arg1.localeCompare(arg2);
-        return comp;
-    }
-    if(arg1 != arg2){
-        //put -1 last
-        if(arg1 === -1){
-            return 1;
-        }
-        else if(arg2 === -1){
-            return -1;
-        }
-
-        if(arg1 > arg2){
-            return 1;
-        }
-        return -1;
-    }
-    return 0
-}
-var use_descending_order = false;
-//sorts the rockets according to the arguments in the array args, ascending or descending
-function sort_rockets(args, descending){
-    return function(a, b){
-        var sort_order_mod = 1;
-        if(descending){
-            sort_order_mod = -1;
-        }
-
-        for (var i = 0; i < args.length; i++) {
-            var curr_a_arg = a[args[i]];
-            var curr_b_arg = b[args[i]];
-
-            curr_comp = compare_args(curr_a_arg, curr_b_arg);
-            if(curr_comp != 0){
-                return curr_comp * sort_order_mod;
-            }
-        }
-
-        //if completely equal
-        return 0;
-    }
-}
 //sorts the rocket if the sorting method is changed
 function sorting_method_change(){
     selected_sorting_args = sorting_args[sorting_method_dropdown.selectedIndex];
@@ -457,28 +266,6 @@ function dark_theme_switch(){
 }
 var dark_theme_checkbox = document.getElementById('dark_theme_checkbox');
 dark_theme_checkbox.addEventListener('click', dark_theme_switch);
-
-//loads the stylesheet
-function load_stylesheet(source){
-    var stylesheet_node = document.createElement('link');
-    stylesheet_node.rel = 'stylesheet';
-    stylesheet_node.type = 'text/css';
-    stylesheet_node.href = source;
-
-    var head_node = document.getElementsByTagName('head')[0];
-    head_node.appendChild(stylesheet_node);
-}
-//unloads the stylesheet
-function unload_stylesheet(filename){
-    var link_list = document.getElementsByTagName('link');
-
-    for (var i = 0; i < link_list.length; i++) {
-        if(link_list[i].getAttribute('href').indexOf(filename) != -1){
-            link_list[i].parentNode.removeChild(link_list[i]);
-            return;
-        }
-    }
-}
 
 
 
@@ -669,6 +456,7 @@ var background_dropdown = document.getElementById('background_dropdown');
 background_dropdown.addEventListener('change', on_background_change);
 
 var status_legend_checkbox = document.getElementById('status_legend_checkbox');
+//switch legend status
 function switch_status_legend(){
     hide_legend = !hide_legend;
     status_legend_checkbox.checked = hide_legend;
@@ -712,35 +500,6 @@ function on_picture_res_change(){
 }
 var high_res_checkbox = document.getElementById('high_res_checkbox');
 high_res_checkbox.addEventListener('click', on_picture_res_change);
-
-//obvious, also adds commas because you're going to get huge numbers with this stupid system
-function kg_to_pounds(good_unit){
-    var bad_unit = good_unit*2.2046;
-    return Math.round(bad_unit).toLocaleString();
-}
-//raw_payload: payload in kg. outputs a shorter number or a longer one if you like stupid unit systems.
-function get_payload(raw_payload){
-    if(stupid_unit_system){
-        return kg_to_pounds(raw_payload) + 'lb';
-    }
-
-    if(raw_payload > 1000){
-        return Math.round(raw_payload/1000 * 10) / 10 + 't'
-    }
-    return raw_payload + 'kg'
-}
-
-//returns a useable date strings
-function get_date(rocket){
-    var date = rocket.date;
-    var today = new Date();
-    var current_year = today.getFullYear();
-
-    if(date.getFullYear > current_year){
-        return date.getFullYear;
-    }
-    return date.toDateString()
-}
 
 
 //update the description position for all rockets each time a rocket is loaded
@@ -885,34 +644,6 @@ function update_rockets(){
 
 
 
-//retun the number of sub-categories present in the category
-function sub_categories_in_category(rocket_num, level) {
-    var categories = ['manufacturer', 'family', 'name', 'version'];
-    var curr_category = json_rockets.rockets[rocket_num][categories[level]];
-    var sub_categories = 1;
-    var curr_sub = json_rockets.rockets[rocket_num][categories[level + 1]]
-
-    while (rocket_num < json_rockets.rockets.length && json_rockets.rockets[rocket_num][categories[level]] === curr_category) {
-        if(curr_sub != json_rockets.rockets[rocket_num][categories[level + 1]]){
-            curr_sub = json_rockets.rockets[rocket_num][categories[level + 1]]
-            sub_categories++;
-        }
-        rocket_num++;
-    }
-    return sub_categories;
-}
-//retun the number of elements present in the category
-function elements_in_category(rocket_num, level) {
-    var categories = ['manufacturer', 'family', 'name', 'version'];
-    var curr_category = json_rockets.rockets[rocket_num][categories[level]];
-    var elements = 1;
-
-    while (rocket_num < json_rockets.rockets.length && json_rockets.rockets[rocket_num][categories[level]] === curr_category) {
-        elements++;
-        rocket_num++;
-    }
-    return elements;
-}
 //creates add/remove/hide buttons
 function create_title_header(type, value, show_buttons){
     var level = 4;
@@ -993,6 +724,7 @@ function apply_all_rocket_param(){
             break;
     }
 }
+//hide the checkboxes associed to this
 function hide_rocket_param(obj){
     var selec = obj.parentElement.parentElement.nextSibling;
     var selec_display = window.getComputedStyle(selec).getPropertyValue('display');
