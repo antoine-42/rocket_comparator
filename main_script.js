@@ -20,6 +20,11 @@ var back_to_top_button = document.getElementById('back_to_top_button');
 var sorting_method_dropdown = document.getElementById('sorting_method_dropdown');
 var object_selection_window = document.getElementById('object_selection');
 
+//rockets that are selected by default
+var selected_list = ['soyuz2', 'proton-m', 'ariane5eca',
+    'sts-atlantis', 'atlas-v551', 'vulcan541', 'n1',
+    'delta-iv-heavy', 'falcon-heavy1.2', 'its', 'saturn-v',
+    'block1crew', 'new-glenn3stages', 'ariane64'];
 
 
 //removes overflow TODO: change this

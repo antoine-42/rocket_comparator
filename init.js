@@ -33,12 +33,6 @@ var sorting_args = [['height', 'country', 'family', 'manufacturer', 'name', 'pay
     ['payload_leo', 'payload_gto', 'country', 'family', 'manufacturer', 'name', 'version'],
     ['cost', 'country', 'family', 'manufacturer', 'name', 'payload_leo', 'payload_gto', 'version']];
 
-//rockets that are selected by default
-var selected_list = ['soyuz2', 'proton-m', 'ariane5eca',
-    'sts-atlantis', 'atlas-v551', 'vulcan501', 'n1',
-    'delta-iv-heavy', 'falcon-heavy1.2', 'its', 'saturn-v',
-    'block1crew', 'new-glenn3stages', 'ariane64'];
-
 //other stuff
 var init = true;
 var stupid_unit_system = false;
@@ -160,6 +154,30 @@ function find_rocket(rocket_id){
     }
 }
 
+//adds every rocket where parameter === value
+function add_rocket(parameter, value){
+    for (var i = 0; i < json_rockets.rockets.length; i++) {
+        if (json_rockets.rockets[i][parameter] === value) {
+            var id = get_id(json_rockets.rockets[i]);
+            force_activate_rocket(id);
+        }
+    }
+
+    update_rockets();
+    update_background_dimensions();
+}
+//removes every rocket where parameter === value
+function remove_rocket(parameter, value){
+    for (var i = 0; i < json_rockets.rockets.length; i++) {
+        if (json_rockets.rockets[i][parameter] === value) {
+            var id = get_id(json_rockets.rockets[i]);
+            force_deactivate_rocket(id);
+        }
+    }
+
+    update_rockets();
+    update_background_dimensions();
+}
 
 //sorting stuff
 //compare 2 objects
