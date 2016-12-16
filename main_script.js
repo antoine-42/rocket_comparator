@@ -21,7 +21,7 @@ var sorting_method_dropdown = document.getElementById('sorting_method_dropdown')
 var object_selection_window = document.getElementById('object_selection');
 
 //rockets that are selected by default
-var selected_list = ['soyuz2', 'proton-m', 'ariane5eca',
+var selected_list = ['human', 'soyuz2', 'proton-m', 'ariane5eca',
     'sts-atlantis', 'atlas-v551', 'vulcan541', 'n1',
     'delta-iv-heavy', 'falcon-heavy1.2', 'its', 'saturn-v',
     'block1crew', 'new-glenn3stages', 'ariane64'];
@@ -178,13 +178,12 @@ function force_deactivate_rocket(rocket_id) {
 //switch settings
 function switch_display_settings () {
     var style_settings = window.getComputedStyle(settings_window);
-    if (style_settings.getPropertyValue('display') == 'none') {
-        settings_window.style.display = 'flex';
-        expand_button.style.display = 'none';
+    var display = parseInt(style_settings.getPropertyValue('right').split('px')[0]);
+    if (display < 0) {
+        settings_window.style.right = '0';
         return true;
     }
-    settings_window.style.display = 'none';
-    expand_button.style.display = 'flex';
+    settings_window.style.right = '-110%';
     return false;
 }
 collapse_button.addEventListener('click', switch_display_settings);
@@ -724,6 +723,13 @@ function apply_all_rocket_param(){
             break;
         case 'expand_less':
             hide_rocket_param(this);
+            if(this.title === 'Show'){
+                this.style.transform = 'rotate(180deg)';
+            }
+            else {
+                this.style.transform = '';
+            }
+
             break;
         default:
             break;
@@ -731,111 +737,150 @@ function apply_all_rocket_param(){
 }
 //hide the checkboxes associed to this
 function hide_rocket_param(obj){
+
     var selec = obj.parentElement.parentElement.nextSibling;
     var selec_display = window.getComputedStyle(selec).getPropertyValue('display');
 
     if(selec_display != 'none'){
         selec.style.display = 'none';
-        obj.innerHTML = 'expand_more';
         obj.title = 'Show';
     }
     else {
         selec.style.display = 'block';
-        obj.innerHTML = 'expand_less';
         obj.title = 'Hide';
     }
 }
 //creates the rockets checkbox and separator
 function create_rocket_checkboxes(){
-    object_selection_window.appendChild(create_title_header('type', 'Rockets', true));
-    var rockets_selec_div = document.createElement('div');
-    rockets_selec_div.id = 'rocket_selection';
-
-
     var i = 0;
+
     while (i < json_rockets.rockets.length) {
+        var curr_type = json_rockets.rockets[i].type;
+        var curr_type_div = document.createElement('div');
+        curr_type_div.className = 'selec_type';
+        curr_type_div.id = curr_type + '_selec_type';
 
-        var curr_country = json_rockets.rockets[i].country;
-        var curr_country_div = document.createElement('div');
-        curr_country_div.className = 'selec_country';
-        curr_country_div.id = curr_country + '_selec_country';
-
-        var curr_country_content = document.createElement('div');
-        curr_country_content.id = curr_country + '_country_content';
-
-        curr_country_div.appendChild(create_title_header('country', curr_country, true));
-
-        while (i < json_rockets.rockets.length && json_rockets.rockets[i].country === curr_country) {
-
-            var curr_manufacturer = json_rockets.rockets[i].manufacturer;
-            var curr_manufacturer_div = document.createElement('div');
-            curr_manufacturer_div.className = 'selec_manufacturer';
-
-            var curr_manufacturer_content = document.createElement('div');
-            curr_manufacturer_content.id = curr_manufacturer + '_manufacturer_content';
-
-            if(curr_country === 'USA' || curr_country === 'USSR / Russia' || curr_country === 'Europe' || curr_country === 'Other'){
-                var show_buttons = false;
-                if(curr_country === 'USA' || curr_country === 'USSR / Russia' || curr_manufacturer === 'ESA'){
-                    show_buttons = true;
-                }
-
-                curr_manufacturer_div.appendChild(create_title_header('manufacturer', curr_manufacturer, show_buttons));
-            }
-
-            while (i < json_rockets.rockets.length && json_rockets.rockets[i].manufacturer === curr_manufacturer){
-
-                var curr_family = json_rockets.rockets[i].family;
-                var curr_family_div = document.createElement('div');
-                curr_family_div.className = 'selec_family';
-
-                if(elements_in_category(i, 1) > 0){
-                    curr_family_div.appendChild(create_text_node(curr_family, 5));
-                }
-
-                while (i < json_rockets.rockets.length && json_rockets.rockets[i].family === curr_family){
-
-                    var curr_name = json_rockets.rockets[i].name;
-                    var curr_name_div = document.createElement('div');
-                    curr_name_div.className = 'selec_name';
-
-                    while (i < json_rockets.rockets.length && json_rockets.rockets[i].name === curr_name){
-                        var curr_id = get_id(json_rockets.rockets[i]);
-
-                        var curr_checkbox = document.createElement('input');
-                        curr_checkbox.type = 'checkbox';
-                        curr_checkbox.name = curr_id + '_checkbox';
-                        curr_checkbox.value = curr_id + '_checkbox';
-                        curr_checkbox.id = curr_id + '_checkbox';
-                        curr_checkbox.addEventListener('click', switch_rocket_status );
-
-                        var curr_label = document.createElement('label');
-                        curr_label.setAttribute('for', curr_id + '_checkbox');
-                        curr_label.appendChild(document.createTextNode(json_rockets.rockets[i].name + ' ' + json_rockets.rockets[i].version))
-
-                        var curr_checkbox_wrap = document.createElement('div');
-                        curr_checkbox_wrap.className = 'rocket_checkbox';
-                        curr_checkbox_wrap.appendChild(curr_checkbox);
-                        curr_checkbox_wrap.appendChild(curr_label);
-
-                        curr_name_div.appendChild(curr_checkbox_wrap);
-
-                        i++;
-                    }
-                    curr_family_div.appendChild(curr_name_div);
-                }
-                curr_manufacturer_content.appendChild(curr_family_div);
-            }
-            curr_manufacturer_div.appendChild(curr_manufacturer_content);
-
-            curr_country_content.appendChild(curr_manufacturer_div);
+        var curr_type_content = document.createElement('div');
+        curr_type_content.id = curr_type + '_type_content';
+        if(curr_type != 'Rockets'){
+            curr_type_content.className = 'not_Rockets_type_content';
         }
-        curr_country_div.appendChild(curr_country_content);
 
-        rockets_selec_div.appendChild(curr_country_div);
+        curr_type_div.appendChild(create_title_header('type', curr_type, true));
+
+
+        if(curr_type != 'Rockets'){
+            while (i < json_rockets.rockets.length && json_rockets.rockets[i].type === curr_type) {
+                var curr_id = get_id(json_rockets.rockets[i]);
+
+                var curr_checkbox = document.createElement('input');
+                curr_checkbox.type = 'checkbox';
+                curr_checkbox.name = curr_id + '_checkbox';
+                curr_checkbox.value = curr_id + '_checkbox';
+                curr_checkbox.id = curr_id + '_checkbox';
+                curr_checkbox.addEventListener('click', switch_rocket_status );
+
+                var curr_label = document.createElement('label');
+                curr_label.setAttribute('for', curr_id + '_checkbox');
+                curr_label.appendChild(document.createTextNode(json_rockets.rockets[i].name + ' ' + json_rockets.rockets[i].version))
+
+                var curr_checkbox_wrap = document.createElement('div');
+                curr_checkbox_wrap.className = 'rocket_checkbox';
+                curr_checkbox_wrap.appendChild(curr_checkbox);
+                curr_checkbox_wrap.appendChild(curr_label);
+
+                curr_type_content.appendChild(curr_checkbox_wrap);
+
+                i++;
+            }
+        }
+
+
+        while (i < json_rockets.rockets.length && json_rockets.rockets[i].type === curr_type) {
+
+            var curr_country = json_rockets.rockets[i].country;
+            var curr_country_div = document.createElement('div');
+            curr_country_div.className = 'selec_country';
+            curr_country_div.id = curr_country + '_selec_country';
+
+            var curr_country_content = document.createElement('div');
+            curr_country_content.id = curr_country + '_country_content';
+
+            curr_country_div.appendChild(create_title_header('country', curr_country, true));
+
+            while (i < json_rockets.rockets.length && json_rockets.rockets[i].country === curr_country) {
+
+                var curr_manufacturer = json_rockets.rockets[i].manufacturer;
+                var curr_manufacturer_div = document.createElement('div');
+                curr_manufacturer_div.className = 'selec_manufacturer';
+
+                var curr_manufacturer_content = document.createElement('div');
+                curr_manufacturer_content.id = curr_manufacturer + '_manufacturer_content';
+
+                if(curr_country === 'USA' || curr_country === 'USSR / Russia' || curr_country === 'Europe' || curr_country === 'Other'){
+                    var show_buttons = false;
+                    if(curr_country === 'USA' || curr_country === 'USSR / Russia' || curr_manufacturer === 'ESA'){
+                        show_buttons = true;
+                    }
+
+                    curr_manufacturer_div.appendChild(create_title_header('manufacturer', curr_manufacturer, show_buttons));
+                }
+
+                while (i < json_rockets.rockets.length && json_rockets.rockets[i].manufacturer === curr_manufacturer){
+
+                    var curr_family = json_rockets.rockets[i].family;
+                    var curr_family_div = document.createElement('div');
+                    curr_family_div.className = 'selec_family';
+
+                    if(elements_in_category(i, 1) > 0){
+                        curr_family_div.appendChild(create_text_node(curr_family, 5));
+                    }
+
+                    while (i < json_rockets.rockets.length && json_rockets.rockets[i].family === curr_family){
+
+                        var curr_name = json_rockets.rockets[i].name;
+                        var curr_name_div = document.createElement('div');
+                        curr_name_div.className = 'selec_name';
+
+                        while (i < json_rockets.rockets.length && json_rockets.rockets[i].name === curr_name){
+                            var curr_id = get_id(json_rockets.rockets[i]);
+
+                            var curr_checkbox = document.createElement('input');
+                            curr_checkbox.type = 'checkbox';
+                            curr_checkbox.name = curr_id + '_checkbox';
+                            curr_checkbox.value = curr_id + '_checkbox';
+                            curr_checkbox.id = curr_id + '_checkbox';
+                            curr_checkbox.addEventListener('click', switch_rocket_status );
+
+                            var curr_label = document.createElement('label');
+                            curr_label.setAttribute('for', curr_id + '_checkbox');
+                            curr_label.appendChild(document.createTextNode(json_rockets.rockets[i].name + ' ' + json_rockets.rockets[i].version))
+
+                            var curr_checkbox_wrap = document.createElement('div');
+                            curr_checkbox_wrap.className = 'rocket_checkbox';
+                            curr_checkbox_wrap.appendChild(curr_checkbox);
+                            curr_checkbox_wrap.appendChild(curr_label);
+
+                            curr_name_div.appendChild(curr_checkbox_wrap);
+
+                            i++;
+                        }
+                        curr_family_div.appendChild(curr_name_div);
+                    }
+                    curr_manufacturer_content.appendChild(curr_family_div);
+                }
+                curr_manufacturer_div.appendChild(curr_manufacturer_content);
+
+                curr_country_content.appendChild(curr_manufacturer_div);
+            }
+            curr_country_div.appendChild(curr_country_content);
+
+            curr_type_content.appendChild(curr_country_div);
+        }
+        curr_type_div.appendChild(curr_type_content);
+
+        object_selection_window.appendChild(curr_type_div);
     }
-
-    object_selection_window.appendChild(rockets_selec_div);
 }
 create_rocket_checkboxes();
 

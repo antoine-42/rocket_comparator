@@ -69,7 +69,7 @@ body{
 }
 #expand_button{
     font-size: 150px;
-    display: none;
+    display: flex;
     position: fixed;
     align-items: center;
     justify-content: center;
@@ -89,13 +89,14 @@ body{
 #settings_window{
     height: 100%;
     width: 35vw;
-    min-width: 610px;
+    min-width: 630px;
     position: fixed;
     top: 0;
     right: 0;
     z-index: 10;
     background-color: #F5F5F5;
     box-shadow: 22px 0px 51px 25px black;
+    transition-duration: 0.4s;
 }
 #settings_window h1{
     text-align: center;
@@ -150,30 +151,43 @@ body{
 #object_selection{
     box-sizing: border-box;
     width: 100%;
-    padding: 0 10px 20px 20px;
+    padding: 0 20px;
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    margin-top: 2em;
 }
 #object_selection h2{
     margin: auto;
 }
 
-#rocket_selection{
-    margin: 1em 0;
-    -moz-column-count: 2;/*fuck this shit*/
+
+.not_Rockets_type_content{
+    -moz-column-count: 3;/*fuck this shit*/
+    -webkit-column-count: 3;
+    column-count: 3;
+}
+
+#Rockets_type_content{
+    -moz-column-count: 2;
     -webkit-column-count: 2;
     column-count: 2;
+
     -webkit-column-break-inside: avoid;
 }
-#rocket_selection > *{
+#Rockets_type_content > *{
     page-break-inside: avoid
 }
 
+
+.selec_type{
+    margin-bottom: 2em;
+}
 .selec_header{
     display: flex;
     align-items: center;
     justify-content: space-between;
+    margin-bottom: 1em;
 }
 
 .title_button_group{
@@ -312,7 +326,7 @@ body{
 /*mobile*/
 @media (max-width: 900px){ /*big phone/tablet*/
     #settings_window{
-        display: none;
+        right: -110%;
         width: 100vw;
         min-width: 0;
     }
@@ -364,17 +378,8 @@ body{
     }
 
 
-    #rocket_selection{
-        -moz-column-count: 2;
-        -webkit-column-count: 2;
-        column-count: 2;
-    }
-
     .title_button_group i {
         margin: 0 0.5em;
-    }
-    .rocket_checkbox{
-        margin: 0.5em 0;
     }
 
     #background_legend{
@@ -388,9 +393,14 @@ body{
     }
 }
 @media (max-width: 600px){ /*phone*/
-    #rocket_selection{
+    #Rockets_type_content{
         -moz-column-count: 1;
         -webkit-column-count: 1;
         column-count: 1;
+    }
+    .not_Rockets_type_content{
+        -moz-column-count: 2;
+        -webkit-column-count: 2;
+        column-count: 2;
     }
 }

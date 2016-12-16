@@ -27,11 +27,11 @@ for (var i = 0; i < json_rockets.rockets.length; i++) {
 }
 
 //height, family, date, payload, cost
-var sorting_args = [['height', 'country', 'family', 'manufacturer', 'name', 'payload_leo', 'payload_gto', 'version'],
-    ['country', 'manufacturer', 'family', 'name', 'payload_leo', 'payload_gto', 'version'],
-    ['date', 'country', 'family', 'manufacturer', 'name', 'payload_leo', 'payload_gto', 'version'],
-    ['payload_leo', 'payload_gto', 'country', 'family', 'manufacturer', 'name', 'version'],
-    ['cost', 'country', 'family', 'manufacturer', 'name', 'payload_leo', 'payload_gto', 'version']];
+var sorting_args = [['height', 'type', 'country', 'family', 'manufacturer', 'name', 'payload_leo', 'payload_gto', 'version'],
+    ['type', 'country', 'manufacturer', 'family', 'name', 'payload_leo', 'payload_gto', 'version'],
+    ['date', 'type', 'country', 'family', 'manufacturer', 'name', 'payload_leo', 'payload_gto', 'version'],
+    ['payload_leo', 'payload_gto', 'type', 'country', 'family', 'manufacturer', 'name', 'version'],
+    ['cost', 'type', 'country', 'family', 'manufacturer', 'name', 'payload_leo', 'payload_gto', 'version']];
 
 //other stuff
 var init = true;
