@@ -261,9 +261,11 @@ function dark_theme_switch(){
 
     if(enable_dark_theme){
         load_stylesheet('dark-theme.css');
+        set_cookie('theme', 'dark');
     }
     else {
         unload_stylesheet('dark-theme.css');
+        set_cookie('theme', 'light');
     }
     update_background_scale();
     set_rocket_background();
@@ -277,6 +279,7 @@ var imperial_checkbox = document.getElementById('imperial_checkbox');
 imperial_checkbox.addEventListener('click', unit_system_check);
 function unit_system_check(){
     stupid_unit_system = imperial_checkbox.checked;
+    set_cookie('imp', stupid_unit_system + '')
     update_background_dimensions();
 }
 var window_width = 0;
@@ -491,15 +494,18 @@ function reset_everything(){
 
     background_dropdown.selectedIndex = 0;
     on_background_change();
+
+    on_sorting_order_change();
+    descending_sort_checkbox.checked = use_descending_order;
 }
 var reset_button = document.getElementById('reset_button');
 reset_button.addEventListener('click', reset_everything);
 
 
 
-var use_high_res = false;
 function on_picture_res_change(){
     use_high_res = !use_high_res;
+    set_cookie('high_res', use_high_res + '')
     update_rockets();
 }
 var high_res_checkbox = document.getElementById('high_res_checkbox');
@@ -571,12 +577,7 @@ function update_rockets(){
         curr_img.addEventListener('load', on_rocket_load);
 
         //adds the image in the correct resolution
-        var image_path = path;
-        if(!use_high_res && selected_rockets.rockets[i].high_res){
-            var low_res_path_table = path.split('/');
-            low_res_path_table[low_res_path_table.length -1] = 'l-' + low_res_path_table[low_res_path_table.length -1];
-            image_path = low_res_path_table.join('/');
-        }
+        var image_path = get_correct_res_path(selected_rockets.rockets[i]);
         curr_img.src = image_path;
 
         //places it in the document
@@ -885,58 +886,91 @@ function create_rocket_checkboxes(){
 create_rocket_checkboxes();
 
 
-function process_parameters(){
-    var parameters_rawr = window.location.search;
-    var parameters = parameters_rawr.substr(1).split('&');
 
-    var custom_rockets = false;
+var custom_rockets = false;
+//handles the parameter
+function handle_parameter(name, value){
+    var int_value = parseInt(value);
+    switch (name) {
+        case 'sort':
+            if(!isNaN(int_value) && int_value < sorting_method_dropdown.options.length){
+                sorting_method_dropdown.selectedIndex = int_value;
+                sorting_method_change();
+            }
+            break;
+        case 'desc':
+            if(value === 'true'){
+                on_sorting_order_change();
+                descending_sort_checkbox.checked = use_descending_order;
+            }
+            break;
 
-    for (var i = 0; i < parameters.length; i++) {
-        var curr_parameters = parameters[i].split('=')
-        var parameter = curr_parameters[0];
+        case 'back':
+            var background_dropdown = document.getElementById('background_dropdown');
+            if(!isNaN(int_value) && int_value < background_dropdown.options.length){
+                background_dropdown.selectedIndex = int_value;
+                on_background_change();
+            }
+            break;
+
+        case 'r':
+            var rocket_nums = value.split('+');
+            for (var i = 0; i < rocket_nums.length; i++) {
+                if(!isNaN(rocket_nums[i])){
+                    custom_rockets = true;
+                    var id = get_id(json_rockets.rockets[rocket_nums[i]]);
+                    switch_rocket_status(id);
+                }
+            }
+            break;
+
+        case 'imp':
+            if(value === 'true'){
+                imperial_checkbox.checked = true;
+                stupid_unit_system = true
+            }
+            break;
+
+        case 'theme':
+            if(value === 'dark'){
+                dark_theme_switch();
+                dark_theme_checkbox.checked = true;
+            }
+            break;
+
+        case 'high_res':
+            if(value === 'true'){
+                on_picture_res_change();
+                high_res_checkbox.checked = true;
+            }
+            break;
+
+        default:
+            break;
+    }
+}
+//get the parameters name and value il list and apply handle_parameter to them
+function process_parameter_list(list){
+    for (var i = 0; i < list.length; i++) {
+        var curr_parameters = list[i].split('=');
+        var parameter = curr_parameters[0].split(' ').join('');
         var value = curr_parameters[1];
 
-        var int_value = parseInt(value);
-
-        switch (parameter) {
-            case 'sort':
-                if(!isNaN(int_value) && int_value < sorting_method_dropdown.options.length){
-                    sorting_method_dropdown.selectedIndex = int_value;
-                    sorting_method_change();
-                }
-                break;
-
-            case 'back':
-                var background_dropdown = document.getElementById('background_dropdown');
-                if(!isNaN(int_value) && int_value < background_dropdown.options.length){
-                    background_dropdown.selectedIndex = int_value;
-                    on_background_change();
-                }
-                break;
-
-            case 'imp':
-                if(value === '1'){
-                    stupid_unit_system = true;
-                    imperial_checkbox.checked = true;
-                }
-                break;
-
-            case 'r':
-                var rocket_nums = value.split('+');
-                for (var i = 0; i < rocket_nums.length; i++) {
-                    if(!isNaN(rocket_nums[i])){
-                        custom_rockets = true;
-                        var id = get_id(json_rockets.rockets[rocket_nums[i]]);
-                        switch_rocket_status(id);
-                    }
-                }
-                break;
-
-            default:
-                break;
-        }
+        handle_parameter(parameter, value);
     }
+}
+//loads and handles cookies and GET arg
+function load_settings(){
+    //GET args processing
+    var parameters_rawr = window.location.search;
+    var parameters = parameters_rawr.substr(1).split('&');
+    process_parameter_list(parameters);
 
+    //cookies processing
+    var cookies = document.cookie.split(';');
+    process_parameter_list(cookies);
+
+    //if no rocket ara loaded during loading, load the default ones.
     if(!custom_rockets){
         for (var i = 0; i < selected_list.length; i++) {
             switch_rocket_status(selected_list[i]);
@@ -986,6 +1020,9 @@ function share(){
     if(sorting_method_dropdown.selectedIndex != 0){
         args += 'sort=' + sorting_method_dropdown.selectedIndex + '&';
     }
+    if(descending_sort_checkbox.checked){
+        args += 'desc=true&';
+    }
     if(background_dropdown.selectedIndex != 0){
         args += 'back=' + background_dropdown.selectedIndex + '&';
     }
@@ -1007,8 +1044,11 @@ share_button.addEventListener('click', share)
 
 
 
-process_parameters();
-update_rockets();
-update_background_dimensions();
+function init(){
+    load_settings();
+    update_rockets();
+    update_background_dimensions();
+}
+init();
 
 init = false;

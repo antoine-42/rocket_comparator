@@ -1,7 +1,8 @@
 body{
     box-sizing: border-box;
     width: 100%;
-    padding: 0 20%;
+    padding-left: 40px;
+    padding-right: 30%;
 }
 
 
@@ -55,7 +56,7 @@ td{
 
 @media (max-width: 900px){ /*big phone/tablet*/
     body{
-        padding: 0 10%;
+        padding-right: 20%;
     }
     #image_display{
         margin-right: 0;
@@ -63,7 +64,7 @@ td{
 }
 @media (max-width: 600px){ /*phone*/
     body{
-        padding: 0 10px;
+        padding-right: 10px;
     }
     #image_display{
         padding: 0;

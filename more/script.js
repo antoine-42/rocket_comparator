@@ -5,7 +5,7 @@ function create_source_table(){
 
     while (i < json_rockets.rockets.length) {
         var curr_source = json_rockets.rockets[i].source_text;
-        if(curr_source === 'zzzunknown'){
+        if(curr_source === 'zzzunknown' || json_rockets.rockets[i].source_text === ''){
             i++;
             continue;
         }
@@ -19,9 +19,7 @@ function create_source_table(){
 
         var source_name_cell = document.createElement('td');
         source_name_cell.className = 'source_name';
-        if(json_rockets.rockets[i].source_text != 'zzzunknown'){
-            source_name_cell.appendChild(create_text_node(json_rockets.rockets[i].source_text, 0))
-        }
+        source_name_cell.appendChild(create_text_node(json_rockets.rockets[i].source_text, 0))
 
         var source_links_cell = document.createElement('td');
         source_links_cell.className = 'source_links';
@@ -43,9 +41,12 @@ function create_source_table(){
 }
 
 
+var high_res = true;
 var image_display = document.getElementById('image_display');
 function show_rocket_display(){
-    image_display.src = '../' + find_rocket(this.id).path;
+    check_res();
+    var path = get_correct_res_path(find_rocket(this.id));
+    image_display.src = '../' + path;
     image_display.style.display = 'block';
 }
 function hide_rocket_display(){
@@ -61,7 +62,20 @@ function assign_mouseover_to_source_links(){
 }
 
 
+function check_theme(){
+    var theme = get_cookie('theme');
+    if(theme === 'dark'){
+        load_stylesheet('../dark-theme.css');
+    }
+}
+function check_res(){
+    use_high_res = get_cookie('high_res') === 'true';
+}
+
+
 function start(){
+    check_theme();
+
     json_rockets.rockets.sort(sort_rockets(['source_text', 'type', 'country', 'manufacturer', 'family', 'name', 'payload_leo', 'payload_gto', 'version'], false));
     create_source_table();
 

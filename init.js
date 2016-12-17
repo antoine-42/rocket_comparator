@@ -37,6 +37,7 @@ var sorting_args = [['height', 'type', 'country', 'family', 'manufacturer', 'nam
 var init = true;
 var stupid_unit_system = false;
 var enable_dark_theme = false;
+var use_high_res = false;
 var rocket_comp_height = 85;
 
 
@@ -87,6 +88,33 @@ function detect_small_browser(){
         return true;
     }
     return false;
+}
+
+//set cookie name to value
+function set_cookie(name, value) {
+    var d = new Date();
+    d.setTime(d.getTime() + (365*24*60*60*1000));
+
+    document.cookie = name + "=" + value + ";expires=" + d.toUTCString() + ";path=/";
+}
+function get_cookie(name) {
+    var cookies = document.cookie.split(';');
+    for(var i = 0; i <cookies.length; i++) {
+        var curr_cookie = cookies[i].split('=');
+        var curr_name = curr_cookie[0].split(' ').join('');
+
+        if (curr_name === name) {
+            return curr_cookie[1];
+        }
+    }
+    return "";
+}
+//delete cookie with name
+function delete_cookie(name) {
+    var d = new Date();
+    d.setTime(0);
+
+    document.cookie = name + "=;expires=" + d.toUTCString() + ";path=/";
 }
 
 //creates a text node at level with text
@@ -252,6 +280,15 @@ function unload_stylesheet(filename){
 }
 
 
+
+function get_correct_res_path(rocket){
+    if(!use_high_res && rocket.high_res){
+        var low_res_path_table = rocket.path.split('/');
+        low_res_path_table[low_res_path_table.length -1] = 'l-' + low_res_path_table[low_res_path_table.length -1];
+        return low_res_path_table.join('/');
+    }
+    return rocket.path;
+}
 
 //obvious, also adds commas because you're going to get huge numbers with this stupid system
 function kg_to_pounds(good_unit){

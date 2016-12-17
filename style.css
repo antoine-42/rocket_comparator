@@ -60,6 +60,11 @@ a:hover {
 }
 
 
+label {
+    margin: 2px 0;
+}
+
+
 button{
     padding: 7px 15px;
     margin: 5px;
@@ -67,7 +72,7 @@ button{
     background-color: #DDDDDD;
     font-size: 17px;
     box-shadow: 0px 0px 5px 0px black;
-    transition-duration: 0.1s;
+    transition-duration: 0.2s;
 }
 button:hover {
     background-color: #FFFFFF;
@@ -82,14 +87,15 @@ select{
     border: none;
     box-shadow: 0px 0px 5px 0px black;
     font-size: 1em;
-    transition-duration: 0.1s;
+    transition-duration: 0.2s;
 }
 select:hover, select:focus{
     box-shadow: 0px 0px 10px 1px black;
 }
 
 input[type="checkbox"] {
-    margin-left: 0;
+    margin: 0;
+    margin-right: 5px;
 }
 
 input[type="text"] {
@@ -105,10 +111,21 @@ input[type="text"]:hover, input[type="text"]:focus{
 }
 
 i{
-    transition-duration: 0.1s;
+    transition-duration: 0.2s;
     border-radius: 50%;
 }
 i:hover {
     color: #000000;
     background-color: rgba(0, 0, 0, 0.2);
+}
+
+
+
+/*mobile*/
+@media (max-width: 900px){ /*big phone/tablet*/
+    label {
+        margin: 5px 0;
+    }
+}
+@media (max-width: 600px){ /*phone*/
 }

@@ -175,7 +175,7 @@ body{
 
     -webkit-column-break-inside: avoid;
 }
-#Rockets_type_content > *{
+.selec_manufacturer{
     page-break-inside: avoid
 }
 
@@ -240,7 +240,10 @@ body{
 }
 
 
-.rocket_checkbox{
+.rocket_checkbox {
+    display: flex;
+    align-items: center;
+    break-inside: avoid;
 }
 
 
