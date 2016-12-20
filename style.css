@@ -12,7 +12,7 @@ a:link {
     text-decoration: none;
 }
 a:visited {
-    color: #4A1268;
+    color: #2A1288;
     text-decoration: none;
 }
 a:hover {
@@ -33,24 +33,24 @@ a:hover {
 }
 
 .material-icons {
-  font-family: 'Material Icons';
-  font-weight: normal;
-  font-style: normal;
-  font-size: 24px;
-  display: inline-block;
-  line-height: 1;
-  text-transform: none;
-  letter-spacing: normal;
-  word-wrap: normal;
-  white-space: nowrap;
-  direction: ltr;
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    display: inline-block;
+    line-height: 1;
+    text-transform: none;
+    letter-spacing: normal;
+    word-wrap: normal;
+    white-space: nowrap;
+    direction: ltr;
 
-  -webkit-font-smoothing: antialiased;
-  text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
 
-  -moz-osx-font-smoothing: grayscale;
+    -moz-osx-font-smoothing: grayscale;
 
-  font-feature-settings: 'liga';
+    font-feature-settings: 'liga';
 }
 
 
@@ -76,7 +76,7 @@ button{
 }
 button:hover {
     background-color: #FFFFFF;
-    box-shadow: 0px 0px 14px 2px black;
+    box-shadow: 0px 0px 10px 1px black;
 }
 
 select{
@@ -94,6 +94,8 @@ select:hover, select:focus{
 }
 
 input[type="checkbox"] {
+    height: 13px;
+    width: 13px;
     margin: 0;
     margin-right: 5px;
 }
@@ -105,6 +107,7 @@ input[type="text"] {
     background-color: #FFFFFF;
     color: #202020;
     box-shadow: 0px 0px 5px 0px black;
+    transition-duration: 0.2s;
 }
 input[type="text"]:hover, input[type="text"]:focus{
     box-shadow: 0px 0px 10px 1px black;

@@ -1,12 +1,13 @@
 body{
     overflow-y: hidden;
+    height: 100vh;
 }
 
 
 
 /*main window*/
 #comp_wrap{
-    height: 100vh;
+    height: 100%;
 }
 
 #rocket_comp_background{
@@ -16,45 +17,66 @@ body{
     z-index: -1;
 }
 
-#rocket_comp_window{
-    height: 85%;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-end;
-    margin-left: 50px;
+table{
+    border-collapse: collapse;
 }
-
-/*image background*/
-.rocket_wrap{
+#rocket_comp_table{
     height: 100%;
-    display: flex;
-    align-items: flex-end;
+    box-sizing: border-box;
+    padding-bottom: 20px;
+    margin-left: 20px;
 }
-.new_decade{
-    border-left: solid;
-    border-left-width: 2px;
-    border-left-color: rgba(32, 32, 32, 0.7);
+
+tr{
+    padding: 0;
 }
-.decade_block{
+
+#rocket_img_row{
+
+}
+#rocket_manufacturer_row{
+
+}
+#rocket_name_row{
+
+}
+#rocket_date_row{
     display: none;
-    position: absolute;
-    font-size: 2em;
-    margin: 20px 10px;
+}
+#rocket_payload_leo_row{
+    display: none;
+}
+#rocket_payload_gto_row{
+    display: none;
+}
+#rocket_cost_row{
+    display: none;
+}
+#basic_row{
+
 }
 
-.comp_img{
-    padding: 0 17px;
+th{
+    padding: 0;
+    font-weight: normal;
+    text-align: left;
 }
-
-.comp_desc{
-    position: absolute;
+td{
+    padding: 0 0.8em;
     text-align: center;
-    display: none;
 }
-.comp_desc p{
-    margin-bottom: 0;
+td p, td h4{
+    margin: 0;
 }
 
+.rocket_comp_cell{
+    height: 86vh;
+    padding: 0;
+    vertical-align: bottom;
+}
+.comp_img{
+    padding: 0 0.8em;
+}
 
 
 /*Settings*/
@@ -88,15 +110,14 @@ body{
 
 #settings_window{
     height: 100%;
-    width: 35vw;
-    min-width: 630px;
+    width: 750px;
     position: fixed;
     top: 0;
     right: 0;
     z-index: 10;
     background-color: #F5F5F5;
-    box-shadow: 22px 0px 51px 25px black;
-    transition-duration: 0.4s;
+    box-shadow: 10px 0px 20px 10px black;
+    transition: right 0.5s ease 0s;
 }
 #settings_window h1{
     text-align: center;
@@ -172,11 +193,10 @@ body{
     -moz-column-count: 2;
     -webkit-column-count: 2;
     column-count: 2;
-
-    -webkit-column-break-inside: avoid;
 }
 .selec_manufacturer{
-    page-break-inside: avoid
+    page-break-inside: avoid;
+    break-inside: avoid;
 }
 
 
@@ -243,6 +263,7 @@ body{
 .rocket_checkbox {
     display: flex;
     align-items: center;
+    page-break-inside: avoid;
     break-inside: avoid;
 }
 
@@ -286,9 +307,8 @@ body{
 #share_box{
     position: fixed;
     top: 45px;
-    right: 37vw;
     display: none;
-    margin: 0;
+    right: 800px;
     padding: 20px;
     z-index: 20;
     background-color: #F5F5F5;
@@ -326,8 +346,13 @@ body{
 
 
 
-/*mobile*/
-@media (max-width: 900px){ /*big phone/tablet*/
+@media (max-width: 1200px){ /*small desktop/big tablet*/
+    #share_box{
+        left: 10px;
+        right: auto;
+    }
+}
+@media (max-width: 900px){ /*phone horizontal/tablet*/
     #settings_window{
         right: -110%;
         width: 100vw;
@@ -395,15 +420,40 @@ body{
         right: auto;
     }
 }
-@media (max-width: 600px){ /*phone*/
+@media (max-width: 650px){ /*big phone/phone horizontal*/
     #Rockets_type_content{
         -moz-column-count: 1;
         -webkit-column-count: 1;
         column-count: 1;
     }
+
+    .selec_name{
+        -moz-column-count: 3;
+        -webkit-column-count: 3;
+        column-count: 3;
+    }
+}
+@media (max-width: 500px){ /*phone*/
     .not_Rockets_type_content{
         -moz-column-count: 2;
         -webkit-column-count: 2;
         column-count: 2;
+    }
+    .selec_name{
+        -moz-column-count: 2;
+        -webkit-column-count: 2;
+        column-count: 2;
+    }
+}
+@media (max-width: 350px){ /*small phone*/
+    .not_Rockets_type_content{
+        -moz-column-count: 1;
+        -webkit-column-count: 1;
+        column-count: 1;
+    }
+    .selec_name{
+        -moz-column-count: 1;
+        -webkit-column-count: 1;
+        column-count: 1;
     }
 }

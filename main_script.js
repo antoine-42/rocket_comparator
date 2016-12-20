@@ -6,7 +6,6 @@ var selected_rockets = JSON.parse('{"rockets" :[]}');
 
 var comp_wrap = document.getElementById('comp_wrap');
 var rocket_comp_background = document.getElementById('rocket_comp_background');
-var rocket_comp_window = document.getElementById('rocket_comp_window');
 
 
 var settings_window = document.getElementById('settings_window');
@@ -21,32 +20,10 @@ var sorting_method_dropdown = document.getElementById('sorting_method_dropdown')
 var object_selection_window = document.getElementById('object_selection');
 
 //rockets that are selected by default
-var selected_list = ['human', 'soyuz2', 'proton-m', 'ariane5eca',
-    'sts-atlantis', 'atlas-v551', 'vulcan541', 'n1',
-    'delta-iv-heavy', 'falcon-heavy1.2', 'its', 'saturn-v',
-    'block1crew', 'new-glenn3stages', 'ariane64'];
-
-
-//removes overflow TODO: change this
-function remove_overflow()
-{
-    var comp_desc = document.getElementsByClassName('comp_desc');
-    var max_height = 0;
-
-    for (var i = 0; i < comp_desc.length; i++) {
-        curr_rect = comp_desc[i].getBoundingClientRect();
-        if(curr_rect.height > max_height){
-            max_height = curr_rect.height;
-        }
-    }
-    max_height = max_height + 20;
-
-    rocket_comp_height = Math.round(100 - max_height *(100/document.body.clientHeight));
-
-    rocket_comp_window.style.height = rocket_comp_height + '%';
-
-    update_background_dimensions_2();
-}
+var selected_list = ['human', 'soyuz2', 'proton-m', 'n1',
+    'long-march5', 'sts-atlantis', 'saturn-v', 'block1crew',
+    'atlas-v551', 'delta-iv-heavy', 'falcon-heavy1.2', 'its',
+    'new-sheppard', 'new-glenn3stages', 'ariane64', 'ariane5eca'];
 
 
 
@@ -183,7 +160,7 @@ function switch_display_settings () {
         settings_window.style.right = '0';
         return true;
     }
-    settings_window.style.right = '-110%';
+    settings_window.style.right = '-780px';
     return false;
 }
 collapse_button.addEventListener('click', switch_display_settings);
@@ -292,12 +269,6 @@ function update_background_scale(){
     var step = 10
     var pixel_per_m = Math.round(step / rocket_ratio / 100 * window_height)/10;
 
-    rocket_comp_window_rect = rocket_comp_window.getBoundingClientRect();
-    for (var i = 0; i < selected_rockets.rockets.length; i++) {
-        var curr_id = get_id(selected_rockets.rockets[i]);
-        var wrap = document.getElementById(curr_id + '_rocket_wrap');
-        wrap.style.height = rocket_comp_window_rect.height;
-    }
 
     var unit = '';
     if(stupid_unit_system){
@@ -408,10 +379,20 @@ function reset_background(){
     var status_legend_checkbox_div = document.getElementById('status_legend_checkbox_div');
     status_legend_checkbox_div.style.display = 'none';
 
-    for (var i = 0; i < selected_rockets.rockets.length; i++) {
-        var curr_id = get_id(selected_rockets.rockets[i]);
-        var curr_background = document.getElementById(curr_id + '_rocket_wrap');
-        curr_background.style.backgroundColor = 'transparent';
+
+    var retired_rocket_cell_array = document.getElementsByClassName('retired_rocket_cell');
+    for (var i = 0; i < retired_rocket_cell_array.length; i++) {
+        retired_rocket_cell_array[i].style.backgroundColor = 'transparent';
+    }
+
+    var dev_rocket_cell_array = document.getElementsByClassName('dev_rocket_cell');
+    for (var i = 0; i < dev_rocket_cell_array.length; i++) {
+        dev_rocket_cell_array[i].style.backgroundColor = 'transparent';
+    }
+
+    var cancelled_rocket_cell_array = document.getElementsByClassName('cancelled_rocket_cell');
+    for (var i = 0; i < cancelled_rocket_cell_array.length; i++) {
+        cancelled_rocket_cell_array[i].style.backgroundColor = 'transparent';
     }
 }
 //sets the background to rocket status
@@ -440,23 +421,20 @@ function set_background_status(){
         color_cancelled = 'rgba(255, 255, 255, 0.3)'
     }
 
-    for (var i = 0; i < selected_rockets.rockets.length; i++) {
-        var curr_id = get_id(selected_rockets.rockets[i]);
-        var curr_background = document.getElementById(curr_id + '_rocket_wrap');
 
-        switch (selected_rockets.rockets[i].status) {
-            case 1:
-                curr_background.style.backgroundColor = color_retired;
-                break;
-            case 2:
-                curr_background.style.backgroundColor = color_dev;
-                break;
-            case 3:
-                curr_background.style.backgroundColor = color_cancelled;
-                break;
-            default:
-                break;
-        }
+    var retired_rocket_cell_array = document.getElementsByClassName('retired_rocket_cell');
+    for (var i = 0; i < retired_rocket_cell_array.length; i++) {
+        retired_rocket_cell_array[i].style.backgroundColor = color_retired;
+    }
+
+    var dev_rocket_cell_array = document.getElementsByClassName('dev_rocket_cell');
+    for (var i = 0; i < dev_rocket_cell_array.length; i++) {
+        dev_rocket_cell_array[i].style.backgroundColor = color_dev;
+    }
+
+    var cancelled_rocket_cell_array = document.getElementsByClassName('cancelled_rocket_cell');
+    for (var i = 0; i < cancelled_rocket_cell_array.length; i++) {
+        cancelled_rocket_cell_array[i].style.backgroundColor = color_cancelled;
     }
 }
 var background_dropdown = document.getElementById('background_dropdown');
@@ -481,6 +459,74 @@ var close_legend_button = document.getElementById('close_legend_button');
 close_legend_button.addEventListener('click', switch_status_legend)
 
 
+var selected_description = 'basic';
+var description_dropdown = document.getElementById('description_dropdown');
+function on_description_change(){
+    selected_description = description_dropdown.options[description_dropdown.selectedIndex].value;
+
+    set_description(true)
+}
+//updates the background of the rocket comparison
+function set_description(update){
+    switch (selected_description) {
+        case 'basic':
+            rocket_manufacturer_row.style.display = 'table-row';
+            rocket_name_row.style.display = 'table-row';
+            rocket_date_row.style.display = 'none';
+            rocket_payload_leo_row.style.display = 'none';
+            rocket_payload_gto_row.style.display = 'none';
+            rocket_cost_row.style.display = 'none';
+            basic_row.style.display = 'table-row';
+
+            rocket_comp_height = 86;
+            var rocket_comp_cell_array = document.getElementsByClassName('rocket_comp_cell');
+            for(i = 0; i < rocket_comp_cell_array.length; i++) {
+                rocket_comp_cell_array[i].style.height = '86vh';
+            }
+            break;
+        case 'full':
+            rocket_manufacturer_row.style.display = 'table-row';
+            rocket_name_row.style.display = 'table-row';
+            rocket_date_row.style.display = 'table-row';
+            rocket_payload_leo_row.style.display = 'table-row';
+            rocket_payload_gto_row.style.display = 'table-row';
+            rocket_cost_row.style.display = 'table-row';
+            basic_row.style.display = 'table-row';
+
+            rocket_comp_height = 75;
+            var rocket_comp_cell_array = document.getElementsByClassName('rocket_comp_cell');
+            for(i = 0; i < rocket_comp_cell_array.length; i++) {
+                rocket_comp_cell_array[i].style.height = '75vh';
+            }
+            break;
+        case 'none':
+            rocket_manufacturer_row.style.display = 'none';
+            rocket_name_row.style.display = 'none';
+            rocket_date_row.style.display = 'none';
+            rocket_payload_leo_row.style.display = 'none';
+            rocket_payload_gto_row.style.display = 'none';
+            rocket_cost_row.style.display = 'none';
+            basic_row.style.display = 'none';
+
+            rocket_comp_height = 100;
+            var rocket_comp_cell_array = document.getElementsByClassName('rocket_comp_cell');
+            for(i = 0; i < rocket_comp_cell_array.length; i++) {
+                rocket_comp_cell_array[i].style.height = '100vh';
+            }
+            break;
+        default:
+            break;
+    }
+    if(update){
+        update_background_dimensions();
+    }
+    else {
+        update_background_dimensions_2();
+    }
+}
+description_dropdown.addEventListener('change', on_description_change);
+
+
 //resets the rocket selection to the default, also reset sort and background
 function reset_everything(){
     remove_all_rocket();
@@ -495,8 +541,10 @@ function reset_everything(){
     background_dropdown.selectedIndex = 0;
     on_background_change();
 
-    on_sorting_order_change();
-    descending_sort_checkbox.checked = use_descending_order;
+    if(use_descending_order){
+        on_sorting_order_change();
+        descending_sort_checkbox.checked = use_descending_order;
+    }
 }
 var reset_button = document.getElementById('reset_button');
 reset_button.addEventListener('click', reset_everything);
@@ -511,140 +559,130 @@ function on_picture_res_change(){
 var high_res_checkbox = document.getElementById('high_res_checkbox');
 high_res_checkbox.addEventListener('click', on_picture_res_change);
 
+function clear_img_table(){
+    rocket_comp_table = document.getElementById('rocket_comp_table');
 
-//update the description position for all rockets each time a rocket is loaded
-//this is because cached rockets finish loading before the position and size of uncached rockets is computed
-var loaded_rockets = [];
-function on_rocket_load(){
-    var curr_id = this.id;
-    loaded_rockets.push(curr_id);
-
-    for (var i = 0; i < loaded_rockets.length; i++) {
-        var curr_id = loaded_rockets[i];
-        var curr_rocket_img = document.getElementById(curr_id);
-        var curr_rocket_desc = document.getElementById(curr_id + '_desc');
-        var curr_rocket_rect = curr_rocket_img.getBoundingClientRect();
-
-        //rect.left accounts for the scrolling, not element.offsetLeft
-        curr_rocket_desc.style.left = curr_rocket_img.offsetLeft + 'px';
-
-        curr_rocket_desc.style.top = curr_rocket_rect.bottom + 'px';
-        curr_rocket_desc.style.width = curr_rocket_rect.width + 'px';
-
-        curr_rocket_desc.style.display = 'block';
-
-        if (selected_sorting_args[0] === 'date') {
-            var curr_rocket_wrap = document.getElementById(curr_id + '_rocket_wrap');
-            if(curr_rocket_wrap.classList.contains('new_decade')){
-                var curr_decade_block = document.getElementById(curr_id + '_decade');
-                curr_decade_block.style.top = 0;
-                curr_decade_block.style.left = curr_rocket_img.offsetLeft + 'px';
-                curr_decade_block.style.display = 'block';
-            }
-        }
-        remove_overflow();
-    }
-
-    if(loaded_rockets.length === selected_rockets.rockets.length){
-        loaded_rockets = [];
-    }
+    rocket_img_row.innerHTML = '<th></th>';
+    rocket_manufacturer_row.innerHTML = '<th>Manufacturer</th>';
+    rocket_name_row.innerHTML = '<th>Name</th>';
+    rocket_date_row.innerHTML = '<th>First launch date</th>';
+    rocket_payload_leo_row.innerHTML = '<th>Payload to <a href="https://en.wikipedia.org/wiki/Low_Earth_orbit">LEO</a>';
+    rocket_payload_gto_row.innerHTML = '<th>Payload to <a href="https://en.wikipedia.org/wiki/Geostationary_transfer_orbit">GTO</a>';
+    rocket_cost_row.innerHTML = '<th>Launch cost</th>';
+    basic_row.innerHTML = '<th>Payload</th>';
 }
 //place the rockets, resize them and add their description
 function update_rockets(){
+    clear_img_table();
+
     var biggest_rocket_height = find_biggest_rocket();
     var rocket_ratio = biggest_rocket_height/100;
-
-    rocket_comp_window.innerHTML = '';
 
     //sorts the rockets
     selected_rockets.rockets.sort(sort_rockets(selected_sorting_args, use_descending_order));
 
-    var curr_decade = 194;
+    curr_decade = 194;
 
     for (var i = 0; i < selected_rockets.rockets.length; i++) {
-        var path = selected_rockets.rockets[i].path;
-        var id = get_id(selected_rockets.rockets[i]);
+        var curr_rocket = selected_rockets.rockets[i];
+        var path = curr_rocket.path;
+        var id = get_id(curr_rocket);
+
+        var rocket_img_cell = document.createElement('td');
+        rocket_img_cell.id = id + '_img_cell';
+        rocket_img_cell.className = 'rocket_comp_cell';
+        switch (curr_rocket.status) {
+            case 0:
+                rocket_img_cell.className += ' active_rocket_cell';
+                break;
+            case 1:
+                rocket_img_cell.className += ' retired_rocket_cell';
+                break;
+            case 2:
+                rocket_img_cell.className += ' dev_rocket_cell';
+                break;
+            case 3:
+                rocket_img_cell.className += ' cancelled_rocket_cell';
+                break;
+            default:
+                break;
+        }
 
         //creates the image and tags
-        var curr_img = new Image()
-        curr_img.style.height = selected_rockets.rockets[i].height / rocket_ratio + '%';
+        var curr_img = new Image();
+        curr_img.style.height = curr_rocket.height / rocket_ratio + '%';
         curr_img.className = 'comp_img';
         curr_img.id = id;
-        curr_img.alt = selected_rockets.rockets[i].name + ' ' + selected_rockets.rockets[i].version;
-        curr_img.title = get_date(selected_rockets.rockets[i]) + ' ' + selected_rockets.rockets[i].cost/1000000 + ' m$';
-
-        //puts the description at the right place
-        curr_img.addEventListener('load', on_rocket_load);
+        curr_img.alt = curr_rocket.name + ' ' + curr_rocket.version;
 
         //adds the image in the correct resolution
-        var image_path = get_correct_res_path(selected_rockets.rockets[i]);
+        var image_path = get_correct_res_path(curr_rocket);
         curr_img.src = image_path;
 
-        //places it in the document
-        var wrap = document.createElement('div');
-        wrap.id = id + '_rocket_wrap';
-        wrap.className = 'rocket_wrap';
-
-        //fuck you firefox
-        rocket_comp_window_rect = rocket_comp_window.getBoundingClientRect();
-
-        wrap.appendChild(curr_img);
-
         if (selected_sorting_args[0] === 'date') {
-            var decade = Math.floor(selected_rockets.rockets[i].date.getFullYear()/10);
-            if(decade > curr_decade){
+            var decade = Math.floor(curr_rocket.date.getFullYear()/10);
+            if(decade != curr_decade){
                 curr_decade = decade;
-                wrap.className += ' new_decade';
+                rocket_img_cell.className += ' new_decade';
+                /*
                 var curr_decade_block = document.createElement('p');
                 curr_decade_block.appendChild(document.createTextNode(curr_decade * 10));
                 curr_decade_block.id = id + '_decade';
                 curr_decade_block.className = 'decade_block';
 
-                wrap.appendChild(curr_decade_block);
+                wrap.appendChild(curr_decade_block);*/
             }
         }
 
-        rocket_comp_window.appendChild(wrap);
+        rocket_img_cell.appendChild(curr_img);
+        rocket_img_row.appendChild(rocket_img_cell);
 
         //creates the description
-        var desc = document.createElement('div');
-        desc.id = id + '_desc';
-        desc.className = 'comp_desc';
+        //manufacturer
 
-        if (selected_rockets.rockets[i].country !== 'not_rocket' ) {
+        var manufacturer_cell = document.createElement('td');
+        manufacturer_cell.id = id + '_manufacturer_cell';
+        manufacturer_cell.appendChild(create_text_node(get_manufacturer(curr_rocket), 4));
+        rocket_manufacturer_row.appendChild(manufacturer_cell);
 
-            //if USA or Russia, display manufacturer
-            if(selected_rockets.rockets[i].country === 'USA' || selected_rockets.rockets[i].country === 'USSR / Russia' || selected_rockets.rockets[i].country === 'Europe' || selected_rockets.rockets[i].country === 'Other'){
-                if (i === 0 || selected_rockets.rockets[i].manufacturer !== selected_rockets.rockets[i - 1].manufacturer){
-                    desc.appendChild(create_text_node(selected_rockets.rockets[i].manufacturer, 4))
-                }
-                else {
-                    desc.innerHTML += '<h4>&nbsp;</h4>'
-                }
-            }
-            else if (i === 0 || selected_rockets.rockets[i].country !== selected_rockets.rockets[i - 1].country){
-                desc.appendChild(create_text_node(selected_rockets.rockets[i].country, 4))
-            }
-            else {
-                desc.innerHTML += '<h4>&nbsp;</h4>'
-            }
+        //name
+        var name_cell = document.createElement('td');
+        name_cell.id = id + '_manufacturer_cell';
+        name_cell.appendChild(create_link(curr_rocket.name + ' ' + curr_rocket.version, curr_rocket.wikipedia));
+        rocket_name_row.appendChild(name_cell);
 
-            desc.appendChild(create_link(selected_rockets.rockets[i].name + ' ' + selected_rockets.rockets[i].version, selected_rockets.rockets[i].wikipedia));
+        //date
+        var date_cell = document.createElement('td');
+        date_cell.id = id + '_date_cell';
+        date_cell.appendChild(document.createTextNode(get_date_string(curr_rocket)));
+        rocket_date_row.appendChild(date_cell);
 
-            if(selected_rockets.rockets[i].payload_leo > 0){
-                desc.appendChild(create_text_node(get_payload(selected_rockets.rockets[i].payload_leo) + ' (LEO)', 0))
-            }
-            if(selected_rockets.rockets[i].payload_gto > 0) {
-                desc.appendChild(create_text_node(get_payload(selected_rockets.rockets[i].payload_gto) + ' (GTO)', 0))
-            }
-        }
-        else {
-            desc.appendChild(create_link(selected_rockets.rockets[i].name, selected_rockets.rockets[i].wikipedia));
-        }
-        rocket_comp_window.appendChild(desc);
+        //payload to LEO
+        var payload_leo_cell = document.createElement('td');
+        payload_leo_cell.id = id + '_payload_leo_cell';
+        payload_leo_cell.appendChild(document.createTextNode(get_payload_string(curr_rocket.payload_leo)));
+        rocket_payload_leo_row.appendChild(payload_leo_cell);
+
+        //payload to GTO
+        var payload_gto_cell = document.createElement('td');
+        payload_gto_cell.id = id + '_payload_gto_cell';
+        payload_gto_cell.appendChild(document.createTextNode(get_payload_string(curr_rocket.payload_gto)));
+        rocket_payload_gto_row.appendChild(payload_gto_cell);
+
+        //cost
+        var cost_cell = document.createElement('td');
+        cost_cell.id = id + '_cost_cell';
+        cost_cell.appendChild(document.createTextNode(get_cost_string(curr_rocket)));
+        rocket_cost_row.appendChild(cost_cell);
+
+        //basic description
+        var basic_cell = document.createElement('td');
+        basic_cell.id = id + '_basic_cell';
+        basic_cell.appendChild(document.createTextNode(get_basic_desc(curr_rocket)));
+        basic_row.appendChild(basic_cell);
     }
 
-    set_rocket_background();
+    set_description(false);
 }
 
 

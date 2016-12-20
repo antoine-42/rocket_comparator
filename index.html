@@ -11,11 +11,42 @@
         <title>Rocket Scale</title>
     </head>
     <body>
+        <table id="rocket_comp_table">
+            <tr id="rocket_img_row">
+                <th></th>
+
+            </tr>
+            <tr id="rocket_manufacturer_row">
+                <th>Manufacturer</th>
+
+            </tr>
+            <tr id="rocket_name_row">
+                <th>Name</th>
+
+            </tr>
+            <tr id="rocket_date_row">
+                <th>First launch date</th>
+
+            </tr>
+            <tr id="rocket_payload_leo_row">
+                <th>Payload to <a href="https://en.wikipedia.org/wiki/Low_Earth_orbit">LEO</a></th>
+
+            </tr>
+            <tr id="rocket_payload_gto_row">
+                <th>Payload to <a href="https://en.wikipedia.org/wiki/Geostationary_transfer_orbit">GTO</a></th>
+
+            </tr>
+            <tr id="rocket_cost_row">
+                <th>Launch cost</th>
+
+            </tr>
+            <tr id="basic_row">
+                <th>Payload</th>
+
+            </tr>
+        </table>
         <div id="comp_wrap">
             <canvas id="rocket_comp_background" width="300" height="300"></canvas>
-            <div id="rocket_comp_window">
-                <p>please enable Javascript</p>
-            </div>
             <div id="background_legend">
                 <i id="close_legend_button" class="material-icons">close</i>
                 <h3 id="legend_active">Active</h3>
@@ -78,8 +109,20 @@
                                     <label for="status_legend_checkbox">Hide Legend</label>
                                 </div>
                             </div>
+                            <div class="selec_div">
+                                <p>Description:</p>
+                                <select name="description_dropdown" id="description_dropdown">
+                                    <option value="basic">Basic</option>
+                                    <option value="full">Full</option>
+                                    <option value="none">None</option>
+                                </select>
+                            </div>
                         </div>
                         <div id="static_checkboxes_container">
+                            <div class="static_checkbox_div">
+                                <input type="checkbox" class="checkbox" id="high_res_checkbox"/>
+                                <label for="high_res_checkbox">High resolution pictures</label>
+                            </div>
                             <div class="static_checkbox_div">
                                 <input type="checkbox" id="imperial_checkbox"/>
                                 <label for="imperial_checkbox">Imperial units</label>
@@ -88,13 +131,9 @@
                                 <input type="checkbox" id="dark_theme_checkbox"/>
                                 <label for="dark_theme_checkbox">Dark theme</label>
                             </div>
-                            <div class="static_checkbox_div">
-                                <input type="checkbox" class="checkbox" id="high_res_checkbox"/>
-                                <label for="high_res_checkbox">High resolution pictures</label>
-                            </div>
                         </div>
                         <p>
-                            <a href="more/">More</a>
+                            <a href="About/">About</a>
                         </p>
                     </div>
 
@@ -116,14 +155,5 @@
         <script type="text/javascript" src="rocket.json"></script>
         <script type="text/javascript" src="init.js"></script>
         <script type="text/javascript" src="main_script.js"></script>
-        <script>
-            (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-            m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-            })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-
-            ga('create', 'UA-88808285-1', 'auto');
-            ga('send', 'pageview');
-        </script>
     </body>
 </html>

@@ -38,7 +38,7 @@ var init = true;
 var stupid_unit_system = false;
 var enable_dark_theme = false;
 var use_high_res = false;
-var rocket_comp_height = 85;
+var rocket_comp_height = 86;
 
 
 //removes overflow TODO: change this
@@ -281,6 +281,7 @@ function unload_stylesheet(filename){
 
 
 
+//returns the path to the image with the right resolution
 function get_correct_res_path(rocket){
     if(!use_high_res && rocket.high_res){
         var low_res_path_table = rocket.path.split('/');
@@ -290,33 +291,98 @@ function get_correct_res_path(rocket){
     return rocket.path;
 }
 
+
+function get_manufacturer(rocket){
+    if(rocket.type === 'Other'){
+        return '';
+    }
+
+    if(rocket.country === 'USA' || rocket.country === 'USSR / Russia' || rocket.country === 'Europe' || rocket.country === 'Other'){
+        return rocket.manufacturer
+    }
+
+    return rocket.country;
+}
+
 //obvious, also adds commas because you're going to get huge numbers with this stupid system
 function kg_to_pounds(good_unit){
     var bad_unit = good_unit*2.2046;
     return Math.round(bad_unit).toLocaleString();
 }
 //raw_payload: payload in kg. outputs a shorter number or a longer one if you like stupid unit systems.
-function get_payload(raw_payload){
+function get_payload_string(raw_payload){
+    if(raw_payload < 1){
+        return '';
+    }
+
     if(stupid_unit_system){
         return kg_to_pounds(raw_payload) + 'lb';
     }
 
     if(raw_payload > 1000){
-        return Math.round(raw_payload/1000 * 10) / 10 + 't'
+        return Math.round(raw_payload/1000 * 10) / 10 + 't';
     }
-    return raw_payload + 'kg'
+    return raw_payload + 'kg';
 }
 
 //returns a useable date strings
-function get_date(rocket){
+function get_date_string(rocket){
     var date = rocket.date;
+    var date_year = date.getFullYear();
+
+    //default year for very old stuff, date should not be displayed
+    if(date_year === 100){
+        return '';
+    }
+
     var today = new Date();
     var current_year = today.getFullYear();
 
-    if(date.getFullYear > current_year){
-        return date.getFullYear;
+    var date_day = date.getDate();
+    var date_month = date.getMonth();
+    //if date is in future or is january 1st, it is unknown and only year should be displayed
+    if(date_year > current_year || (date_day === 0 && date_month === 1)){
+        return date_year;
     }
-    return date.toDateString()
+
+    var months = [
+        "January", "February", "March", "April", "May", "June", "July",
+        "August", "September", "October", "November", "December"
+    ];
+    return months[date_month] + ' ' + date_day + ' ' + date_year;
+}
+
+//returns the cost in K/M/B
+function get_cost_string(rocket){
+    var cost = rocket.cost;
+    if(cost === -1){
+        return '';
+    }
+
+    var mult_array = ['', 'K', ' million', ' billion'];
+    var n = 0;
+
+    while (cost > 1000) {
+        cost /= 1000;
+        n++;
+    }
+
+    var cost_string = '$' + cost + mult_array[n];
+    return cost_string
+}
+
+//returns either the payload to LEO, GTO, or nothing
+function get_basic_desc(rocket){
+    var payload_to_leo = get_payload_string(rocket.payload_leo);
+    if(payload_to_leo != ''){
+        return payload_to_leo + ' (LEO)';
+    }
+
+    var payload_to_gto = get_payload_string(rocket.payload_gto);
+    if(payload_to_gto != ''){
+        return payload_to_gto + ' (GTO)';
+    }
+    return '';
 }
 
 
