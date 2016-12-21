@@ -377,20 +377,8 @@ function reset_background(){
     status_legend_checkbox_div.style.display = 'none';
 
 
-    var retired_rocket_cell_array = document.getElementsByClassName('retired_rocket_cell');
-    for (var i = 0; i < retired_rocket_cell_array.length; i++) {
-        retired_rocket_cell_array[i].style.backgroundColor = 'transparent';
-    }
-
-    var dev_rocket_cell_array = document.getElementsByClassName('dev_rocket_cell');
-    for (var i = 0; i < dev_rocket_cell_array.length; i++) {
-        dev_rocket_cell_array[i].style.backgroundColor = 'transparent';
-    }
-
-    var cancelled_rocket_cell_array = document.getElementsByClassName('cancelled_rocket_cell');
-    for (var i = 0; i < cancelled_rocket_cell_array.length; i++) {
-        cancelled_rocket_cell_array[i].style.backgroundColor = 'transparent';
-    }
+    unload_stylesheet('background_status_dark.css');
+    unload_stylesheet('background_status_light.css');
 }
 //sets the background to rocket status
 function set_background_status(){
@@ -402,36 +390,12 @@ function set_background_status(){
     var status_legend_checkbox_div = document.getElementById('status_legend_checkbox_div');
     status_legend_checkbox_div.style.display = 'inline-block';
 
-    var div_retired = document.getElementById('legend_retired');
-    var style_retired = window.getComputedStyle(div_retired);
-    var color_retired = style_retired.getPropertyValue('background-color');
-
-    var div_dev = document.getElementById('legend_dev');
-    var style_dev = window.getComputedStyle(div_dev);
-    var color_dev = style_dev.getPropertyValue('background-color');
-
-    var div_cancelled = document.getElementById('legend_cancelled');
-    var style_cancelled = window.getComputedStyle(div_cancelled);
-    var color_cancelled = style_cancelled.getPropertyValue('background-color');
 
     if(enable_dark_theme){
-        color_cancelled = 'rgba(255, 255, 255, 0.3)'
+        load_stylesheet('background_status_dark.css');
     }
-
-
-    var retired_rocket_cell_array = document.getElementsByClassName('retired_rocket_cell');
-    for (var i = 0; i < retired_rocket_cell_array.length; i++) {
-        retired_rocket_cell_array[i].style.backgroundColor = color_retired;
-    }
-
-    var dev_rocket_cell_array = document.getElementsByClassName('dev_rocket_cell');
-    for (var i = 0; i < dev_rocket_cell_array.length; i++) {
-        dev_rocket_cell_array[i].style.backgroundColor = color_dev;
-    }
-
-    var cancelled_rocket_cell_array = document.getElementsByClassName('cancelled_rocket_cell');
-    for (var i = 0; i < cancelled_rocket_cell_array.length; i++) {
-        cancelled_rocket_cell_array[i].style.backgroundColor = color_cancelled;
+    else {
+        load_stylesheet('background_status_light.css');
     }
 }
 var background_dropdown = document.getElementById('background_dropdown');
@@ -475,18 +439,18 @@ function set_description(update){
             rocket_cost_row.style.display = 'none';
             basic_row.style.display = 'table-row';
 
-            rocket_comp_height = 113.1717 + (-11865420 - 113.1717)/(1 + Math.pow((window.innerHeight/0.000009803632), 0.6981681));
+            rocket_comp_height = 91.70302 + (36.07096 - 91.70302)/(1 + Math.pow((window.innerHeight/529.4911), 2.370563));
             /*data points used for the above equation, thanks to www.mycurvefit.com
             if(window.innerHeight > 1300){
-                rocket_comp_height = 88;
+                rocket_comp_height = 86;
             }
-            else if(window.innerHeight > 1000){
+            else if(window.innerHeight > 1100){
                 rocket_comp_height = 83;
             }
             else if(window.innerHeight > 750){
                 rocket_comp_height = 75;
             }
-            else if(window.innerHeight > 500){
+            else if(window.innerHeight > 550){
                 rocket_comp_height = 65;
             }
             else if(window.innerHeight > 400){
@@ -509,25 +473,31 @@ function set_description(update){
             rocket_cost_row.style.display = 'table-row';
             basic_row.style.display = 'none';
 
-            rocket_comp_height = 117.0972 + (-3269388 - 117.0972)/(1 + Math.pow((window.innerHeight/0.00008788315), 0.6879827));
+            rocket_comp_height = 80.78716 + (-3.626785 - 80.78716)/(1 + Math.pow((window.innerHeight/516.6534), 2.746105));
             /*
             if(window.innerHeight > 1300){
-                rocket_comp_height = 80;
-            }
-            else if(window.innerHeight > 1050){
                 rocket_comp_height = 75;
             }
-            else if(window.innerHeight > 750){
+            else if(window.innerHeight > 1050){
+                rocket_comp_height = 70;
+            }
+            else if(window.innerHeight > 900){
+                rocket_comp_height = 65;
+            }
+            else if(window.innerHeight > 775){
                 rocket_comp_height = 60;
             }
-            else if(window.innerHeight > 650){
+            else if(window.innerHeight > 690){
                 rocket_comp_height = 55;
             }
-            else if(window.innerHeight > 450){
+            else if(window.innerHeight > 525){
                 rocket_comp_height = 40;
             }
-            else if(window.innerHeight > 400){
+            else if(window.innerHeight > 450){
                 rocket_comp_height = 30;
+            }
+            else if(window.innerHeight > 300){
+                rocket_comp_height = 12;
             }
             else if(window.innerHeight > 0){
                 rocket_comp_height = 0;

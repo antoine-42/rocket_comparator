@@ -1,0 +1,9 @@
+.retired_rocket_cell{
+    background-color: rgba(196, 19, 0, 0.3);
+}
+.dev_rocket_cell{
+    background-color: rgba(0, 110, 255, 0.3);
+}
+.cancelled_rocket_cell{
+    background-color: rgba(255, 255, 255, 0.3);
+}
