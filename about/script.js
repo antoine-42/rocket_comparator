@@ -1,6 +1,5 @@
 function create_source_table(){
     var source_table_body = document.getElementById('source_table_body');
-    var curr_row_is_color = false;
     var i = 0;
 
     while (i < json_rockets.rockets.length) {
@@ -10,12 +9,7 @@ function create_source_table(){
             continue;
         }
 
-        curr_row_is_color = !curr_row_is_color;
-
         var curr_line = document.createElement('tr');
-        if(curr_row_is_color){
-            curr_line.className = 'color_row';
-        }
 
         var source_name_cell = document.createElement('td');
         source_name_cell.className = 'source_name';

@@ -41,30 +41,8 @@ var use_high_res = false;
 var rocket_comp_height = 86;
 
 
-//removes overflow TODO: change this
-function remove_overflow()
-{
-    var comp_desc = document.getElementsByClassName('comp_desc');
-    var max_height = 0;
 
-    for (var i = 0; i < comp_desc.length; i++) {
-        curr_rect = comp_desc[i].getBoundingClientRect();
-        if(curr_rect.height > max_height){
-            max_height = curr_rect.height;
-        }
-    }
-    max_height = max_height + 20;
-
-    rocket_comp_height = Math.round(100 - max_height *(100/document.body.clientHeight));
-
-    rocket_comp_window.style.height = rocket_comp_height + '%';
-
-    update_background_dimensions_2();
-}
-
-
-
-//Scroll stuff
+//basic functions
 //checks if elem can be viewed in doc
 function isScrolledIntoView(elem, doc)
 {
@@ -79,9 +57,6 @@ function isScrolledIntoView(elem, doc)
     return (elem_bottom > 0);
 }
 
-
-
-//basic functions
 //detects mobile browsers
 function detect_small_browser(){
     if(window.innerWidth <= 900) {
@@ -293,11 +268,7 @@ function get_correct_res_path(rocket){
 
 
 function get_manufacturer(rocket){
-    if(rocket.type === 'Other'){
-        return '';
-    }
-
-    if(rocket.country === 'USA' || rocket.country === 'USSR / Russia' || rocket.country === 'Europe' || rocket.country === 'Other'){
+    if(rocket.type === 'Other' || rocket.type === 'Stations' || rocket.country === 'USA' || rocket.country === 'USSR / Russia' || rocket.country === 'Europe' || rocket.country === 'Other'){
         return rocket.manufacturer
     }
 

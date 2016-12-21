@@ -44,6 +44,9 @@
                 <th>Payload</th>
 
             </tr>
+            <!--this is a very dirty solution to make sure the image row aligns on top if there are no other rows-->
+            <tr id="alignment_row">
+            </tr>
         </table>
         <div id="comp_wrap">
             <canvas id="rocket_comp_background" width="300" height="300"></canvas>
@@ -66,11 +69,11 @@
                     <div id="static_settings">
                         <h1>Settings</h1>
                         <div id="button_container">
-                            <button type="button" id="add_all_button">Add all</button>
+                            <button type="button" id="add_all_button">Add everything</button>
                             <button type="button" id="add_remove_button">Add / Remove</button>
-                            <button type="button" id="remove_all_button">Remove all</button>
+                            <button type="button" id="remove_all_button">Remove everything</button>
                             <button type="button" id="reset_button">Reset</button>
-                            <button type="button" id="share_button">Share</button>
+                            <button type="button" id="share_button">Get link</button>
                         </div>
                         <div id="selec_div_container">
                             <div class="selec_div">
@@ -144,7 +147,7 @@
         </div>
 
         <div id="share_box">
-            <h1>Share</h1>
+            <h1>Get link</h1>
             <i id="close_share_button" class="material-icons">close</i>
             <form id="share_form">
                 <p id="share_form_text">Link: </p>

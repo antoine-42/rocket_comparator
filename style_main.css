@@ -1,6 +1,4 @@
 body{
-    overflow-y: hidden;
-    height: 100vh;
 }
 
 
@@ -21,10 +19,15 @@ table{
     border-collapse: collapse;
 }
 #rocket_comp_table{
+    position: absolute;
+    top: 0;
+    bottom: 0;
     height: 100%;
-    box-sizing: border-box;
-    padding-bottom: 20px;
     margin-left: 20px;
+}
+
+tbody{
+    height: 100%;
 }
 
 tr{
@@ -32,7 +35,6 @@ tr{
 }
 
 #rocket_img_row{
-
 }
 #rocket_manufacturer_row{
 
@@ -70,7 +72,7 @@ td p, td h4{
 }
 
 .rocket_comp_cell{
-    height: 86vh;
+    height: 84vh;
     padding: 0;
     vertical-align: bottom;
 }

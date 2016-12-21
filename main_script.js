@@ -6,6 +6,7 @@ var selected_rockets = JSON.parse('{"rockets" :[]}');
 
 var comp_wrap = document.getElementById('comp_wrap');
 var rocket_comp_background = document.getElementById('rocket_comp_background');
+var rocket_comp_table = document.getElementById('rocket_comp_table');
 
 
 var settings_window = document.getElementById('settings_window');
@@ -321,23 +322,19 @@ function update_background_scale(){
 //updates the size of the background
 function update_background_dimensions_2(){//fuck it i need to sleep
     window_width = document.body.clientWidth;
-    window_height = rocket_comp_height * (document.body.clientHeight) / 100;
+    window_height = window.innerHeight/100 * rocket_comp_height;
 
     rocket_comp_background.width = window_width;
     rocket_comp_background.height = window_height + 1;
-
-    comp_wrap.style.height = document.body.clientHeight + 'px';
 
     update_background_scale();
 }
 function update_background_dimensions(){
     window_width = document.body.clientWidth;
-    window_height = rocket_comp_height * (document.body.clientHeight) / 100;
+    window_height = window.innerHeight/100 * rocket_comp_height;
 
     rocket_comp_background.width = window_width;
     rocket_comp_background.height = window_height + 1;
-
-    comp_wrap.style.height = document.body.clientHeight + 'px';
 
     update_background_scale();
     if(!init){
@@ -478,10 +475,29 @@ function set_description(update){
             rocket_cost_row.style.display = 'none';
             basic_row.style.display = 'table-row';
 
-            rocket_comp_height = 86;
+            rocket_comp_height = 113.1717 + (-11865420 - 113.1717)/(1 + Math.pow((window.innerHeight/0.000009803632), 0.6981681));
+            /*data points used for the above equation, thanks to www.mycurvefit.com
+            if(window.innerHeight > 1300){
+                rocket_comp_height = 88;
+            }
+            else if(window.innerHeight > 1000){
+                rocket_comp_height = 83;
+            }
+            else if(window.innerHeight > 750){
+                rocket_comp_height = 75;
+            }
+            else if(window.innerHeight > 500){
+                rocket_comp_height = 65;
+            }
+            else if(window.innerHeight > 400){
+                rocket_comp_height = 55;
+            }
+            else if(window.innerHeight > 0){
+                rocket_comp_height = 40;
+            }*/
             var rocket_comp_cell_array = document.getElementsByClassName('rocket_comp_cell');
             for(i = 0; i < rocket_comp_cell_array.length; i++) {
-                rocket_comp_cell_array[i].style.height = '86vh';
+                rocket_comp_cell_array[i].style.height = rocket_comp_height + 'vh';
             }
             break;
         case 'full':
@@ -491,12 +507,34 @@ function set_description(update){
             rocket_payload_leo_row.style.display = 'table-row';
             rocket_payload_gto_row.style.display = 'table-row';
             rocket_cost_row.style.display = 'table-row';
-            basic_row.style.display = 'table-row';
+            basic_row.style.display = 'none';
 
-            rocket_comp_height = 75;
+            rocket_comp_height = 117.0972 + (-3269388 - 117.0972)/(1 + Math.pow((window.innerHeight/0.00008788315), 0.6879827));
+            /*
+            if(window.innerHeight > 1300){
+                rocket_comp_height = 80;
+            }
+            else if(window.innerHeight > 1050){
+                rocket_comp_height = 75;
+            }
+            else if(window.innerHeight > 750){
+                rocket_comp_height = 60;
+            }
+            else if(window.innerHeight > 650){
+                rocket_comp_height = 55;
+            }
+            else if(window.innerHeight > 450){
+                rocket_comp_height = 40;
+            }
+            else if(window.innerHeight > 400){
+                rocket_comp_height = 30;
+            }
+            else if(window.innerHeight > 0){
+                rocket_comp_height = 0;
+            }*/
             var rocket_comp_cell_array = document.getElementsByClassName('rocket_comp_cell');
             for(i = 0; i < rocket_comp_cell_array.length; i++) {
-                rocket_comp_cell_array[i].style.height = '75vh';
+                rocket_comp_cell_array[i].style.height = rocket_comp_height + 'vh';
             }
             break;
         case 'none':
@@ -508,10 +546,10 @@ function set_description(update){
             rocket_cost_row.style.display = 'none';
             basic_row.style.display = 'none';
 
-            rocket_comp_height = 100;
+            rocket_comp_height = 97;
             var rocket_comp_cell_array = document.getElementsByClassName('rocket_comp_cell');
             for(i = 0; i < rocket_comp_cell_array.length; i++) {
-                rocket_comp_cell_array[i].style.height = '100vh';
+                rocket_comp_cell_array[i].style.height = rocket_comp_height + 'vh';
             }
             break;
         default:
@@ -560,7 +598,6 @@ var high_res_checkbox = document.getElementById('high_res_checkbox');
 high_res_checkbox.addEventListener('click', on_picture_res_change);
 
 function clear_img_table(){
-    rocket_comp_table = document.getElementById('rocket_comp_table');
 
     rocket_img_row.innerHTML = '<th></th>';
     rocket_manufacturer_row.innerHTML = '<th>Manufacturer</th>';
@@ -581,7 +618,11 @@ function update_rockets(){
     //sorts the rockets
     selected_rockets.rockets.sort(sort_rockets(selected_sorting_args, use_descending_order));
 
-    curr_decade = 194;
+    var curr_decade = 194;
+
+    var curr_manufacturer_cell_number = 1;
+    var curr_manufacturer_cell;
+    var curr_manufacturer = 'NONE';
 
     for (var i = 0; i < selected_rockets.rockets.length; i++) {
         var curr_rocket = selected_rockets.rockets[i];
@@ -640,10 +681,22 @@ function update_rockets(){
         //creates the description
         //manufacturer
 
-        var manufacturer_cell = document.createElement('td');
-        manufacturer_cell.id = id + '_manufacturer_cell';
-        manufacturer_cell.appendChild(create_text_node(get_manufacturer(curr_rocket), 4));
-        rocket_manufacturer_row.appendChild(manufacturer_cell);
+        var last_manufacturer = curr_manufacturer;
+        curr_manufacturer = get_manufacturer(curr_rocket);
+
+        if(curr_manufacturer != last_manufacturer){
+            var manufacturer_cell = document.createElement('td');
+            manufacturer_cell.id = id + '_manufacturer_cell';
+            manufacturer_cell.appendChild(create_text_node(curr_manufacturer, 4));
+            rocket_manufacturer_row.appendChild(manufacturer_cell);
+
+            curr_manufacturer_cell = manufacturer_cell;
+            curr_manufacturer_cell_number = 1;
+        }
+        else {
+            curr_manufacturer_cell_number++;
+            curr_manufacturer_cell.colSpan = "" + curr_manufacturer_cell_number;
+        }
 
         //name
         var name_cell = document.createElement('td');
