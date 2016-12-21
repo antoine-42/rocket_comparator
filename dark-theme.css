@@ -90,6 +90,6 @@ i:hover{
 
 
 /*for more*/
-.color_row{
+#source_table tr:nth-child(odd) {
     background-color: rgba(255, 255, 255, 0.2);
 }
