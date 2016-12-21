@@ -24,7 +24,7 @@ var object_selection_window = document.getElementById('object_selection');
 var selected_list = ['human', 'soyuz2', 'proton-m', 'n1',
     'long-march5', 'sts-atlantis', 'saturn-v', 'block1crew',
     'atlas-v551', 'delta-iv-heavy', 'falcon-heavy1.2', 'its',
-    'new-sheppard', 'new-glenn3stages', 'ariane64', 'ariane5eca'];
+    'new-sheppard', 'ariane64', 'ariane5eca'];
 
 
 
@@ -600,8 +600,8 @@ high_res_checkbox.addEventListener('click', on_picture_res_change);
 function clear_img_table(){
 
     rocket_img_row.innerHTML = '<th></th>';
-    rocket_manufacturer_row.innerHTML = '<th>Manufacturer</th>';
-    rocket_name_row.innerHTML = '<th>Name</th>';
+    rocket_manufacturer_row.innerHTML = '<th></th>';
+    rocket_name_row.innerHTML = '<th></th>';
     rocket_date_row.innerHTML = '<th>First launch date</th>';
     rocket_payload_leo_row.innerHTML = '<th>Payload to <a href="https://en.wikipedia.org/wiki/Low_Earth_orbit">LEO</a>';
     rocket_payload_gto_row.innerHTML = '<th>Payload to <a href="https://en.wikipedia.org/wiki/Geostationary_transfer_orbit">GTO</a>';
