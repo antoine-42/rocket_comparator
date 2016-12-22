@@ -114,7 +114,7 @@ function switch_checkbox(rocket_id){
     rocket_checkbox.checked = !rocket_checkbox.checked;
 }
 //switch the state of rocket_id
-function switch_rocket_status(id) {
+function switch_rocket_status(id, set_box) {
     if(typeof id.altKey == 'undefined'){
         rocket_id = id;
     }
@@ -125,7 +125,7 @@ function switch_rocket_status(id) {
     if(!check_if_rocket_is_active(rocket_id, true)){
         selected_rockets.rockets.push(find_rocket(rocket_id));
     }
-    if(init){
+    if(init || set_box === true){
         switch_checkbox(rocket_id);
     }
     else {//don't want to call that during the automated loading, it is called at the end anyway
@@ -545,7 +545,7 @@ function reset_everything(){
     remove_all_rocket();
 
     for (var i = 0; i < selected_list.length; i++) {
-        switch_rocket_status(selected_list[i]);
+        switch_rocket_status(selected_list[i], true);
     }
 
     sorting_method_dropdown.selectedIndex = 0;

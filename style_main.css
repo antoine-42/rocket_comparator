@@ -78,7 +78,7 @@ td p, td h4{
     vertical-align: bottom;
 }
 .new_decade{
-    border-left: 1px solid rgba(21, 21, 21, 0.7);
+    border-left: 2px solid rgba(21, 21, 21, 0.7);
 }
 
 .decade_block{
