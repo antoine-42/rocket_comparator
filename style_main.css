@@ -1,4 +1,5 @@
 body{
+    overflow-y: hidden;
 }
 
 
@@ -76,6 +77,17 @@ td p, td h4{
     padding: 0;
     vertical-align: bottom;
 }
+.new_decade{
+    border-left: 1px solid rgba(21, 21, 21, 0.7);
+}
+
+.decade_block{
+    position: absolute;
+    top: 0;
+    padding: 15px 5px;
+    font-size: 1.5em;
+}
+
 .comp_img{
     padding: 0 0.8em;
 }
@@ -150,7 +162,7 @@ td p, td h4{
     margin: 0.75em 0;
 }
 
-#status_legend_checkbox_label{
+#status_legend_checkbox_div{
     display: none;
 }
 
@@ -354,7 +366,7 @@ td p, td h4{
         right: auto;
     }
 }
-@media (max-width: 900px){ /*phone horizontal/tablet*/
+@media (max-width: 750px){ /*phone horizontal/tablet*/
     #settings_window{
         right: -110%;
         width: 100vw;

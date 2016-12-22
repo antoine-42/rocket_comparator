@@ -312,7 +312,7 @@ function get_date_string(rocket){
     var date_day = date.getDate();
     var date_month = date.getMonth();
     //if date is in future or is january 1st, it is unknown and only year should be displayed
-    if(date_year > current_year || (date_day === 0 && date_month === 1)){
+    if(date_year > current_year || (date_day === 1 && date_month === 0)){
         return date_year;
     }
 

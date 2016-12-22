@@ -154,18 +154,21 @@ function force_deactivate_rocket(rocket_id) {
 
 
 //switch settings
-function switch_display_settings () {
-    var style_settings = window.getComputedStyle(settings_window);
-    var display = parseInt(style_settings.getPropertyValue('right').split('px')[0]);
-    if (display < 0) {
-        settings_window.style.right = '0';
-        return true;
-    }
-    settings_window.style.right = '-780px';
-    return false;
+var settings_out = true;
+function show_settings(){
+    settings_window.style.right = '0';
+    settings_out = true;
+
+    set_cookie('show_settings', 'true');
 }
-collapse_button.addEventListener('click', switch_display_settings);
-expand_button.addEventListener('click', switch_display_settings);
+function hide_settings(){
+    settings_window.style.right = '-780px';
+    settings_out = false;
+
+    set_cookie('show_settings', 'false');
+}
+collapse_button.addEventListener('click', hide_settings);
+expand_button.addEventListener('click', show_settings);
 
 
 //this kills all the rockets
@@ -345,8 +348,8 @@ window.onresize = update_background_dimensions;
 
 var hide_legend = false;
 var selected_background = 'default';
+var background_dropdown = document.getElementById('background_dropdown');
 function on_background_change(){
-    var background_dropdown = document.getElementById('background_dropdown');
     selected_background = background_dropdown.options[background_dropdown.selectedIndex].value;
 
     set_rocket_background()
@@ -398,7 +401,6 @@ function set_background_status(){
         load_stylesheet('background_status_light.css');
     }
 }
-var background_dropdown = document.getElementById('background_dropdown');
 background_dropdown.addEventListener('change', on_background_change);
 
 var status_legend_checkbox = document.getElementById('status_legend_checkbox');
@@ -406,6 +408,8 @@ var status_legend_checkbox = document.getElementById('status_legend_checkbox');
 function switch_status_legend(){
     hide_legend = !hide_legend;
     status_legend_checkbox.checked = hide_legend;
+
+    set_cookie('hide_legend', 'true');
 
     var background_legend = document.getElementById('background_legend');
     if(hide_legend){
@@ -425,6 +429,7 @@ var description_dropdown = document.getElementById('description_dropdown');
 function on_description_change(){
     selected_description = description_dropdown.options[description_dropdown.selectedIndex].value;
 
+    set_cookie('description', description_dropdown.selectedIndex);
     set_description(true)
 }
 //updates the background of the rocket comparison
@@ -632,16 +637,17 @@ function update_rockets(){
 
         if (selected_sorting_args[0] === 'date') {
             var decade = Math.floor(curr_rocket.date.getFullYear()/10);
-            if(decade != curr_decade){
+            if(decade != curr_decade && decade > 194){
                 curr_decade = decade;
                 rocket_img_cell.className += ' new_decade';
-                /*
+
                 var curr_decade_block = document.createElement('p');
                 curr_decade_block.appendChild(document.createTextNode(curr_decade * 10));
                 curr_decade_block.id = id + '_decade';
                 curr_decade_block.className = 'decade_block';
+                curr_decade_block.left = curr_img.offsetLeft;
 
-                wrap.appendChild(curr_decade_block);*/
+                rocket_img_cell.appendChild(curr_decade_block);
             }
         }
 
@@ -953,6 +959,26 @@ var custom_rockets = false;
 function handle_parameter(name, value){
     var int_value = parseInt(value);
     switch (name) {
+        case 'r':
+            var rocket_nums = value.split('+');
+            for (var i = 0; i < rocket_nums.length; i++) {
+                if(!isNaN(rocket_nums[i])){
+                    custom_rockets = true;
+                    var id = get_id(json_rockets.rockets[rocket_nums[i]]);
+                    switch_rocket_status(id);
+                }
+            }
+            break;
+
+        case 'show_settings':
+            if(value === 'true'){
+                show_settings();
+            }
+            else if(value === 'false'){
+                hide_settings();
+            }
+            break;
+
         case 'sort':
             if(!isNaN(int_value) && int_value < sorting_method_dropdown.options.length){
                 sorting_method_dropdown.selectedIndex = int_value;
@@ -967,21 +993,21 @@ function handle_parameter(name, value){
             break;
 
         case 'back':
-            var background_dropdown = document.getElementById('background_dropdown');
             if(!isNaN(int_value) && int_value < background_dropdown.options.length){
                 background_dropdown.selectedIndex = int_value;
                 on_background_change();
             }
             break;
+        case 'hide_legend':
+            if(value === 'true'){
+                switch_status_legend();
+            }
+            break;
 
-        case 'r':
-            var rocket_nums = value.split('+');
-            for (var i = 0; i < rocket_nums.length; i++) {
-                if(!isNaN(rocket_nums[i])){
-                    custom_rockets = true;
-                    var id = get_id(json_rockets.rockets[rocket_nums[i]]);
-                    switch_rocket_status(id);
-                }
+        case 'description':
+            if(!isNaN(int_value) && int_value < description_dropdown.options.length){
+                description_dropdown.selectedIndex = int_value;
+                on_description_change();
             }
             break;
 
