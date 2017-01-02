@@ -8,6 +8,8 @@ var comp_wrap = document.getElementById('comp_wrap');
 var rocket_comp_background = document.getElementById('rocket_comp_background');
 var rocket_comp_table = document.getElementById('rocket_comp_table');
 
+var placeholder_img_cell = document.getElementById('placeholder_img_cell');
+
 
 var settings_window = document.getElementById('settings_window');
 var settings_wrap = document.getElementById('settings_wrap');
@@ -511,6 +513,7 @@ function set_description(update){
             for(i = 0; i < rocket_comp_cell_array.length; i++) {
                 rocket_comp_cell_array[i].style.height = rocket_comp_height + 'vh';
             }
+            placeholder_img_cell.style.height = rocket_comp_height + 'vh';
             break;
         case 'none':
             rocket_manufacturer_row.style.display = 'none';
@@ -574,7 +577,7 @@ high_res_checkbox.addEventListener('click', on_picture_res_change);
 
 function clear_img_table(){
 
-    rocket_img_row.innerHTML = '<th></th>';
+    rocket_img_row.innerHTML = '<th id="placeholder_img_cell" class="rocket_comp_cell"></th>';
     rocket_manufacturer_row.innerHTML = '<th></th>';
     rocket_name_row.innerHTML = '<th></th>';
     rocket_date_row.innerHTML = '<th>First launch date</th>';
@@ -689,13 +692,13 @@ function update_rockets(){
         //payload to LEO
         var payload_leo_cell = document.createElement('td');
         payload_leo_cell.id = id + '_payload_leo_cell';
-        payload_leo_cell.appendChild(document.createTextNode(get_payload_string(curr_rocket.payload_leo)));
+        payload_leo_cell.appendChild(document.createTextNode(get_payload_string(curr_rocket.payload_leo, curr_rocket.type === 'Rockets', curr_rocket.type === 'Spacecraft')));
         rocket_payload_leo_row.appendChild(payload_leo_cell);
 
         //payload to GTO
         var payload_gto_cell = document.createElement('td');
         payload_gto_cell.id = id + '_payload_gto_cell';
-        payload_gto_cell.appendChild(document.createTextNode(get_payload_string(curr_rocket.payload_gto)));
+        payload_gto_cell.appendChild(document.createTextNode(get_payload_string(curr_rocket.payload_gto, false)));
         rocket_payload_gto_row.appendChild(payload_gto_cell);
 
         //cost

@@ -27,11 +27,11 @@ for (var i = 0; i < json_rockets.rockets.length; i++) {
 }
 
 //height, family, date, payload, cost
-var sorting_args = [['height', 'type', 'country', 'family', 'manufacturer', 'name', 'payload_leo', 'payload_gto', 'version'],
-    ['type', 'country', 'manufacturer', 'family', 'name', 'payload_leo', 'payload_gto', 'version'],
-    ['date', 'type', 'country', 'family', 'manufacturer', 'name', 'payload_leo', 'payload_gto', 'version'],
+var sorting_args = [['height', 'type', 'country', 'family', 'manufacturer', 'name', 'version'],
+    ['type', 'country', 'manufacturer', 'family', 'name', 'version'],
+    ['date', 'type', 'country', 'family', 'manufacturer', 'name', 'version'],
     ['payload_leo', 'payload_gto', 'type', 'country', 'family', 'manufacturer', 'name', 'version'],
-    ['cost', 'type', 'country', 'family', 'manufacturer', 'name', 'payload_leo', 'payload_gto', 'version']];
+    ['cost', 'type', 'country', 'family', 'manufacturer', 'name', 'version']];
 
 //other stuff
 var init = true;
@@ -281,9 +281,17 @@ function kg_to_pounds(good_unit){
     return Math.round(bad_unit).toLocaleString();
 }
 //raw_payload: payload in kg. outputs a shorter number or a longer one if you like stupid unit systems.
-function get_payload_string(raw_payload){
+function get_payload_string(raw_payload, show_suborbital = false, crew_capsule = false){
     if(raw_payload < 1){
+        if(raw_payload === 0 && show_suborbital)
+        {
+            return 'Suborbital rocket';
+        }
         return '';
+    }
+
+    if(crew_capsule){
+        return 'Crew: ' + raw_payload;
     }
 
     if(stupid_unit_system){
