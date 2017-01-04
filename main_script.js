@@ -164,7 +164,8 @@ function show_settings(){
     set_cookie('show_settings', 'true');
 }
 function hide_settings(){
-    settings_window.style.right = '-780px';
+    settings_window_rect = settings_window.getBoundingClientRect();
+    settings_window.style.right = '-' + (settings_window_rect.width +30) + 'px';
     settings_out = false;
 
     set_cookie('show_settings', 'false');
@@ -344,6 +345,10 @@ function update_background_dimensions(){
     update_background_scale();
     if(!init){
         update_rockets();
+
+        if(!settings_out){
+            hide_settings();
+        }
     }
 }
 window.onresize = update_background_dimensions;
@@ -692,13 +697,13 @@ function update_rockets(){
         //payload to LEO
         var payload_leo_cell = document.createElement('td');
         payload_leo_cell.id = id + '_payload_leo_cell';
-        payload_leo_cell.appendChild(document.createTextNode(get_payload_string(curr_rocket.payload_leo, curr_rocket.type === 'Rockets', curr_rocket.type === 'Spacecraft')));
+        payload_leo_cell.appendChild(document.createTextNode(get_payload_cell(curr_rocket, 'leo')));
         rocket_payload_leo_row.appendChild(payload_leo_cell);
 
         //payload to GTO
         var payload_gto_cell = document.createElement('td');
         payload_gto_cell.id = id + '_payload_gto_cell';
-        payload_gto_cell.appendChild(document.createTextNode(get_payload_string(curr_rocket.payload_gto, false)));
+        payload_gto_cell.appendChild(document.createTextNode(get_payload_cell(curr_rocket, 'gto')));
         rocket_payload_gto_row.appendChild(payload_gto_cell);
 
         //cost
@@ -710,7 +715,7 @@ function update_rockets(){
         //basic description
         var basic_cell = document.createElement('td');
         basic_cell.id = id + '_basic_cell';
-        basic_cell.appendChild(document.createTextNode(get_basic_desc(curr_rocket)));
+        basic_cell.appendChild(document.createTextNode(get_payload_cell(curr_rocket, 'basic')));
         basic_row.appendChild(basic_cell);
     }
 
@@ -1131,6 +1136,29 @@ function share(){
 }
 var share_button = document.getElementById('share_button');
 share_button.addEventListener('click', share)
+
+
+
+function on_keypress(e){
+    e = e || window.event;
+
+    var escape = false;
+    if ("key" in e) {
+        escape = (e.key === "Escape" || e.key === "Esc");
+    } else {
+        escape = (e.keyCode === 27);
+    }
+
+    if (escape){
+        if(share_open){
+            hide_share();
+        }
+        else if(settings_out) {
+            hide_settings();
+        }
+    }
+}
+window.addEventListener('keydown', on_keypress);
 
 
 

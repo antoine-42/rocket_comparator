@@ -280,29 +280,6 @@ function kg_to_pounds(good_unit){
     var bad_unit = good_unit*2.2046;
     return Math.round(bad_unit).toLocaleString();
 }
-//raw_payload: payload in kg. outputs a shorter number or a longer one if you like stupid unit systems.
-function get_payload_string(raw_payload, show_suborbital = false, crew_capsule = false){
-    if(raw_payload < 1){
-        if(raw_payload === 0 && show_suborbital)
-        {
-            return 'Suborbital rocket';
-        }
-        return '';
-    }
-
-    if(crew_capsule){
-        return 'Crew: ' + raw_payload;
-    }
-
-    if(stupid_unit_system){
-        return kg_to_pounds(raw_payload) + 'lb';
-    }
-
-    if(raw_payload > 1000){
-        return Math.round(raw_payload/1000 * 10) / 10 + 't';
-    }
-    return raw_payload + 'kg';
-}
 
 //returns a useable date strings
 function get_date_string(rocket){
@@ -353,18 +330,57 @@ function get_cost_string(rocket){
     return cost_string
 }
 
-//returns either the payload to LEO, GTO, or nothing
-function get_basic_desc(rocket){
-    var payload_to_leo = get_payload_string(rocket.payload_leo);
-    if(payload_to_leo != ''){
-        return payload_to_leo + ' (LEO)';
+//raw_payload: payload in kg. outputs a shorter number or a longer one if you like stupid unit systems.
+function get_payload_correct_unit(raw_payload, show_suborbital = false){
+    if(raw_payload < 1){
+        if(raw_payload === 0 && show_suborbital)
+        {
+            return 'Suborbital rocket';
+        }
+        return '';
     }
 
-    var payload_to_gto = get_payload_string(rocket.payload_gto);
-    if(payload_to_gto != ''){
-        return payload_to_gto + ' (GTO)';
+    if(stupid_unit_system){
+        return kg_to_pounds(raw_payload) + 'lb';
     }
-    return '';
+
+    if(raw_payload > 1000){
+        return Math.round(raw_payload/1000 * 10) / 10 + 't';
+    }
+    return raw_payload + 'kg';
+}
+//outputs the correct payload depending on row and type
+function get_payload_cell(rocket, curr_row){
+    var payload_to_gto = get_payload_correct_unit(rocket.payload_gto);
+
+    if(curr_row != 'gto'){
+        switch (rocket.payload_type) {
+            case 'crew':
+                return (rocket.payload_leo > 0)? 'Crew: ' + rocket.payload_leo : '';
+                break;
+
+            case 'missile':
+                return 'Missile';
+                break;
+
+            case 'icbm':
+                return 'ICBM';
+                break;
+
+            default:
+                break;
+        }
+
+        var payload_to_leo = get_payload_correct_unit(rocket.payload_leo, rocket.type === 'Rockets');
+
+        if(curr_row === 'basic' && payload_to_leo === ''){
+            return payload_to_gto
+        }
+
+        return payload_to_leo;
+    }
+
+    return payload_to_gto + ' (GTO)';
 }
 
 
