@@ -331,12 +331,8 @@ function get_cost_string(rocket){
 }
 
 //raw_payload: payload in kg. outputs a shorter number or a longer one if you like stupid unit systems.
-function get_payload_correct_unit(raw_payload, show_suborbital = false){
+function get_payload_correct_unit(raw_payload){
     if(raw_payload < 1){
-        if(raw_payload === 0 && show_suborbital)
-        {
-            return 'Suborbital rocket';
-        }
         return '';
     }
 
@@ -371,16 +367,20 @@ function get_payload_cell(rocket, curr_row){
                 break;
         }
 
-        var payload_to_leo = get_payload_correct_unit(rocket.payload_leo, rocket.type === 'Rockets');
+        var payload_to_leo = get_payload_correct_unit(rocket.payload_leo);
 
-        if(curr_row === 'basic' && payload_to_leo === ''){
-            return payload_to_gto
+        if(rocket.type === 'Rockets' && rocket.payload_leo === 0){
+            return 'Suborbital Rocket';
         }
 
-        return payload_to_leo;
+        if(curr_row === 'basic' && payload_to_leo === '' && payload_to_gto != ''){
+            return payload_to_gto + ' (GTO)';
+        }
+
+        return payload_to_leo + ((curr_row === 'basic' && payload_to_leo != '')? ' (LEO)' : '');
     }
 
-    return payload_to_gto + ' (GTO)';
+    return payload_to_gto;
 }
 
 
