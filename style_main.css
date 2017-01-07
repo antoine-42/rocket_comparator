@@ -366,7 +366,7 @@ td p, td h4{
         right: auto;
     }
 }
-@media (max-width: 750px){ /*phone horizontal/tablet*/
+@media (max-width: 1000px){ /*phone horizontal/tablet*/
     #settings_window{
         right: -110%;
         width: 100vw;
@@ -469,5 +469,12 @@ td p, td h4{
         -moz-column-count: 1;
         -webkit-column-count: 1;
         column-count: 1;
+    }
+
+    #static_settings{
+        padding: 0 7px;
+    }
+    #object_selection{
+        padding: 0 7px;
     }
 }
