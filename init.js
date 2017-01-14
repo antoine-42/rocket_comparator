@@ -14,9 +14,6 @@ for (var i = 0; i < json_rockets.rockets.length; i++) {
 for (var i = 0; i < json_rockets.rockets.length; i++) {
     json_rockets.rockets[i].cost = parseInt(json_rockets.rockets[i].cost);
 }
-for (var i = 0; i < json_rockets.rockets.length; i++) {
-    json_rockets.rockets[i].status = parseInt(json_rockets.rockets[i].status);
-}
 //parse the strings into bools in the json array
 for (var i = 0; i < json_rockets.rockets.length; i++) {
     json_rockets.rockets[i].high_res = json_rockets.rockets[i].high_res === '1';
@@ -93,16 +90,17 @@ function delete_cookie(name) {
 }
 
 //creates a text node at level with text
-function create_text_node(text, level){
-    var curr_header;
+function create_text_node(text, level, class_name = ''){
+    var curr_node;
     if(level > 0){
-        curr_header = document.createElement('h' + level);
+        curr_node = document.createElement('h' + level);
     }
     else {
-        curr_header = document.createElement('p');
+        curr_node = document.createElement('p');
     }
-    curr_header.appendChild(document.createTextNode(text));
-    return curr_header;
+    curr_node.className = class_name;
+    curr_node.appendChild(document.createTextNode(text));
+    return curr_node;
 }
 //creates a link with text
 function create_link(text, link){
@@ -125,6 +123,11 @@ function get_id(rocket){
     var path = rocket.path;
     var path_array = path.split('/');
     return path_array[path_array.length - 1].split('.png')[0];
+}
+
+//takes a rocket, returns an id
+function get_full_name(rocket){
+    return rocket.name + ' ' + rocket.version;
 }
 
 //finds_biggest_rocket
@@ -181,6 +184,52 @@ function remove_rocket(parameter, value){
     update_rockets();
     update_background_dimensions();
 }
+
+function check_object_for_parameters(object, param_array){
+    for (var i = 0; i < param_array.length; i++) {
+        var parameter = param_array[i][0];
+        var curr_value = object[parameter];
+
+        if(param_array[i].length === 2){
+            var value = param_array[i][1];
+            if (curr_value != value) {
+                return false;
+            }
+        }
+        else if(param_array[i].length === 3){
+            var min = param_array[i][1];
+            var max = param_array[i][2];
+            if (curr_value < min || curr_value > max) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+//returns an array where each object meet all the requirements
+//param_array = [[param1, value1], [param2, min2, max2]];
+function get_rockets_multiple_param(param_array, add){
+    var correct_objects = JSON.parse('{"rockets" :[]}');
+
+    //if there are no condition, return empty
+    if(param_array.length <= 0){
+        return correct_objects;
+    }
+
+    for (var i = 0; i < json_rockets.rockets.length; i++) {
+        var curr_rocket = json_rockets.rockets[i];
+
+        if(check_object_for_parameters(curr_rocket, param_array)){
+            var is_active = check_if_rocket_is_active(get_id(curr_rocket), false);
+            if((add && !is_active) || (!add && is_active)){
+                correct_objects.rockets.push(curr_rocket);
+            }
+        }
+    }
+
+    return correct_objects;
+}
+
 
 //sorting stuff
 //compare 2 objects
@@ -298,7 +347,7 @@ function get_date_string(rocket){
     var date_month = date.getMonth();
     //if date is in future or is january 1st, it is unknown and only year should be displayed
     if(date_year > current_year || (date_day === 1 && date_month === 0)){
-        if(rocket.status === 3){
+        if(rocket.status === 'Cancelled'){
             return 'Never launched';
         }
         return date_year;
@@ -321,7 +370,7 @@ function get_cost_string(rocket){
     var mult_array = ['', 'K', ' million', ' billion'];
     var n = 0;
 
-    while (cost > 1000) {
+    while (cost >= 1000) {
         cost /= 1000;
         n++;
     }
@@ -351,19 +400,15 @@ function get_payload_cell(rocket, curr_row){
 
     if(curr_row != 'gto'){
         switch (rocket.payload_type) {
-            case 'crew':
+            case 'Crew':
                 return (rocket.payload_leo > 0)? 'Crew: ' + rocket.payload_leo : '';
                 break;
 
-            case 'missile':
-                return 'Missile';
-                break;
-
-            case 'icbm':
-                return 'ICBM';
+            case 'Mass':
                 break;
 
             default:
+                return rocket.payload_type;
                 break;
         }
 

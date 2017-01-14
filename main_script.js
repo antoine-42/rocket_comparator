@@ -201,22 +201,296 @@ function add_all_rocket(){
 var add_all_button = document.getElementById('add_all_button');
 add_all_button.addEventListener('click', add_all_rocket);
 
+//add all rockets in json_array to selected_rockets
+function add_to_selected_rocket(json_array, add){
+    for (var i = 0; i < json_array.rockets.length; i++) {
+        var curr_rocket = json_array.rockets[i];
 
-//this adds all the rockets according to their status
-function add_rocket_status(){
-    if(selected === 'none'){
-        return;
+        if(add){
+            selected_rockets.rockets.push(curr_rocket);
+        }
+        else {
+            var index = selected_rockets.rockets.indexOf(curr_rocket);
+            if (index > -1) {
+                selected_rockets.rockets.splice(index, 1);
+            }
+        }
+
+        force_checkbox(get_id(curr_rocket), add);
     }
-    var selected = this.options[this.selectedIndex].value.split('=');
-    var parameter = selected[0];
-    var value = parseInt(selected[1]);
-
-    add_rocket(parameter, value)
-
-    this.selectedIndex = 0;
+    update_rockets();
 }
-var add_rockets_dropdown = document.getElementById('add_rockets_dropdown');
-add_rockets_dropdown.addEventListener('change', add_rocket_status);
+
+
+
+//handles the add/remove button
+var add_remove_box = document.getElementById('add_remove_box');
+var add_remove_box_title = document.getElementById('add_remove_box_title');
+var add_remove_condition_block = document.getElementById('add_remove_condition_block');
+var add_remove_condition_dropdown = document.getElementById('add_remove_condition_dropdown');
+var add_remove_confirm_button = document.getElementById('add_remove_confirm_button');
+var add_remove_list = document.getElementById('add_remove_list');
+
+var add_remove_box_open = false;
+var add_remove_function_is_add = true; //true = add, false = remove
+var button_word_list = ['Add', 0, 'rocket'];
+var active_conditions_list = [];
+var temp_selected_objects = JSON.parse('{"rockets" :[]}');
+var selected_conditions = [];
+
+
+function add_remove_open(){
+    add_remove_box.style.display = 'inline-block';
+    add_remove_box_open = true;
+
+    hide_share();
+}
+function add_remove_close(){
+    add_remove_box.style.display = 'none';
+    add_remove_box_open = false;
+}
+var close_add_remove_button = document.getElementById('close_add_remove_button');
+close_add_remove_button.addEventListener('click', add_remove_close);
+
+function add_remove_switch(){
+    if(add_remove_box_open){
+        add_remove_close();
+    }
+    else {
+        add_remove_open();
+    }
+}
+var add_remove_button = document.getElementById('add_remove_button');
+add_remove_button.addEventListener('click', add_remove_switch);
+
+
+function set_add_remove_function_add(){
+    add_remove_function_is_add = true;
+    add_remove_box_title.innerHTML = 'Add';
+
+    button_word_list[0] = 'Add';
+    on_condition_change();
+}
+add_remove_radio_add = document.getElementById('add_remove_radio_add');
+add_remove_radio_add.addEventListener('click', set_add_remove_function_add);
+function set_add_remove_function_remove(){
+    add_remove_function_is_add = false;
+    add_remove_box_title.innerHTML = 'Remove';
+
+    button_word_list[0] = 'Remove';
+    on_condition_change();
+}
+add_remove_radio_remove = document.getElementById('add_remove_radio_remove');
+add_remove_radio_remove.addEventListener('click', set_add_remove_function_remove);
+
+function switch_add_remove_function(){
+    if(add_remove_function_is_add){
+        set_add_remove_function_remove();
+    }
+    else {
+        set_add_remove_function_add();
+    }
+}
+
+
+var invalid_date = false;
+function on_condition_change(){
+    condition_comp_min_array = document.getElementsByClassName('condition_comp_min');
+    condition_comp_max_array = document.getElementsByClassName('condition_comp_max');
+    condition_dropdown_array = document.getElementsByClassName('condition_dropdown');
+
+    conditions = [[]];
+    //conditions = [[param1, value1], [param2, min2, max2]];
+
+    //extract conditions
+    for (var i = 0; i < condition_dropdown_array.length; i++) {
+        curr_dropdown = condition_dropdown_array[i];
+        curr_parameter = curr_dropdown.id.split('|')[1]
+        curr_value = curr_dropdown.options[curr_dropdown.selectedIndex].value;
+
+        var curr_conditions = [curr_parameter, curr_value];
+
+        conditions.push(curr_conditions)
+    }
+
+    for (var i = 0; i < condition_comp_min_array.length; i++) {
+        curr_min = condition_comp_min_array[i];
+        curr_max = condition_comp_max_array[i];
+
+        curr_parameter = curr_min.id.split('|')[0]
+
+        curr_min_value = curr_min.value;
+        curr_max_value = curr_max.value;
+
+        invalid_date = false;
+        if(curr_parameter === 'date'){
+            curr_min_value = new Date(curr_min_value);
+            curr_max_value = new Date(curr_max_value);
+
+            if(isNaN(curr_min_value.getTime()) || isNaN(curr_max_value.getTime())){
+                invalid_date = true;
+                //SHOW ERROR SOMEWHERE
+            }
+        }
+        if(curr_parameter === 'cost'){
+            curr_min_value = curr_min_value * 1000000;
+            curr_max_value = curr_max_value * 1000000;
+        }
+        if(curr_parameter === 'payload_leo' || curr_parameter === 'payload_gto'){
+            curr_min_value = curr_min_value * 1000;
+            curr_max_value = curr_max_value * 1000;
+        }
+
+        if(!invalid_date){
+            var curr_conditions = [curr_parameter, curr_min_value, curr_max_value];
+            conditions.push(curr_conditions)
+        }
+    }
+
+    //don't need the first empty list
+    conditions.shift();
+    //call the function that will add all the rockets that fit that into a new array
+    temp_selected_objects = get_rockets_multiple_param(conditions, add_remove_function_is_add);
+
+    //display this shit
+    button_word_list[1] = temp_selected_objects.rockets.length;
+    button_word_list[2] = (temp_selected_objects.rockets.length > 1)? 'rockets': 'rocket';
+    button_words_change();
+}
+
+
+function condition_remove(){
+    var condition = this.id.split('|')[0];
+    var condition_div = document.getElementById(condition + '|add_remove_condition');
+    condition_div.remove();
+
+    on_condition_change();
+}
+
+
+function get_all_values_of_parameter(parameter, search_only_in_rockets = true){
+    var values = [];
+    for (var i = 0; i < json_rockets.rockets.length; i++) {
+        if(!search_only_in_rockets || (search_only_in_rockets && json_rockets.rockets[i].type === 'Rockets')){
+            var curr_value = json_rockets.rockets[i][parameter];
+            if(values.indexOf(curr_value) < 0){
+                values.push(curr_value);
+            }
+        }
+    }
+    return values;
+}
+function add_remove_add_condition(){
+    var condition = add_remove_condition_dropdown.options[add_remove_condition_dropdown.selectedIndex].value;
+
+    if(selected_conditions.indexOf(condition) >= 0){
+        return;
+        //SHOW ERROR SOMEWHERE
+    }
+    selected_conditions.push(condition);
+
+    var condition_div = document.createElement('div');
+    condition_div.id = condition + '|add_remove_condition';
+    condition_div.className = 'selec_div';
+
+    var comp = false;
+    switch (condition) {
+        case 'status':
+        case 'payload_type':
+        case 'type':
+            var values = get_all_values_of_parameter(condition, false);
+            break;
+
+        case 'country':
+        case 'manufacturer':
+        case 'family':
+            var values = get_all_values_of_parameter(condition);
+            break;
+
+        case 'date':
+        case 'height':
+        case 'payload_leo':
+        case 'payload_gto':
+        case 'cost':
+            comp = true;
+            break;
+
+        default:
+            break;
+    }
+    condition_div.appendChild(create_text_node(add_remove_condition_dropdown.options[add_remove_condition_dropdown.selectedIndex].innerHTML, 0, 'add_remove_condition_first_col'))
+    if(comp){
+        condition_div.appendChild(create_text_node(' between', 0))
+
+        var input_type = (condition === 'date')? 'date': 'number';
+
+        var condition_comp_min = document.createElement('input');
+        condition_comp_min.type = input_type;
+        if(condition != 'date'){
+            condition_comp_min.min = 0;
+            condition_comp_min.value = 0;
+        }
+        condition_comp_min.id = condition + '|min';
+        condition_comp_min.className = 'condition_comp_min';
+        condition_comp_min.addEventListener('change', on_condition_change)
+        condition_div.appendChild(condition_comp_min);
+
+        condition_div.appendChild(create_text_node('and', 0))
+
+        var condition_comp_max = document.createElement('input');
+        condition_comp_max.type = input_type;
+        if(condition != 'date'){
+            condition_comp_max.min = 0;
+            condition_comp_max.value = 0;
+        }
+        condition_comp_max.id = condition + '|max';
+        condition_comp_max.className = 'condition_comp_max';
+        condition_comp_max.addEventListener('change', on_condition_change)
+        condition_div.appendChild(condition_comp_max);
+
+
+    }
+    else {
+        var condition_dropdown = document.createElement('select');
+        condition_dropdown.id = 'add_remove_dropdown|' + condition;
+        condition_dropdown.className = 'condition_dropdown';
+        condition_dropdown.addEventListener('change', on_condition_change)
+
+        for (var i = 0; i < values.length; i++) {
+            var curr_value = values[i];
+            var curr_value_option = document.createElement('option');
+
+            curr_value_option.value = curr_value;
+            curr_value_option.innerHTML = curr_value;
+
+            condition_dropdown.appendChild(curr_value_option);
+        }
+        condition_div.appendChild(condition_dropdown)
+    }
+
+    var close_condition_button = document.createElement('i');
+    close_condition_button.id = condition + '|remove_add_remove_condition';
+    close_condition_button.className = 'material-icons remove_condition';
+    close_condition_button.innerHTML = 'close';
+    close_condition_button.addEventListener('click', condition_remove);
+    condition_div.appendChild(close_condition_button)
+
+    add_remove_condition_block.appendChild(condition_div);
+    on_condition_change();
+}
+var confirm_add_condition_button = document.getElementById('confirm_add_condition_button');
+confirm_add_condition_button.addEventListener('click', add_remove_add_condition);
+
+
+function button_words_change(){
+    add_remove_confirm_button.innerHTML = button_word_list.join(' ');
+}
+
+function on_add_remove_confirm(){
+    add_to_selected_rocket(temp_selected_objects, add_remove_function_is_add);
+}
+add_remove_confirm_button.addEventListener('click', on_add_remove_confirm)
+
 
 
 //sorting stuff
@@ -383,8 +657,8 @@ function reset_background(){
     background_legend.style.display = 'none';
     rocket_comp_background.style.display = 'block';
 
-    var status_legend_checkbox_div = document.getElementById('status_legend_checkbox_div');
-    status_legend_checkbox_div.style.display = 'none';
+    var status_legend_checkbox_wrap = document.getElementById('status_legend_checkbox_wrap');
+    status_legend_checkbox_wrap.style.display = 'none';
 
 
     unload_stylesheet('background_status_dark.css');
@@ -397,8 +671,8 @@ function set_background_status(){
         background_legend.style.display = 'block';
     }
 
-    var status_legend_checkbox_div = document.getElementById('status_legend_checkbox_div');
-    status_legend_checkbox_div.style.display = 'inline-block';
+    var status_legend_checkbox_wrap = document.getElementById('status_legend_checkbox_wrap');
+    status_legend_checkbox_wrap.style.display = 'inline-block';
 
 
     if(enable_dark_theme){
@@ -616,16 +890,16 @@ function update_rockets(){
         rocket_img_cell.id = id + '_img_cell';
         rocket_img_cell.className = 'rocket_comp_cell';
         switch (curr_rocket.status) {
-            case 0:
+            case 'Active':
                 rocket_img_cell.className += ' active_rocket_cell';
                 break;
-            case 1:
+            case 'Retired':
                 rocket_img_cell.className += ' retired_rocket_cell';
                 break;
-            case 2:
+            case 'In Development':
                 rocket_img_cell.className += ' dev_rocket_cell';
                 break;
-            case 3:
+            case 'Cancelled':
                 rocket_img_cell.className += ' cancelled_rocket_cell';
                 break;
             default:
@@ -637,7 +911,7 @@ function update_rockets(){
         curr_img.style.height = curr_rocket.height / rocket_ratio + '%';
         curr_img.className = 'comp_img';
         curr_img.id = id;
-        curr_img.alt = curr_rocket.name + ' ' + curr_rocket.version;
+        curr_img.alt = get_full_name(curr_rocket);
 
         //adds the image in the correct resolution
         var image_path = get_correct_res_path(curr_rocket);
@@ -685,7 +959,7 @@ function update_rockets(){
         //name
         var name_cell = document.createElement('td');
         name_cell.id = id + '_manufacturer_cell';
-        name_cell.appendChild(create_link(curr_rocket.name + ' ' + curr_rocket.version, curr_rocket.wikipedia));
+        name_cell.appendChild(create_link(get_full_name(curr_rocket), curr_rocket.wikipedia));
         rocket_name_row.appendChild(name_cell);
 
         //date
@@ -720,6 +994,11 @@ function update_rockets(){
     }
 
     set_description(false);
+
+    //if the add/remove box is open, the selected rockets need to be updated
+    if(add_remove_box_open){
+        on_condition_change();
+    }
 }
 
 
@@ -782,6 +1061,10 @@ function create_title_button(type, value, action){
     curr_button.id = value + '-' + type + '-' + action;
     curr_button.title = title_text;
     curr_button.addEventListener('click', apply_all_rocket_param);
+
+    if(action = 'expand_less'){
+        curr_button.style.transform = 'rotate(180deg)';
+    }
     return curr_button;
 }
 function apply_all_rocket_param(){
@@ -800,10 +1083,10 @@ function apply_all_rocket_param(){
         case 'expand_less':
             hide_rocket_param(this);
             if(this.title === 'Show'){
-                this.style.transform = 'rotate(180deg)';
+                this.style.transform = 'rotate(90deg)';
             }
             else {
-                this.style.transform = '';
+                this.style.transform = 'rotate(180deg)';
             }
 
             break;
@@ -847,7 +1130,8 @@ function create_rocket_checkboxes(){
 
         if(curr_type != 'Rockets'){
             while (i < json_rockets.rockets.length && json_rockets.rockets[i].type === curr_type) {
-                var curr_id = get_id(json_rockets.rockets[i]);
+                var curr_rocket = json_rockets.rockets[i]
+                var curr_id = get_id(curr_rocket);
 
                 var curr_checkbox = document.createElement('input');
                 curr_checkbox.type = 'checkbox';
@@ -857,12 +1141,11 @@ function create_rocket_checkboxes(){
                 curr_checkbox.addEventListener('click', switch_rocket_status );
 
                 var curr_label = document.createElement('label');
-                curr_label.setAttribute('for', curr_id + '_checkbox');
-                curr_label.appendChild(document.createTextNode(json_rockets.rockets[i].name + ' ' + json_rockets.rockets[i].version))
+                curr_label.appendChild(curr_checkbox);
+                curr_label.appendChild(document.createTextNode(get_full_name(curr_rocket)));
 
                 var curr_checkbox_wrap = document.createElement('div');
                 curr_checkbox_wrap.className = 'rocket_checkbox';
-                curr_checkbox_wrap.appendChild(curr_checkbox);
                 curr_checkbox_wrap.appendChild(curr_label);
 
                 curr_type_content.appendChild(curr_checkbox_wrap);
@@ -892,6 +1175,7 @@ function create_rocket_checkboxes(){
 
                 var curr_manufacturer_content = document.createElement('div');
                 curr_manufacturer_content.id = curr_manufacturer + '_manufacturer_content';
+                curr_manufacturer_content.className = 'selec_manufacturer_content';
 
                 if(curr_country === 'USA' || curr_country === 'USSR / Russia' || curr_country === 'Europe' || curr_country === 'Other'){
                     var show_buttons = false;
@@ -919,22 +1203,22 @@ function create_rocket_checkboxes(){
                         curr_name_div.className = 'selec_name';
 
                         while (i < json_rockets.rockets.length && json_rockets.rockets[i].name === curr_name){
-                            var curr_id = get_id(json_rockets.rockets[i]);
+                            var curr_rocket = json_rockets.rockets[i]
+                            var curr_id = get_id(curr_rocket);
 
                             var curr_checkbox = document.createElement('input');
                             curr_checkbox.type = 'checkbox';
                             curr_checkbox.name = curr_id + '_checkbox';
                             curr_checkbox.value = curr_id + '_checkbox';
                             curr_checkbox.id = curr_id + '_checkbox';
-                            curr_checkbox.addEventListener('click', switch_rocket_status );
+                            curr_checkbox.addEventListener('click', switch_rocket_status);
 
                             var curr_label = document.createElement('label');
-                            curr_label.setAttribute('for', curr_id + '_checkbox');
-                            curr_label.appendChild(document.createTextNode(json_rockets.rockets[i].name + ' ' + json_rockets.rockets[i].version))
+                            curr_label.appendChild(curr_checkbox);
+                            curr_label.appendChild(document.createTextNode(get_full_name(curr_rocket)));
 
                             var curr_checkbox_wrap = document.createElement('div');
                             curr_checkbox_wrap.className = 'rocket_checkbox';
-                            curr_checkbox_wrap.appendChild(curr_checkbox);
                             curr_checkbox_wrap.appendChild(curr_label);
 
                             curr_name_div.appendChild(curr_checkbox_wrap);
@@ -1106,6 +1390,8 @@ function share(){
         return;
     }
 
+    add_remove_close();
+
     share_box.style.display = 'inline-block';
     share_open = true;
 
@@ -1153,6 +1439,9 @@ function on_keypress(e){
         if(share_open){
             hide_share();
         }
+        else if(add_remove_box_open) {
+            add_remove_close();
+        }
         else if(settings_out) {
             hide_settings();
         }
@@ -1166,6 +1455,8 @@ function init(){
     load_settings();
     update_rockets();
     update_background_dimensions();
+
+    console.log('Rocket Comparator, made by Antoine Dujardin.\nGithub: https://github.com/antoine-42/rocket_scale');
 }
 init();
 

@@ -154,15 +154,21 @@ td p, td h4{
 #selec_div_container{
     margin: 1em 0;
 }
-#selec_div_container p{
+.selec_div{
+    margin: 0.75em 0;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+}
+.selec_div i{
+    align-self: center;
+}
+.selec_div p{
     display: inline-block;
     margin: 0;
 }
-.selec_div{
-    margin: 0.75em 0;
-}
 
-#status_legend_checkbox_div{
+#status_legend_checkbox_wrap{
     display: none;
 }
 
@@ -176,9 +182,9 @@ td p, td h4{
     margin: 1.5em 0;
 }
 
-.static_checkbox_div{
-    margin-right: 1.5em;
-    display: inline-block;
+
+#static_checkboxes_container label{
+    margin-right: 1em;
 }
 
 
@@ -203,16 +209,6 @@ td p, td h4{
     column-count: 3;
 }
 
-#Rockets_type_content{
-    -moz-column-count: 2;
-    -webkit-column-count: 2;
-    column-count: 2;
-}
-.selec_manufacturer{
-    page-break-inside: avoid;
-    break-inside: avoid;
-}
-
 
 .selec_type{
     margin-bottom: 2em;
@@ -221,7 +217,8 @@ td p, td h4{
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 1em;
+
+    margin-bottom: 0.5em;
 }
 
 .title_button_group{
@@ -242,7 +239,6 @@ td p, td h4{
     font-size: 1.5em;
 }
 .selec_country{
-    margin: 0 0 2em 0;
 }
 
 #object_selection h4{
@@ -250,10 +246,16 @@ td p, td h4{
     font-size: 1.2em;
 }
 .selec_header_manufacturer{
-    margin-bottom: 0.5em;
 }
 .selec_manufacturer{
-    margin: 1em 0;
+    break-inside: avoid;
+}
+.selec_manufacturer_content{
+    -moz-column-count: 2;
+    -webkit-column-count: 2;
+    column-count: 2;
+
+    margin-top: -0.75em;
 }
 
 #object_selection h5{
@@ -261,13 +263,17 @@ td p, td h4{
     font-size: 1em;
 }
 .selec_family{
-    margin-bottom: 1.5em;
+    page-break-inside: avoid;
+    break-inside: avoid;
+    padding: 1em 0;
+}
+.selec_family div[class="selec_name"] + div[class="selec_name"]{
+    margin: 1em 0;
 }
 
 #object_selection h6{
 }
 .selec_name{
-    margin-bottom: 1em;
     -moz-column-count: 2;/*seriously fuck this shit*/
     -webkit-column-count: 2;
     column-count: 2;
@@ -328,15 +334,15 @@ td p, td h4{
     background-color: #F5F5F5;
     box-shadow: 0px 0px 26px 3px black;
 }
+#share_box h1{
+    margin-top: 0;
+}
 
 #close_share_button{
     top: 10px;
     right: 10px;
     position: absolute;
     font-size: 48px;
-}
-#share_box h1{
-    margin-top: 0;
 }
 #share_form{
     margin-bottom: 0;
@@ -360,8 +366,69 @@ td p, td h4{
 
 
 
+/*add/remove box*/
+#add_remove_box{
+    position: fixed;
+    top: 45px;
+    display: none;
+    left: 20px;
+    min-width: 450px;
+    padding: 20px;
+    padding-left: 40px;
+    z-index: 20;
+    background-color: #F5F5F5;
+    box-shadow: 0px 0px 26px 3px black;
+}
+#add_remove_box h1{
+    margin-top: 0;
+}
+#add_remove_box select, #add_remove_box input[type="date"], #add_remove_box input[type="number"]{
+    margin: 0 0.5em;
+}
+#add_remove_box select{
+    width: 175px;
+}
+
+#close_add_remove_button{
+    top: 10px;
+    right: 10px;
+    position: absolute;
+    font-size: 48px;
+}
+
+#add_remove_form{
+    display: flex;
+    flex-direction: column;
+    max-height: 80vh;
+}
+#add_remove_form > *{
+    margin: 7px 0;
+}
+
+#add_remove_radio_add input[type="radio" i]{
+    margin-left: 0;
+}
+
+.add_remove_condition_first_col{
+    width: 130px;
+}
+.remove_condition{
+    position: absolute;
+    left: 15px;
+}
+
+#add_remove_confirm_button{
+    align-self: center;
+}
+
+
+
 @media (max-width: 1200px){ /*small desktop/big tablet*/
     #share_box{
+        left: 10px;
+        right: auto;
+    }
+    #add_remove_box{
         left: 10px;
         right: auto;
     }
@@ -414,10 +481,6 @@ td p, td h4{
     .selec_div{
         margin: 1em 0;
     }
-    .static_checkbox_div{
-        margin-top: 0.5em;
-        margin-bottom: 0.5em;
-    }
 
 
     .title_button_group i {
@@ -430,12 +493,13 @@ td p, td h4{
     }
     #share_box{
         top: 70px;
-        left: 10px;
-        right: auto;
+    }
+    #add_remove_box{
+        top: 70px;
     }
 }
 @media (max-width: 650px){ /*big phone/phone horizontal*/
-    #Rockets_type_content{
+    .selec_manufacturer_content{
         -moz-column-count: 1;
         -webkit-column-count: 1;
         column-count: 1;
@@ -445,6 +509,13 @@ td p, td h4{
         -moz-column-count: 3;
         -webkit-column-count: 3;
         column-count: 3;
+    }
+
+
+    #add_remove_box{
+        box-sizing: border-box;
+        width: 100%;
+        left: 0;
     }
 }
 @media (max-width: 500px){ /*phone*/
@@ -476,5 +547,12 @@ td p, td h4{
     }
     #object_selection{
         padding: 0 7px;
+    }
+
+
+    #share_box{
+        box-sizing: border-box;
+        width: 100%;
+        left: 0;
     }
 }

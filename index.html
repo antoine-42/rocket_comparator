@@ -67,24 +67,15 @@
             <form id="settings_form">
                 <div id="settings_wrap">
                     <div id="static_settings">
-                        <h1>Settings</h1>
+                        <h1>Rocket Comparator Settings</h1>
                         <div id="button_container">
                             <button type="button" id="add_all_button">Add everything</button>
+                            <button type="button" id="add_remove_button">Add or Remove</button>
                             <button type="button" id="remove_all_button">Remove everything</button>
                             <button type="button" id="reset_button">Reset comparison</button>
                             <button type="button" id="share_button">Get link</button>
                         </div>
                         <div id="selec_div_container">
-                            <div class="selec_div">
-                                <p>Add all rockets that are:</p>
-                                <select name="add_rockets_dropdown" id="add_rockets_dropdown">
-                                    <option value="none">-</option>
-                                    <option value="status=0">Active</option>
-                                    <option value="status=1">Retired</option>
-                                    <option value="status=2">In developpment</option>
-                                    <option value="status=3">Cancelled</option>
-                                </select>
-                            </div>
                             <div class="selec_div">
                                 <p>Sort according to:</p>
                                 <select name="sorting_method_dropdown" id="sorting_method_dropdown">
@@ -94,10 +85,7 @@
                                     <option value="payload">Maximum payload</option>
                                     <option value="cost">Launch cost</option>
                                 </select>
-                                <div class="static_checkbox_div">
-                                    <input type="checkbox" class="checkbox" id="descending_sort_checkbox"/>
-                                    <label for="descending_sort_checkbox">Descending</label>
-                                </div>
+                                <label id="descending_sort_checkbox_wrap"><input type="checkbox" class="checkbox" id="descending_sort_checkbox"/>Descending</label>
                             </div>
                             <div class="selec_div">
                                 <p>Background:</p>
@@ -106,10 +94,7 @@
                                     <option value="status">Status</option>
                                     <option value="none">None</option>
                                 </select>
-                                <div class="static_checkbox_div" id="status_legend_checkbox_div">
-                                    <input type="checkbox" class="checkbox" id="status_legend_checkbox"/>
-                                    <label for="status_legend_checkbox">Hide Legend</label>
-                                </div>
+                                <label id="status_legend_checkbox_wrap"><input type="checkbox" class="checkbox" id="status_legend_checkbox"/>Hide Legend</label>
                             </div>
                             <div class="selec_div">
                                 <p>Description:</p>
@@ -121,18 +106,9 @@
                             </div>
                         </div>
                         <div id="static_checkboxes_container">
-                            <div class="static_checkbox_div">
-                                <input type="checkbox" class="checkbox" id="high_res_checkbox"/>
-                                <label for="high_res_checkbox">High resolution pictures</label>
-                            </div>
-                            <div class="static_checkbox_div">
-                                <input type="checkbox" id="imperial_checkbox"/>
-                                <label for="imperial_checkbox">Imperial units</label>
-                            </div>
-                            <div class="static_checkbox_div">
-                                <input type="checkbox" id="dark_theme_checkbox"/>
-                                <label for="dark_theme_checkbox">Dark theme</label>
-                            </div>
+                            <label><input type="checkbox" class="checkbox" id="high_res_checkbox"/>High resolution pictures</label>
+                            <label><input type="checkbox" id="imperial_checkbox"/>Imperial units</label>
+                            <label><input type="checkbox" id="dark_theme_checkbox"/>Dark theme</label>
                         </div>
                         <p>
                             <a href="about/">About</a>
@@ -145,6 +121,40 @@
             </form>
         </div>
 
+        <div id="add_remove_box">
+            <h1 id="add_remove_box_title">Add</h1>
+            <i id="close_add_remove_button" class="material-icons">close</i>
+            <form id="add_remove_form">
+                <div id="add_remove_radio">
+                    <label><input type="radio" name="add_remove_radio" value="Add" id="add_remove_radio_add" checked/> Add</label>
+                    <label><input type="radio" name="add_remove_radio" value="Remove" id="add_remove_radio_remove"/> Remove</label>
+                </div>
+
+                <div id="add_remove_condition_block">
+                </div>
+
+                <div id="add_remove_condition_choice" class="selec_div">
+                    <p class="add_remove_condition_first_col">Add a condition:</p>
+                    <select name="add_remove_condition_dropdown" id="add_remove_condition_dropdown">
+                        <option value="type">Type</option>
+                        <option value="status">Status</option>
+                        <option value="date">First launch date</option>
+                        <option value="country">Country</option>
+                        <option value="manufacturer">Manufacturer</option>
+                        <option value="family">Family</option>
+                        <option value="height">Height</option>
+                        <option value="payload_type">Payload Type</option>
+                        <option value="payload_leo">Payload to LEO</option>
+                        <option value="payload_gto">Payload to GTO</option>
+                        <option value="cost">Launch cost</option>
+                    </select>
+                    <i id="confirm_add_condition_button" class="material-icons">done</i>
+                </div>
+
+                <button type="button" id="add_remove_confirm_button">Add 0 rocket</button>
+            </form>
+        </div>
+
         <div id="share_box">
             <h1>Get link</h1>
             <i id="close_share_button" class="material-icons">close</i>
@@ -154,6 +164,7 @@
                 <i id="copy_share_button" class="material-icons" title="Copy URL">content_copy</i>
             </form>
         </div>
+
         <script type="text/javascript" src="rocket.json"></script>
         <script type="text/javascript" src="init.js"></script>
         <script type="text/javascript" src="main_script.js"></script>

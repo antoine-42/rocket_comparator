@@ -34,7 +34,7 @@ select:hover, select:focus{
     box-shadow: 0px 0px 10px 1px black;
 }
 
-input[type="text"] {
+input[type="date"], input[type="text"], input[type="number"] {
     background-color: #404040;
     color: #DDDDDD;
     box-shadow: 0px 0px 5px 0px black;
@@ -83,6 +83,14 @@ i:hover{
 
 /*share box*/
 #share_box{
+    background-color: #202020;
+    box-shadow: 0px 0px 26px 3px black;
+}
+
+
+
+/*add/remove box*/
+#add_remove_box{
     background-color: #202020;
     box-shadow: 0px 0px 26px 3px black;
 }
