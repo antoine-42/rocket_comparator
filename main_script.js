@@ -244,6 +244,7 @@ function add_remove_open(){
     add_remove_box_open = true;
 
     hide_share();
+    close_zoom_image();
 }
 function add_remove_close(){
     add_remove_box.style.display = 'none';
@@ -1015,7 +1016,7 @@ function open_zoom_image(e){
         id = e;
     }
 
-    if(image_zoom.alt.split(' ')[0] === id){
+    if(image_zoom_open && image_zoom.alt.split(' ')[0] === id){
         image_zoom.alt = 'rocket image zoom';
         close_zoom_image();
         return;
@@ -1452,6 +1453,7 @@ function share(){
     }
 
     add_remove_close();
+    close_zoom_image();
 
     share_box.style.display = 'inline-block';
     share_open = true;
