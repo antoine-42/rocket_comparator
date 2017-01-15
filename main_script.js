@@ -1006,14 +1006,24 @@ function update_rockets(){
 var image_zoom_box = document.getElementById('image_zoom_box');
 var image_zoom = document.getElementById('image_zoom');
 var image_zoom_open = false;
-function open_zoom_image(id){
-    if(id === undefined || id.target){
-        var rocket = find_rocket(this.id);
+function open_zoom_image(e){
+    var id;
+    if(e === undefined || e.target){
+        id = this.id;
     }
     else {
-        var rocket = find_rocket(id);
+        id = e;
     }
 
+    if(image_zoom.alt.split(' ')[0] === id){
+        image_zoom.alt = 'rocket image zoom';
+        close_zoom_image();
+        return;
+    }
+
+    var rocket = find_rocket(id);
+
+    image_zoom.alt = id + ' image zoom';
     image_zoom.src = get_correct_res_path(rocket);
     rocket_zoom_name.innerHTML = get_full_name(rocket);
     image_zoom_box.style.display = 'inline-block';
