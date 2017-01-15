@@ -41,7 +41,17 @@ function show_rocket_display(){
     check_res();
     var path = get_correct_res_path(find_rocket(this.id));
     image_display.src = '../' + path;
+
+    image_display.style.width = '';
+    image_display.style.height = '';
     image_display.style.display = 'block';
+
+    if(image_display.naturalWidth + 1 >= document.body.clientWidth){
+        image_display.style.display = '';
+        image_display.style.width = '100%';
+        image_display.style.height = 'auto';
+        image_display.style.display = 'block';
+    }
 }
 function hide_rocket_display(){
     image_display.style.display = 'none';

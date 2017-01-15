@@ -70,8 +70,8 @@
                         <h1>Rocket Comparator Settings</h1>
                         <div id="button_container">
                             <button type="button" id="add_all_button">Add everything</button>
-                            <button type="button" id="add_remove_button">Add or Remove</button>
                             <button type="button" id="remove_all_button">Remove everything</button>
+                            <button type="button" id="add_remove_button">Add or Remove</button>
                             <button type="button" id="reset_button">Reset comparison</button>
                             <button type="button" id="share_button">Get link</button>
                         </div>
@@ -163,6 +163,11 @@
                 <input type="text" name="share_link" id="share_link"/>
                 <i id="copy_share_button" class="material-icons" title="Copy URL">content_copy</i>
             </form>
+        </div>
+
+        <div id="image_zoom_box">
+            <h2 id="rocket_zoom_name"></h2>
+            <img id="image_zoom" src="" alt="zoomed in rocket"></img>
         </div>
 
         <script type="text/javascript" src="rocket.json"></script>

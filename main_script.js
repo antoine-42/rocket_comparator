@@ -912,6 +912,7 @@ function update_rockets(){
         curr_img.className = 'comp_img';
         curr_img.id = id;
         curr_img.alt = get_full_name(curr_rocket);
+        curr_img.addEventListener('click', open_zoom_image);
 
         //adds the image in the correct resolution
         var image_path = get_correct_res_path(curr_rocket);
@@ -1000,6 +1001,56 @@ function update_rockets(){
         on_condition_change();
     }
 }
+
+
+var image_zoom_box = document.getElementById('image_zoom_box');
+var image_zoom = document.getElementById('image_zoom');
+var image_zoom_open = false;
+function open_zoom_image(id){
+    if(id === undefined || id.target){
+        var rocket = find_rocket(this.id);
+    }
+    else {
+        var rocket = find_rocket(id);
+    }
+
+    image_zoom.src = get_correct_res_path(rocket);
+    rocket_zoom_name.innerHTML = get_full_name(rocket);
+    image_zoom_box.style.display = 'inline-block';
+
+    if(image_zoom_box.clientWidth > document.body.clientWidth){
+        image_zoom_box.style.height = 'auto';
+        image_zoom_box.style.width = '100%';
+
+        image_zoom.style.height = 'auto';
+        image_zoom.style.width = '100%';
+    }
+    else {
+        image_zoom_box.style.height = '';
+        image_zoom_box.style.width = '';
+
+        image_zoom.style.height = '';
+        image_zoom.style.width = '';
+    }
+
+    if(image_zoom_box.clientWidth + rocket_zoom_name.clientWidth > document.body.clientWidth){
+        rocket_zoom_name.style.top = '10px';
+        rocket_zoom_name.style.left = '0';
+    }
+    else {
+        rocket_zoom_name.style.top = '';
+        rocket_zoom_name.style.left = '';
+    }
+
+    image_zoom_open = true;
+    add_remove_close();
+    hide_share();
+}
+function close_zoom_image(){
+    image_zoom_box.style.display = 'none';
+    image_zoom_open = false;
+}
+image_zoom_box.addEventListener('click', close_zoom_image);
 
 
 
@@ -1441,6 +1492,9 @@ function on_keypress(e){
         }
         else if(add_remove_box_open) {
             add_remove_close();
+        }
+        else if(image_zoom_open) {
+            close_zoom_image();
         }
         else if(settings_out) {
             hide_settings();
