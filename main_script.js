@@ -1021,6 +1021,8 @@ function open_zoom_image(e){
         close_zoom_image();
         return;
     }
+    add_remove_close();
+    hide_share();
 
     var rocket = find_rocket(id);
 
@@ -1029,12 +1031,9 @@ function open_zoom_image(e){
     rocket_zoom_name.innerHTML = get_full_name(rocket);
     image_zoom_box.style.display = 'inline-block';
 
-    //we want the true size, not the viewport for this
-    var ratio = window.devicePixelRatio || 1;
-    var device_width = document.body.clientWidth * ratio;
-    alert('block: ' + (image_zoom_box.clientWidth + rocket_zoom_name.clientWidth) + ' device: ' + device_width)
+    var viewport = document.body.clientWidth;
 
-    if(image_zoom_box.clientWidth > device_width){
+    if(image_zoom_box.clientWidth > viewport){
         image_zoom_box.style.height = 'auto';
         image_zoom_box.style.width = '100%';
 
@@ -1049,7 +1048,7 @@ function open_zoom_image(e){
         image_zoom.style.width = '';
     }
 
-    if(image_zoom_box.clientWidth + rocket_zoom_name.clientWidth > device_width){
+    if(image_zoom_box.clientWidth + rocket_zoom_name.clientWidth > viewport){
         rocket_zoom_name.style.top = '10px';
         rocket_zoom_name.style.left = '0';
     }
@@ -1059,8 +1058,6 @@ function open_zoom_image(e){
     }
 
     image_zoom_open = true;
-    add_remove_close();
-    hide_share();
 }
 function close_zoom_image(){
     image_zoom_box.style.display = 'none';

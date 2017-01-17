@@ -534,8 +534,7 @@ td p, td h4{
         top: 70px;
     }
     #rocket_zoom_name{
-        top: 10px;
-        left: 0;
+        
     }
 }
 @media (max-width: 650px){ /*big phone/phone horizontal*/
