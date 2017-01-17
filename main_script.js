@@ -1029,7 +1029,12 @@ function open_zoom_image(e){
     rocket_zoom_name.innerHTML = get_full_name(rocket);
     image_zoom_box.style.display = 'inline-block';
 
-    if(image_zoom_box.clientWidth > document.body.clientWidth){
+    //we want the true size, not the viewport for this
+    var ratio = window.devicePixelRatio || 1;
+    var device_width = document.body.clientWidth * ratio;
+    alert('viewport: ' + document.body.clientWidth + ' ratio: ' + ratio + ' device: ' + device_width)
+
+    if(image_zoom_box.clientWidth > device_width){
         image_zoom_box.style.height = 'auto';
         image_zoom_box.style.width = '100%';
 
@@ -1044,7 +1049,7 @@ function open_zoom_image(e){
         image_zoom.style.width = '';
     }
 
-    if(image_zoom_box.clientWidth + rocket_zoom_name.clientWidth > document.body.clientWidth){
+    if(image_zoom_box.clientWidth + rocket_zoom_name.clientWidth > device_width){
         rocket_zoom_name.style.top = '10px';
         rocket_zoom_name.style.left = '0';
     }
