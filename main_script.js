@@ -1032,7 +1032,7 @@ function open_zoom_image(e){
     //we want the true size, not the viewport for this
     var ratio = window.devicePixelRatio || 1;
     var device_width = document.body.clientWidth * ratio;
-    alert('viewport: ' + document.body.clientWidth + ' ratio: ' + ratio + ' device: ' + device_width)
+    alert('block: ' + (image_zoom_box.clientWidth + rocket_zoom_name.clientWidth) + ' device: ' + device_width)
 
     if(image_zoom_box.clientWidth > device_width){
         image_zoom_box.style.height = 'auto';
