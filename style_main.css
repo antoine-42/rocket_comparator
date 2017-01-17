@@ -173,6 +173,18 @@ td p, td h4{
     margin: 0;
 }
 
+
+#title_box{
+    width: 90%;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+}
+#title_box h1{
+    display: inline-block;
+    margin-right: 20px;
+}
+
 #status_legend_checkbox_wrap{
     display: none;
 }
@@ -438,24 +450,32 @@ td p, td h4{
     display: none;
 
     height: 100%;
-    padding: 10px 20px;
     box-sizing: border-box;
     z-index: 5;
     background-color: #DDDDDD;
     box-shadow: 0px 0px 26px 3px black;
-    cursor: zoom-out;
-}
-#rocket_zoom_name{
-    position: absolute;
-    left: 100%;
-    padding: 10px;
-    margin: 0;
-    white-space: nowrap;
-}
-#image_zoom{
-    height: 100%;
 }
 
+#rocket_zoom_name_box{
+    position: absolute;
+    left: 100%;
+    max-width: 300px;
+    padding: 10px;
+    margin: 0;
+}
+#rocket_zoom_name_box h2{
+
+}
+#rocket_zoom_name_box p{
+    font-size: 1.1em;
+}
+
+#image_zoom{
+    height: 100%;
+    box-sizing: border-box;
+    padding: 10px 20px;
+    cursor: zoom-out;
+}
 
 
 
@@ -534,7 +554,7 @@ td p, td h4{
         top: 70px;
     }
     #rocket_zoom_name{
-        
+
     }
 }
 @media (max-width: 650px){ /*big phone/phone horizontal*/

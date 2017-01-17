@@ -324,6 +324,10 @@ function get_manufacturer(rocket){
     return rocket.country;
 }
 
+function get_status(rocket){
+    return rocket.status;
+}
+
 //obvious, also adds commas because you're going to get huge numbers with this stupid system
 function kg_to_pounds(good_unit){
     var bad_unit = good_unit*2.2046;
@@ -331,7 +335,7 @@ function kg_to_pounds(good_unit){
 }
 
 //returns a useable date strings
-function get_date_string(rocket){
+function get_date_string(rocket, add_text = false){
     var date = rocket.date;
     var date_year = date.getFullYear();
 
@@ -340,6 +344,7 @@ function get_date_string(rocket){
         return '';
     }
 
+    var additional_text = ((add_text)? 'First launch: ' : '');
     var today = new Date();
     var current_year = today.getFullYear();
 
@@ -350,18 +355,18 @@ function get_date_string(rocket){
         if(rocket.status === 'Cancelled'){
             return 'Never launched';
         }
-        return date_year;
+        return additional_text + date_year;
     }
 
     var months = [
         "January", "February", "March", "April", "May", "June", "July",
         "August", "September", "October", "November", "December"
     ];
-    return months[date_month] + ' ' + date_day + ' ' + date_year;
+    return additional_text + months[date_month] + ' ' + date_day + ' ' + date_year;
 }
 
 //returns the cost in K/M/B
-function get_cost_string(rocket){
+function get_cost_string(rocket, add_text = false){
     var cost = rocket.cost;
     if(cost === -1){
         return '';
@@ -376,7 +381,7 @@ function get_cost_string(rocket){
     }
 
     var cost_string = '$' + cost + mult_array[n];
-    return cost_string
+    return ((add_text)? 'Launch cost: ' : '') + cost_string;
 }
 
 //raw_payload: payload in kg. outputs a shorter number or a longer one if you like stupid unit systems.
@@ -395,7 +400,7 @@ function get_payload_correct_unit(raw_payload){
     return raw_payload + 'kg';
 }
 //outputs the correct payload depending on row and type
-function get_payload_cell(rocket, curr_row){
+function get_payload_cell(rocket, curr_row, add_text = false){
     var payload_to_gto = get_payload_correct_unit(rocket.payload_gto);
 
     if(curr_row != 'gto'){
@@ -422,7 +427,7 @@ function get_payload_cell(rocket, curr_row){
             return payload_to_gto + ' (GTO)';
         }
 
-        return payload_to_leo + ((curr_row === 'basic' && payload_to_leo != '')? ' (LEO)' : '');
+        return ((add_text)? 'Payload to LEO:' : '') + payload_to_leo + ((curr_row === 'basic' && payload_to_leo != '')? ' (LEO)' : '');
     }
 
     return payload_to_gto;

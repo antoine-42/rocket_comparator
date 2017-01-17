@@ -102,6 +102,9 @@ i:hover{
     background-color: #202020;
     box-shadow: 0px 0px 26px 3px black;
 }
+#rocket_zoom_name_box{
+    text-shadow: 1px 1px 3px black;
+}
 
 
 

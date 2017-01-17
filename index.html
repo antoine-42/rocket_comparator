@@ -67,7 +67,10 @@
             <form id="settings_form">
                 <div id="settings_wrap">
                     <div id="static_settings">
-                        <h1>Rocket Comparator Settings</h1>
+                        <div id="title_box">
+                            <h1>Rocket Comparator</h1>
+                            <h1>Settings</h1>
+                        </div>
                         <div id="button_container">
                             <button type="button" id="add_all_button">Add everything</button>
                             <button type="button" id="remove_all_button">Remove everything</button>
@@ -166,7 +169,14 @@
         </div>
 
         <div id="image_zoom_box">
-            <h2 id="rocket_zoom_name"></h2>
+            <div id="rocket_zoom_name_box">
+                <h2 id="rocket_zoom_name"></h2>
+                <p id="rocket_zoom_manufacturer"></p>
+                <p id="rocket_zoom_status"></p>
+                <p id="rocket_zoom_date"></p>
+                <p id="rocket_zoom_payload"></p>
+                <p id="rocket_zoom_cost"></p>
+            </div>
             <img id="image_zoom" src="" alt="zoomed in rocket"></img>
         </div>
 

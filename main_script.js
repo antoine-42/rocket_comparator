@@ -360,14 +360,22 @@ function on_condition_change(){
 }
 
 
-function condition_remove(){
-    var condition = this.id.split('|')[0];
+function condition_remove(remove_condition){
+    var condition;
+    if(selected_conditions.indexOf(remove_condition) >= 0){
+        condition = remove_condition;
+    }
+    else {
+        condition = this.id.split('|')[0];
+    }
+
     var condition_div = document.getElementById(condition + '|add_remove_condition');
     condition_div.remove();
 
+    selected_conditions.splice(selected_conditions.indexOf(condition), 1);
+
     on_condition_change();
 }
-
 
 function get_all_values_of_parameter(parameter, search_only_in_rockets = true){
     var values = [];
@@ -488,7 +496,16 @@ function button_words_change(){
 }
 
 function on_add_remove_confirm(){
+    if(button_word_list[1] === 0){
+        return;
+    }
+
     add_to_selected_rocket(temp_selected_objects, add_remove_function_is_add);
+
+    for (var i = 0; i < selected_conditions.length; i++) {
+        condition_remove(selected_conditions[i]);
+    }
+    on_condition_change();
 }
 add_remove_confirm_button.addEventListener('click', on_add_remove_confirm)
 
@@ -1004,9 +1021,21 @@ function update_rockets(){
 }
 
 
+
 var image_zoom_box = document.getElementById('image_zoom_box');
 var image_zoom = document.getElementById('image_zoom');
+
+var rocket_zoom_name_box = document.getElementById('rocket_zoom_name_box');
+
+var rocket_zoom_name = document.getElementById('rocket_zoom_name');
+var rocket_zoom_manufacturer = document.getElementById('rocket_zoom_manufacturer');
+var rocket_zoom_status = document.getElementById('rocket_zoom_status');
+var rocket_zoom_date = document.getElementById('rocket_zoom_date');
+var rocket_zoom_payload = document.getElementById('rocket_zoom_payload');
+var rocket_zoom_cost = document.getElementById('rocket_zoom_cost');
+
 var image_zoom_open = false;
+
 function open_zoom_image(e){
     var id;
     if(e === undefined || e.target){
@@ -1028,7 +1057,34 @@ function open_zoom_image(e){
 
     image_zoom.alt = id + ' image zoom';
     image_zoom.src = get_correct_res_path(rocket);
+
+
     rocket_zoom_name.innerHTML = get_full_name(rocket);
+    rocket_zoom_manufacturer.innerHTML = get_manufacturer(rocket);
+    rocket_zoom_status.innerHTML = get_status(rocket);
+    rocket_zoom_date.innerHTML = get_date_string(rocket, true);
+
+    switch (rocket.payload_type) {
+        case 'Mass':
+            rocket_zoom_payload.innerHTML = 'Payload: ' + get_payload_cell(rocket, 'basic');
+            break;
+
+        case 'Crew':
+            rocket_zoom_payload.innerHTML = get_payload_cell(rocket, 'basic');
+            break;
+
+        case 'No':
+            rocket_zoom_payload.innerHTML = '';
+            break;
+
+        default:
+            rocket_zoom_payload.innerHTML = rocket.payload_type;
+            break;
+    }
+
+    rocket_zoom_cost.innerHTML = get_cost_string(rocket, true);
+
+
     image_zoom_box.style.display = 'inline-block';
 
     var viewport = document.body.clientWidth;
@@ -1048,13 +1104,18 @@ function open_zoom_image(e){
         image_zoom.style.width = '';
     }
 
-    if(image_zoom_box.clientWidth + rocket_zoom_name.clientWidth > viewport){
-        rocket_zoom_name.style.top = '10px';
-        rocket_zoom_name.style.left = '0';
+    rocket_zoom_name_box.style.width = '';
+    if(image_zoom_box.clientWidth + rocket_zoom_name_box.clientWidth > viewport){
+        rocket_zoom_name_box.style.top = '10px';
+        rocket_zoom_name_box.style.left = '0';
+
+        rocket_zoom_name_box.style.width = '95vw';
     }
     else {
-        rocket_zoom_name.style.top = '';
-        rocket_zoom_name.style.left = '';
+        rocket_zoom_name_box.style.top = '';
+        rocket_zoom_name_box.style.left = '';
+
+        rocket_zoom_name_box.style.width = (viewport - image_zoom_box.clientWidth - 20) + 'px';
     }
 
     image_zoom_open = true;
@@ -1063,7 +1124,7 @@ function close_zoom_image(){
     image_zoom_box.style.display = 'none';
     image_zoom_open = false;
 }
-image_zoom_box.addEventListener('click', close_zoom_image);
+image_zoom.addEventListener('click', close_zoom_image);
 
 
 
