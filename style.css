@@ -60,7 +60,10 @@ a:hover {
 
 
 label {
-    margin: 2px 0;
+    margin: 4px 0;
+}
+label:hover {
+    text-decoration: underline;
 }
 
 
@@ -132,7 +135,7 @@ i:hover {
 /*mobile*/
 @media (max-width: 1000px){ /*phone horizontal/tablet*/
     label {
-        margin: 5px 0;
+        margin: 10px 0;
     }
     input[type="text"] {
         width: 170px;

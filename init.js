@@ -344,7 +344,9 @@ function get_date_string(rocket, add_text = false){
         return '';
     }
 
-    var additional_text = ((add_text)? 'First launch: ' : '');
+    var text = rocket.type === 'Rockets' || rocket.type === 'Spacecraft'? 'First launch: ' : (rocket.type != 'Other'? 'launch: ' : '');
+    var additional_text = (add_text)? text : '';
+
     var today = new Date();
     var current_year = today.getFullYear();
 
@@ -381,7 +383,9 @@ function get_cost_string(rocket, add_text = false){
     }
 
     var cost_string = '$' + cost + mult_array[n];
-    return ((add_text)? 'Launch cost: ' : '') + cost_string;
+
+    var additional_text = rocket.type === 'Rockets' || rocket.type === 'Spacecraft'? 'Launch cost: ' : 'Cost: ';
+    return (add_text? additional_text : '') + cost_string;
 }
 
 //raw_payload: payload in kg. outputs a shorter number or a longer one if you like stupid unit systems.
@@ -427,10 +431,10 @@ function get_payload_cell(rocket, curr_row, add_text = false){
             return payload_to_gto + ' (GTO)';
         }
 
-        return ((add_text)? 'Payload to LEO:' : '') + payload_to_leo + ((curr_row === 'basic' && payload_to_leo != '')? ' (LEO)' : '');
+        return (add_text && payload_to_leo != '' ? 'Payload to LEO: ' : '') + payload_to_leo + (curr_row === 'basic'? ' (LEO)' : '');
     }
 
-    return payload_to_gto;
+    return (add_text && payload_to_gto != '' ? 'Payload to GTO: ' : '') + payload_to_gto;
 }
 
 

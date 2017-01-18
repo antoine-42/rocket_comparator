@@ -1027,15 +1027,27 @@ var image_zoom = document.getElementById('image_zoom');
 
 var rocket_zoom_name_box = document.getElementById('rocket_zoom_name_box');
 
+var rocket_zoom_name_link = document.getElementById('rocket_zoom_name_link');
 var rocket_zoom_name = document.getElementById('rocket_zoom_name');
 var rocket_zoom_manufacturer = document.getElementById('rocket_zoom_manufacturer');
 var rocket_zoom_status = document.getElementById('rocket_zoom_status');
 var rocket_zoom_date = document.getElementById('rocket_zoom_date');
 var rocket_zoom_payload = document.getElementById('rocket_zoom_payload');
+var rocket_zoom_payload_gto = document.getElementById('rocket_zoom_payload_gto');
 var rocket_zoom_cost = document.getElementById('rocket_zoom_cost');
 
 var image_zoom_open = false;
+var image_zoom_id = ''
 
+function set_small_image_cursor(type){
+    var small_image = document.getElementById(image_zoom_id);
+
+    if(small_image === null){
+        return;
+    }
+
+    small_image.style.cursor = 'zoom-' + type;
+}
 function open_zoom_image(e){
     var id;
     if(e === undefined || e.target){
@@ -1059,14 +1071,22 @@ function open_zoom_image(e){
     image_zoom.src = get_correct_res_path(rocket);
 
 
+    set_small_image_cursor('in');
+    image_zoom_id = id;
+    set_small_image_cursor('out');
+
+
+    rocket_zoom_name_link.href = rocket.wikipedia;
     rocket_zoom_name.innerHTML = get_full_name(rocket);
     rocket_zoom_manufacturer.innerHTML = get_manufacturer(rocket);
     rocket_zoom_status.innerHTML = get_status(rocket);
     rocket_zoom_date.innerHTML = get_date_string(rocket, true);
 
+    rocket_zoom_payload_gto.innerHTML = '';
     switch (rocket.payload_type) {
         case 'Mass':
-            rocket_zoom_payload.innerHTML = 'Payload: ' + get_payload_cell(rocket, 'basic');
+            rocket_zoom_payload.innerHTML = get_payload_cell(rocket, 'leo', true);
+            rocket_zoom_payload_gto.innerHTML = get_payload_cell(rocket, 'gto', true);
             break;
 
         case 'Crew':
@@ -1121,6 +1141,8 @@ function open_zoom_image(e){
     image_zoom_open = true;
 }
 function close_zoom_image(){
+    set_small_image_cursor('in');
+
     image_zoom_box.style.display = 'none';
     image_zoom_open = false;
 }
@@ -1137,9 +1159,6 @@ function create_title_header(type, value, show_buttons){
             break;
         case 'country':
             level = 3;
-            break;
-        case 'manufacturer':
-            level = 4;
             break;
         default:
             break;
@@ -1234,6 +1253,24 @@ function hide_rocket_param(obj){
         obj.title = 'Hide';
     }
 }
+
+function create_checkbox(rocket){
+    var curr_id = get_id(rocket);
+
+    var curr_checkbox = document.createElement('input');
+    curr_checkbox.type = 'checkbox';
+    curr_checkbox.name = curr_id + '_checkbox';
+    curr_checkbox.value = curr_id + '_checkbox';
+    curr_checkbox.id = curr_id + '_checkbox';
+    curr_checkbox.addEventListener('click', switch_rocket_status );
+
+    var curr_label = document.createElement('label');
+    curr_label.className = 'rocket_checkbox';
+    curr_label.appendChild(curr_checkbox);
+    curr_label.appendChild(document.createTextNode(get_full_name(rocket)));
+
+    return curr_label;
+}
 //creates the rockets checkbox and separator
 function create_rocket_checkboxes(){
     var i = 0;
@@ -1255,25 +1292,8 @@ function create_rocket_checkboxes(){
 
         if(curr_type != 'Rockets'){
             while (i < json_rockets.rockets.length && json_rockets.rockets[i].type === curr_type) {
-                var curr_rocket = json_rockets.rockets[i]
-                var curr_id = get_id(curr_rocket);
-
-                var curr_checkbox = document.createElement('input');
-                curr_checkbox.type = 'checkbox';
-                curr_checkbox.name = curr_id + '_checkbox';
-                curr_checkbox.value = curr_id + '_checkbox';
-                curr_checkbox.id = curr_id + '_checkbox';
-                curr_checkbox.addEventListener('click', switch_rocket_status );
-
-                var curr_label = document.createElement('label');
-                curr_label.appendChild(curr_checkbox);
-                curr_label.appendChild(document.createTextNode(get_full_name(curr_rocket)));
-
-                var curr_checkbox_wrap = document.createElement('div');
-                curr_checkbox_wrap.className = 'rocket_checkbox';
-                curr_checkbox_wrap.appendChild(curr_label);
-
-                curr_type_content.appendChild(curr_checkbox_wrap);
+                var curr_checkbox = create_checkbox(json_rockets.rockets[i]);
+                curr_type_content.appendChild(curr_checkbox);
 
                 i++;
             }
@@ -1328,25 +1348,8 @@ function create_rocket_checkboxes(){
                         curr_name_div.className = 'selec_name';
 
                         while (i < json_rockets.rockets.length && json_rockets.rockets[i].name === curr_name){
-                            var curr_rocket = json_rockets.rockets[i]
-                            var curr_id = get_id(curr_rocket);
-
-                            var curr_checkbox = document.createElement('input');
-                            curr_checkbox.type = 'checkbox';
-                            curr_checkbox.name = curr_id + '_checkbox';
-                            curr_checkbox.value = curr_id + '_checkbox';
-                            curr_checkbox.id = curr_id + '_checkbox';
-                            curr_checkbox.addEventListener('click', switch_rocket_status);
-
-                            var curr_label = document.createElement('label');
-                            curr_label.appendChild(curr_checkbox);
-                            curr_label.appendChild(document.createTextNode(get_full_name(curr_rocket)));
-
-                            var curr_checkbox_wrap = document.createElement('div');
-                            curr_checkbox_wrap.className = 'rocket_checkbox';
-                            curr_checkbox_wrap.appendChild(curr_label);
-
-                            curr_name_div.appendChild(curr_checkbox_wrap);
+                            var curr_checkbox = create_checkbox(json_rockets.rockets[i]);
+                            curr_name_div.appendChild(curr_checkbox);
 
                             i++;
                         }
