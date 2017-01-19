@@ -22,6 +22,24 @@ var back_to_top_button = document.getElementById('back_to_top_button');
 var sorting_method_dropdown = document.getElementById('sorting_method_dropdown');
 var object_selection_window = document.getElementById('object_selection');
 
+
+var image_zoom_box = document.getElementById('image_zoom_box');
+var image_zoom = document.getElementById('image_zoom');
+
+var rocket_zoom_name_box = document.getElementById('rocket_zoom_name_box');
+
+var rocket_zoom_background = document.getElementById('rocket_zoom_background');
+var rocket_zoom_name_link = document.getElementById('rocket_zoom_name_link');
+var rocket_zoom_name = document.getElementById('rocket_zoom_name');
+var rocket_zoom_manufacturer = document.getElementById('rocket_zoom_manufacturer');
+var rocket_zoom_status = document.getElementById('rocket_zoom_status');
+var rocket_zoom_date = document.getElementById('rocket_zoom_date');
+var rocket_zoom_payload = document.getElementById('rocket_zoom_payload');
+var rocket_zoom_payload_gto = document.getElementById('rocket_zoom_payload_gto');
+var rocket_zoom_cost = document.getElementById('rocket_zoom_cost');
+
+
+
 //rockets that are selected by default
 var selected_list = ['human', 'soyuz2', 'proton-m', 'n1',
     'long-march5', 'sts-atlantis', 'saturn-v', 'block1crew',
@@ -626,6 +644,7 @@ function update_background_dimensions_2(){//fuck it i need to sleep
     rocket_comp_background.height = window_height + 1;
 
     update_background_scale();
+    update_zoom_dimensions();
 }
 function update_background_dimensions(){
     window_width = document.body.clientWidth;
@@ -635,6 +654,7 @@ function update_background_dimensions(){
     rocket_comp_background.height = window_height + 1;
 
     update_background_scale();
+    update_zoom_dimensions();
     if(!init){
         update_rockets();
 
@@ -1031,20 +1051,6 @@ function update_rockets(){
 
 
 
-var image_zoom_box = document.getElementById('image_zoom_box');
-var image_zoom = document.getElementById('image_zoom');
-
-var rocket_zoom_name_box = document.getElementById('rocket_zoom_name_box');
-
-var rocket_zoom_name_link = document.getElementById('rocket_zoom_name_link');
-var rocket_zoom_name = document.getElementById('rocket_zoom_name');
-var rocket_zoom_manufacturer = document.getElementById('rocket_zoom_manufacturer');
-var rocket_zoom_status = document.getElementById('rocket_zoom_status');
-var rocket_zoom_date = document.getElementById('rocket_zoom_date');
-var rocket_zoom_payload = document.getElementById('rocket_zoom_payload');
-var rocket_zoom_payload_gto = document.getElementById('rocket_zoom_payload_gto');
-var rocket_zoom_cost = document.getElementById('rocket_zoom_cost');
-
 var image_zoom_open = false;
 var image_zoom_id = ''
 
@@ -1056,6 +1062,69 @@ function set_small_image_cursor(type){
     }
 
     small_image.style.cursor = 'zoom-' + type;
+}
+function update_zoom_dimensions(){
+    var viewport_width = document.body.clientWidth;
+
+    //if the image width >= screen width and image height <= screen height
+    if(image_zoom_box.clientWidth >= viewport_width && image_zoom_box.clientHeight <= document.body.scrollHeight){
+        image_zoom_box.style.height = 'auto';
+        image_zoom_box.style.width = '100%';
+
+        image_zoom.style.height = 'auto';
+        image_zoom.style.width = '100%';
+    }
+    else {
+        image_zoom_box.style.height = '';
+        image_zoom_box.style.width = '';
+
+        image_zoom.style.height = '';
+        image_zoom.style.width = '';
+    }
+
+    //if the background width >= 400px
+    if(rocket_zoom_background.clientWidth >= 400){
+        rocket_zoom_background.style.width = '400px';
+    }
+    else {
+        rocket_zoom_background.style.width = '100%';
+    }
+
+    //if the image + text + background width >= screen width
+    if(rocket_zoom_background.clientWidth + image_zoom_box.clientWidth + rocket_zoom_name_box.clientWidth >= viewport_width){
+        rocket_zoom_background.style.top = '100%';
+        rocket_zoom_background.style.left = '0';
+
+        if(image_zoom_box.clientWidth + rocket_zoom_background.clientWidth >= viewport_width){
+            rocket_zoom_background.style.width = (viewport_width - image_zoom_box.clientWidth) + 'px';
+        }
+        else {
+            rocket_zoom_background.style.width = '';
+        }
+    }
+    else {
+        rocket_zoom_background.style.top = '';
+        rocket_zoom_background.style.left = '';
+
+        rocket_zoom_background.style.width = '';
+    }
+
+    rocket_zoom_name_box.style.width = '';
+    //if the image + text width >= screen width
+    if(image_zoom_box.clientWidth + rocket_zoom_name_box.clientWidth >= viewport_width){
+        rocket_zoom_name_box.style.top = '10px';
+        rocket_zoom_name_box.style.left = '0';
+
+        rocket_zoom_name_box.style.width = '95vw';
+
+        rocket_zoom_background.style.width = '';
+    }
+    else {
+        rocket_zoom_name_box.style.top = '';
+        rocket_zoom_name_box.style.left = '';
+
+        rocket_zoom_name_box.style.width = (viewport_width - image_zoom_box.clientWidth - 20) + 'px';
+    }
 }
 function open_zoom_image(e){
     var id;
@@ -1084,11 +1153,57 @@ function open_zoom_image(e){
     image_zoom_id = id;
     set_small_image_cursor('out');
 
-    //TODO ADD BACKGROUND
+
+    var manufacturer = get_manufacturer(rocket).toLowerCase().replace(/ /g, '_');
+    switch (manufacturer) {
+        case 'university_of_hawaii':
+            manufacturer = 'usa';
+            break;
+        case 'sea_launch':
+            manufacturer = 'russia';
+            break;
+        case 'international':
+            var random = Math.random();
+            if(random < 0.25){
+                manufacturer = 'usa';
+            }
+            else if (random < 0.5) {
+                manufacturer = 'russia';
+            }
+            else if (random < 0.75) {
+                manufacturer = 'japan';
+            }
+            else if (random < 1) {
+                manufacturer = 'esa';
+            }
+            break;
+        case 'aegis_dynamics':
+        case 'corellian_engineering_corporation':
+        case 'pr._calculus':
+        case 'systems_alliance':
+            manufacturer = '';
+            break;
+        default:
+
+    }
+    if(manufacturer != ''){
+        rocket_zoom_background.src = 'assets/flags-logos/' + manufacturer + '.svg';
+        rocket_zoom_background.style.display = '';
+    }
+    else {
+        rocket_zoom_background.style.display = 'none';
+    }
+
     rocket_zoom_name_link.href = rocket.wikipedia;
     rocket_zoom_name.innerHTML = get_full_name(rocket);
-    rocket_zoom_manufacturer.innerHTML = get_manufacturer(rocket);
-    rocket_zoom_status.innerHTML = get_status(rocket);
+
+    if(rocket.type === 'Other'){
+        rocket_zoom_status.innerHTML = '';
+    }
+    else {
+        rocket_zoom_status.innerHTML = get_status(rocket);
+    }
+
     rocket_zoom_date.innerHTML = get_date_string(rocket, true);
 
     rocket_zoom_payload_gto.innerHTML = '';
@@ -1113,39 +1228,8 @@ function open_zoom_image(e){
 
     rocket_zoom_cost.innerHTML = get_cost_string(rocket, true);
 
-
     image_zoom_box.style.display = 'inline-block';
-
-    var viewport = document.body.clientWidth;
-
-    if(image_zoom_box.clientWidth > viewport){
-        image_zoom_box.style.height = 'auto';
-        image_zoom_box.style.width = '100%';
-
-        image_zoom.style.height = 'auto';
-        image_zoom.style.width = '100%';
-    }
-    else {
-        image_zoom_box.style.height = '';
-        image_zoom_box.style.width = '';
-
-        image_zoom.style.height = '';
-        image_zoom.style.width = '';
-    }
-
-    rocket_zoom_name_box.style.width = '';
-    if(image_zoom_box.clientWidth + rocket_zoom_name_box.clientWidth > viewport){
-        rocket_zoom_name_box.style.top = '10px';
-        rocket_zoom_name_box.style.left = '0';
-
-        rocket_zoom_name_box.style.width = '95vw';
-    }
-    else {
-        rocket_zoom_name_box.style.top = '';
-        rocket_zoom_name_box.style.left = '';
-
-        rocket_zoom_name_box.style.width = (viewport - image_zoom_box.clientWidth - 20) + 'px';
-    }
+    update_zoom_dimensions();
 
     image_zoom_open = true;
 }

@@ -46,7 +46,9 @@ function show_rocket_display(){
     image_display.style.height = '';
     image_display.style.display = 'block';
 
-    if(image_display.naturalWidth + 1 >= document.body.clientWidth){
+    var img = image_display.clientWidth;
+    var doc = document.body.clientWidth;
+    if(img >= doc){
         image_display.style.display = '';
         image_display.style.width = '100%';
         image_display.style.height = 'auto';

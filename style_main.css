@@ -474,11 +474,21 @@ td p, td h4{
     padding: 10px;
     margin: 0;
 }
+#rocket_zoom_background{
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: 100%;
+    max-width: 400px;
+    margin: 10px 0;
+    z-index: -1;
+}
 #rocket_zoom_name_box h2{
-
+    z-index: 7;
 }
 #rocket_zoom_name_box p{
     font-size: 1.1em;
+    z-index: 7;
 }
 
 #image_zoom{
