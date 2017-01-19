@@ -97,7 +97,7 @@ back_to_top_button.addEventListener('click', settings_scroll_to_top);
 
 
 //checks if rocket_id is active, if it is remove it if remove
-function check_if_rocket_is_active(rocket_id, remove){
+function check_if_rocket_is_active(rocket_id, remove = false){
     for (var i = 0; i < selected_rockets.rockets.length; i++) {
         var curr_rocket_id = get_id(selected_rockets.rockets[i]);
 
@@ -924,6 +924,15 @@ function update_rockets(){
                 break;
         }
 
+        //creates the remove button
+        var curr_remove = document.createElement('i');
+        curr_remove.className = 'material-icons remove_rocket';
+        curr_remove.id = id + '|none|remove_id';
+        curr_remove.innerHTML = 'remove';
+        curr_remove.addEventListener('click', apply_all_rocket_param)
+
+        rocket_img_cell.appendChild(curr_remove);
+
         //creates the image and tags
         var curr_img = new Image();
         curr_img.style.height = curr_rocket.height / rocket_ratio + '%';
@@ -1202,7 +1211,7 @@ function create_title_button(type, value, action){
     var curr_button = document.createElement('i');
     curr_button.innerHTML = action;
     curr_button.className = 'material-icons';
-    curr_button.id = value + '-' + type + '-' + action;
+    curr_button.id = value + '|' + type + '|' + action;
     curr_button.title = title_text;
     curr_button.addEventListener('click', apply_all_rocket_param);
 
@@ -1212,7 +1221,7 @@ function create_title_button(type, value, action){
     return curr_button;
 }
 function apply_all_rocket_param(){
-    var table = this.id.split('-');
+    var table = this.id.split('|');
     var value = table[0];
     var parameter = table[1];
     var action = table[2];
@@ -1223,6 +1232,11 @@ function apply_all_rocket_param(){
             break;
         case 'remove':
             remove_rocket(parameter, value);
+            break;
+        case 'remove_id':
+            check_if_rocket_is_active(value, true);
+            force_checkbox(value, false);
+            update_rockets();
             break;
         case 'expand_less':
             hide_rocket_param(this);

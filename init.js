@@ -416,6 +416,10 @@ function get_payload_cell(rocket, curr_row, add_text = false){
             case 'Mass':
                 break;
 
+            case 'No':
+                return '';
+                break;
+
             default:
                 return rocket.payload_type;
                 break;

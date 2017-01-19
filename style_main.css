@@ -81,6 +81,9 @@ td p, td h4{
     padding: 0;
     vertical-align: bottom;
 }
+.rocket_comp_cell:hover i {
+    display:inline-block;
+}
 .new_decade{
     border-left: 2px solid rgba(21, 21, 21, 0.7);
 }
@@ -92,6 +95,12 @@ td p, td h4{
     font-size: 1.5em;
 }
 
+.remove_rocket{
+    display: none;
+    position: absolute;
+    top: 0;
+    margin: 20px 10px;
+}
 .comp_img{
     padding: 0 0.8em;
 }
@@ -462,6 +471,11 @@ td p, td h4{
     max-width: 300px;
     padding: 10px;
     margin: 0;
+
+    background-image: url(assets/flags-logos/usa);
+    background-size: 100%;
+    background-position: center top;
+    background-repeat: no-repeat;
 }
 #rocket_zoom_name_box h2{
 
