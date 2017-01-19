@@ -262,7 +262,6 @@ function add_remove_open(){
     add_remove_box_open = true;
 
     hide_share();
-    close_zoom_image();
 }
 function add_remove_close(){
     add_remove_box.style.display = 'none';
@@ -1488,6 +1487,10 @@ function handle_parameter(name, value){
             }
             break;
 
+        case 'r_zoom':
+            open_zoom_image(value);
+            break;
+
         case 'show_settings':
             if(value === 'true'){
                 show_settings();
@@ -1617,7 +1620,6 @@ function share(){
     }
 
     add_remove_close();
-    close_zoom_image();
 
     share_box.style.display = 'inline-block';
     share_open = true;
@@ -1633,6 +1635,9 @@ function share(){
     }
     if(background_dropdown.selectedIndex != 0){
         args += 'back=' + background_dropdown.selectedIndex + '&';
+    }
+    if(image_zoom_open){
+        args += 'r_zoom=' + image_zoom_id + '&';
     }
 
     if(selected_rockets.rockets.length > 0){
