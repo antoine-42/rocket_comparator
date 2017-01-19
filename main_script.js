@@ -1084,7 +1084,7 @@ function open_zoom_image(e){
     image_zoom_id = id;
     set_small_image_cursor('out');
 
-
+    //TODO ADD BACKGROUND
     rocket_zoom_name_link.href = rocket.wikipedia;
     rocket_zoom_name.innerHTML = get_full_name(rocket);
     rocket_zoom_manufacturer.innerHTML = get_manufacturer(rocket);

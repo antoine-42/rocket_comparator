@@ -80,6 +80,7 @@ td p, td h4{
     height: 84vh;
     padding: 0;
     vertical-align: bottom;
+    position: relative;
 }
 .rocket_comp_cell:hover i {
     display:inline-block;
@@ -99,6 +100,7 @@ td p, td h4{
     display: none;
     position: absolute;
     top: 0;
+    left: 0;
     margin: 20px 10px;
 }
 .comp_img{
@@ -471,11 +473,6 @@ td p, td h4{
     max-width: 300px;
     padding: 10px;
     margin: 0;
-
-    background-image: url(assets/flags-logos/usa);
-    background-size: 100%;
-    background-position: center top;
-    background-repeat: no-repeat;
 }
 #rocket_zoom_name_box h2{
 
