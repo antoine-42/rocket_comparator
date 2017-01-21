@@ -213,9 +213,12 @@ function remove_all_rocket(){
         force_checkbox(id, false);
     }
     selected_rockets = JSON.parse('{"rockets" :[]}');
-    update_rockets();
-    update_background_dimensions();
-    update_selected_rocket_cookie();
+
+    if(!init){
+        update_rockets();
+        update_background_dimensions();
+        update_selected_rocket_cookie();
+    }
 }
 var remove_all_button = document.getElementById('remove_all_button');
 remove_all_button.addEventListener('click', remove_all_rocket);
@@ -1530,11 +1533,13 @@ function handle_parameter(name, value){
     var int_value = parseInt(value);
     switch (name) {
         case 'r':
+            remove_all_rocket();
             var rocket_nums = value.split('+');
             for (var i = 0; i < rocket_nums.length; i++) {
-                if(!isNaN(rocket_nums[i])){
+                var num = parseInt(rocket_nums[i]);
+                if(!isNaN(rocket_nums[i]) && num >= 0){
                     custom_rockets = true;
-                    var id = get_id(json_rockets.rockets[rocket_nums[i]]);
+                    var id = get_id(json_rockets.rockets[num]);
                     force_activate_rocket(id);
                 }
             }
