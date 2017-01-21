@@ -46,6 +46,7 @@ var selected_list = ['human', 'soyuz2', 'proton-m', 'n1',
     'atlas-v551', 'delta-iv-heavy', 'falcon-heavy1.2', 'its',
     'new-sheppard', 'ariane64', 'ariane5eca'];
 
+var selected_sorting_args = sorting_args[0];
 
 
 //Scroll stuff
@@ -94,12 +95,12 @@ function horizontal_scroll(e){
 //makes the event handler passive
 var supportsPassive = false;
 try {
-  var opts = Object.defineProperty({}, 'passive', {
-    get: function() {
-      supportsPassive = true;
-    }
-  });
-  window.addEventListener('test', null, opts);
+    var opts = Object.defineProperty({}, 'passive', {
+        get: function() {
+            supportsPassive = true;
+        }
+    });
+    window.addEventListener('test', null, opts);
 } catch (e) {}
 document.body.addEventListener('wheel', horizontal_scroll, supportsPassive ? { passive: true } : false);
 
@@ -113,6 +114,16 @@ function settings_scroll_to_top(){
 back_to_top_button.addEventListener('click', settings_scroll_to_top);
 
 
+
+function update_selected_rocket_cookie(){
+    var arg = '';
+    for (var i = 0; i < selected_rockets.rockets.length; i++) {
+        arg += find_rocket_num(selected_rockets.rockets[i]) + '+';
+    }
+    arg = arg.substring(0, arg.length - 1);
+
+    set_cookie('r', arg)
+}
 
 //checks if rocket_id is active, if it is remove it if remove
 function check_if_rocket_is_active(rocket_id, remove = false){
@@ -152,6 +163,8 @@ function switch_rocket_status(id, set_box) {
         update_rockets();
         update_background_dimensions();
     }
+
+    update_selected_rocket_cookie();
 };
 
 //force a checkbox to be at state
@@ -201,6 +214,7 @@ function remove_all_rocket(){
     selected_rockets = JSON.parse('{"rockets" :[]}');
     update_rockets();
     update_background_dimensions();
+    update_selected_rocket_cookie();
 }
 var remove_all_button = document.getElementById('remove_all_button');
 remove_all_button.addEventListener('click', remove_all_rocket);
@@ -215,6 +229,7 @@ function add_all_rocket(){
     }
     update_rockets();
     update_background_dimensions();
+    update_selected_rocket_cookie();
 }
 var add_all_button = document.getElementById('add_all_button');
 add_all_button.addEventListener('click', add_all_rocket);
@@ -523,6 +538,8 @@ function on_add_remove_confirm(){
         condition_remove(selected_conditions[i]);
     }
     on_condition_change();
+
+    update_selected_rocket_cookie();
 }
 add_remove_confirm_button.addEventListener('click', on_add_remove_confirm)
 
@@ -533,13 +550,16 @@ add_remove_confirm_button.addEventListener('click', on_add_remove_confirm)
 function sorting_method_change(){
     selected_sorting_args = sorting_args[sorting_method_dropdown.selectedIndex];
     update_rockets();
+
+    set_cookie('sort', sorting_method_dropdown.selectedIndex + '');
 }
-sorting_method_change();
 sorting_method_dropdown.addEventListener('change', sorting_method_change);
 //updates the sorting order
 function on_sorting_order_change(){
     use_descending_order = !use_descending_order;
     update_rockets();
+
+    set_cookie('desc', use_descending_order + '');
 }
 var descending_sort_checkbox = document.getElementById('descending_sort_checkbox');
 descending_sort_checkbox.addEventListener('click', on_sorting_order_change);
@@ -670,7 +690,9 @@ var background_dropdown = document.getElementById('background_dropdown');
 function on_background_change(){
     selected_background = background_dropdown.options[background_dropdown.selectedIndex].value;
 
-    set_rocket_background()
+    set_rocket_background();
+
+    set_cookie('back', background_dropdown.selectedIndex);
 }
 //updates the background of the rocket comparison
 function set_rocket_background(){
@@ -877,6 +899,8 @@ function reset_everything(){
         on_sorting_order_change();
         descending_sort_checkbox.checked = use_descending_order;
     }
+
+    update_selected_rocket_cookie();
 }
 var reset_button = document.getElementById('reset_button');
 reset_button.addEventListener('click', reset_everything);
@@ -1238,7 +1262,7 @@ function close_zoom_image(){
     image_zoom_box.style.display = 'none';
     image_zoom_open = false;
 }
-image_zoom.addEventListener('click', close_zoom_image);
+image_zoom_box.addEventListener('click', close_zoom_image);
 
 
 
@@ -1482,9 +1506,10 @@ function handle_parameter(name, value){
                 if(!isNaN(rocket_nums[i])){
                     custom_rockets = true;
                     var id = get_id(json_rockets.rockets[rocket_nums[i]]);
-                    switch_rocket_status(id);
+                    force_activate_rocket(id);
                 }
             }
+            update_selected_rocket_cookie();
             break;
 
         case 'r_zoom':
@@ -1569,14 +1594,14 @@ function process_parameter_list(list){
 }
 //loads and handles cookies and GET arg
 function load_settings(){
+    //cookies processing
+    var cookies = document.cookie.split(';');
+    process_parameter_list(cookies);
+
     //GET args processing
     var parameters_rawr = window.location.search;
     var parameters = parameters_rawr.substr(1).split('&');
     process_parameter_list(parameters);
-
-    //cookies processing
-    var cookies = document.cookie.split(';');
-    process_parameter_list(cookies);
 
     //if no rocket ara loaded during loading, load the default ones.
     if(!custom_rockets){
@@ -1688,8 +1713,10 @@ window.addEventListener('keydown', on_keypress);
 
 function init(){
     load_settings();
-    update_rockets();
     update_background_dimensions();
+    sorting_method_change();
+
+    settings_window.style.transitionDuration = '0.2s';
 
     console.log('Rocket Comparator, made by Antoine Dujardin.\nGithub: https://github.com/antoine-42/rocket_scale');
 }

@@ -435,7 +435,7 @@ function get_payload_cell(rocket, curr_row, add_text = false){
             return payload_to_gto + ' (GTO)';
         }
 
-        return (add_text && payload_to_leo != '' ? 'Payload to LEO: ' : '') + payload_to_leo + (curr_row === 'basic'? ' (LEO)' : '');
+        return (add_text && payload_to_leo != '' ? 'Payload to LEO: ' : '') + payload_to_leo + (curr_row === 'basic' && payload_to_leo != ''? ' (LEO)' : '');
     }
 
     return (add_text && payload_to_gto != '' ? 'Payload to GTO: ' : '') + payload_to_gto;

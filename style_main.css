@@ -147,7 +147,7 @@ td p, td h4{
     z-index: 10;
     background-color: #F5F5F5;
     box-shadow: 10px 0px 20px 10px black;
-    transition: right 0.5s ease 0s;
+    transition: right 0s ease 0s;
 }
 #settings_window h1{
     text-align: center;
@@ -465,6 +465,7 @@ td p, td h4{
     z-index: 5;
     background-color: #DDDDDD;
     box-shadow: 0px 0px 26px 3px black;
+    cursor: zoom-out;
 }
 
 #rocket_zoom_name_box{
@@ -495,7 +496,6 @@ td p, td h4{
     height: 100%;
     box-sizing: border-box;
     padding: 10px 20px;
-    cursor: zoom-out;
 }
 
 
