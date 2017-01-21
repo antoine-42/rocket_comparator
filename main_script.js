@@ -1122,7 +1122,7 @@ function update_zoom_dimensions(){
     var viewport_width = document.body.clientWidth;
 
     //if the image width >= screen width and image height <= screen height
-    if(image_zoom_box.clientWidth >= viewport_width && image_zoom_box.clientHeight <= document.body.scrollHeight){
+    if(image_zoom_box.clientWidth >= viewport_width && image_zoom_box.clientHeight <= (window.innerHeight || document.body.scrollHeight)){
         image_zoom_box.style.height = 'auto';
         image_zoom_box.style.width = '100%';
 
@@ -1150,6 +1150,16 @@ function update_zoom_dimensions(){
         rocket_zoom_background.style.top = '100%';
         rocket_zoom_background.style.left = '0';
 
+        //if the text + background height >= image height
+        if(rocket_zoom_name_box.clientHeight + rocket_zoom_background.clientHeight + 40 >= image_zoom_box.clientHeight){
+            image_zoom_box_rect = image_zoom_box.getBoundingClientRect();
+            rocket_zoom_background.style.top = (image_zoom_box_rect.bottom - rocket_zoom_background.clientHeight - 20) + 'px';
+        }
+        else {
+            rocket_zoom_background.style.top = '100%';
+        }
+
+        //if image + background width >= screen width
         if(image_zoom_box.clientWidth + rocket_zoom_background.clientWidth >= viewport_width){
             rocket_zoom_background.style.width = (viewport_width - image_zoom_box.clientWidth) + 'px';
         }

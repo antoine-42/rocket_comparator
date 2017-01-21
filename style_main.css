@@ -321,8 +321,9 @@ td p, td h4{
 .rocket_checkbox {
     display: flex;
     align-items: center;
-    page-break-inside: avoid;
     break-inside: avoid;
+    page-break-inside: avoid;
+    -webkit-column-break-before: avoid;
 }
 
 
