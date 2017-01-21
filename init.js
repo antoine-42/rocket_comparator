@@ -132,13 +132,24 @@ function get_full_name(rocket){
 
 //finds_biggest_rocket
 function find_biggest_rocket(){
-    var biggest_rocket_height = 1;
+    var biggest_rocket_height = 0.1;
     for (var i = 0; i < selected_rockets.rockets.length; i++) {
         if(selected_rockets.rockets[i].height > biggest_rocket_height){
             biggest_rocket_height = selected_rockets.rockets[i].height;
         }
     }
     return biggest_rocket_height;
+}
+//finds_biggest_rocket
+function find_biggest_payload(orbit = 'leo'){
+    var payload = 'payload_' + orbit;
+    var biggest_payload = 1;
+    for (var i = 0; i < selected_rockets.rockets.length; i++) {
+        if(selected_rockets.rockets[i][payload] > biggest_payload){
+            biggest_payload = selected_rockets.rockets[i][payload];
+        }
+    }
+    return biggest_payload;
 }
 
 //returns i where json_rockets.rockets[i] === rocket

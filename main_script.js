@@ -46,6 +46,7 @@ var selected_list = ['human', 'soyuz2', 'proton-m', 'n1',
     'atlas-v551', 'delta-iv-heavy', 'falcon-heavy1.2', 'its',
     'new-sheppard', 'ariane64', 'ariane5eca'];
 
+
 var selected_sorting_args = sorting_args[0];
 
 
@@ -702,6 +703,9 @@ function set_rocket_background(){
         case 'status':
             set_background_status();
             break;
+        case 'payload':
+            set_background_payload();
+            break;
         case 'none':
             rocket_comp_background.style.display = 'none';
             break;
@@ -719,6 +723,10 @@ function reset_background(){
     var status_legend_checkbox_wrap = document.getElementById('status_legend_checkbox_wrap');
     status_legend_checkbox_wrap.style.display = 'none';
 
+    var background_payload_divs = document.getElementsByClassName('payload_background');
+    for (var i = 0; i < background_payload_divs.length; i++) {
+        background_payload_divs[i].style.display = 'none'
+    }
 
     unload_stylesheet('background_status_dark.css');
     unload_stylesheet('background_status_light.css');
@@ -739,6 +747,14 @@ function set_background_status(){
     }
     else {
         load_stylesheet('background_status_light.css');
+    }
+}
+//sets the background to rocket payload
+function set_background_payload(){
+    var background_payload_divs = document.getElementsByClassName('payload_background');
+
+    for (var i = 0; i < background_payload_divs.length; i++) {
+        background_payload_divs[i].style.display = 'block'
     }
 }
 background_dropdown.addEventListener('change', on_background_change);
@@ -933,6 +949,9 @@ function update_rockets(){
     var biggest_rocket_height = find_biggest_rocket();
     var rocket_ratio = biggest_rocket_height/100;
 
+    var biggest_payload = find_biggest_payload();
+    var rocket_payload_ratio = biggest_payload/100;
+
     //sorts the rockets
     selected_rockets.rockets.sort(sort_rockets(selected_sorting_args, use_descending_order));
 
@@ -966,6 +985,15 @@ function update_rockets(){
             default:
                 break;
         }
+
+        //creates the remove button
+        var curr_payload_background = document.createElement('div');
+        curr_payload_background.className = 'payload_background';
+        curr_payload_background.id = id + '_payload_background';
+
+        curr_payload_background.style.height = curr_rocket.payload_leo / rocket_payload_ratio + '%';
+
+        rocket_img_cell.appendChild(curr_payload_background);
 
         //creates the remove button
         var curr_remove = document.createElement('i');
@@ -1065,6 +1093,7 @@ function update_rockets(){
     }
 
     set_description(false);
+    set_rocket_background();
 
     //if the add/remove box is open, the selected rockets need to be updated
     if(add_remove_box_open){
