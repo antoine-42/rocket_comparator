@@ -124,23 +124,16 @@ td p, td h4{
     position: absolute;
     top: 0;
     right: 0;
-    width: 100px;
-    height: 100px;
     margin: 20px;
+
+    font-size: 100px;
 }
 #expand_button{
-    font-size: 150px;
-    display: flex;
     position: fixed;
-    align-items: center;
-    justify-content: center;
+    top: 50px;
     z-index: 7;
 }
 #collapse_button{
-    font-size: 150px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 #back_to_top_button{
