@@ -1227,6 +1227,9 @@ function open_zoom_image(e){
         case 'sea_launch':
             manufacturer = 'russia';
             break;
+        case 'ussr_/_ukraine':
+            manufacturer = 'ukraine';
+            break;
         case 'international':
             var random = Math.random();
             if(random < 0.25){
