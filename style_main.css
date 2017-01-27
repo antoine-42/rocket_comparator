@@ -440,7 +440,6 @@ td p, td h4{
     display: flex;
     flex-direction: column;
     max-height: 80vh;
-    max-width: 85vw;
 }
 #add_remove_form > *{
     margin: 7px 0;
@@ -605,6 +604,7 @@ td p, td h4{
     }
     #add_remove_box{
         top: 70px;
+        min-width: 0;
     }
 
     #rocket_zoom_name{
