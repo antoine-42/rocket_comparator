@@ -26,6 +26,10 @@ var object_selection_window = document.getElementById('object_selection');
 var image_zoom_box = document.getElementById('image_zoom_box');
 var image_zoom = document.getElementById('image_zoom');
 
+var zoom_icons = document.getElementById('zoom_icons');
+var zoom_remove_rocket = document.getElementsByClassName('zoom_remove_rocket')[0];
+var image_zoom_out = document.getElementById('image_zoom_out');
+
 var rocket_zoom_name_box = document.getElementById('rocket_zoom_name_box');
 
 var rocket_zoom_background = document.getElementById('rocket_zoom_background');
@@ -634,9 +638,10 @@ function update_background_scale(){
         if((pixel_per_unit > 3.9 && i % 10 === 0) || (pixel_per_unit <= 3.9 && i % 50 === 0)){
             //draws the line
             var pos_x_line = 15 + 10 * ((i + '').length)
+            var pos_y_line = rocket_comp_background.height - (Math.round(i * pixel_per_unit) +0.5)
             ctx.beginPath();
-            ctx.moveTo(pos_x_line, rocket_comp_background.height - (Math.round(i * pixel_per_unit) +0.5));
-            ctx.lineTo(window_width, rocket_comp_background.height - (Math.round(i * pixel_per_unit) +0.5));
+            ctx.moveTo(pos_x_line, pos_y_line);
+            ctx.lineTo(window_width, pos_y_line);
             ctx.strokeStyle = big_line_color;
             ctx.stroke();
             ctx.closePath();
@@ -644,7 +649,11 @@ function update_background_scale(){
             //draws the text
             ctx.font = '15px Arial';
             ctx.fillStyle = big_line_color;
-            ctx.fillText(i + unit, 3 , rocket_comp_background.height - (Math.round(i * pixel_per_unit)));
+            var pos_y_text = rocket_comp_background.height - (Math.round(i * pixel_per_unit))
+            if(pos_y_text - 15 < 0){
+                pos_y_text = 15;
+            }
+            ctx.fillText(i + unit, 3 , pos_y_text);
         }
         else if (pixel_per_unit > 20 && i % 2 === 0) {
             //secondary line, no text
@@ -1128,6 +1137,8 @@ function update_zoom_dimensions(){
 
         image_zoom.style.height = 'auto';
         image_zoom.style.width = '100%';
+
+        zoom_icons.style.top = '175px';
     }
     else {
         image_zoom_box.style.height = '';
@@ -1135,6 +1146,13 @@ function update_zoom_dimensions(){
 
         image_zoom.style.height = '';
         image_zoom.style.width = '';
+
+        if(image_zoom_box.clientWidth + 100 >= viewport_width){
+            zoom_icons.style.top = '175px';
+        }
+        else {
+            zoom_icons.style.top = '';
+        }
     }
 
     //if the background width >= 400px
@@ -1213,6 +1231,9 @@ function open_zoom_image(e){
     image_zoom.alt = id + ' image zoom';
     image_zoom.src = get_correct_res_path(rocket);
 
+    zoom_remove_rocket.id = id + '|none|remove_id';
+    zoom_remove_rocket.addEventListener('click', apply_all_rocket_param);
+
 
     set_small_image_cursor('in');
     image_zoom_id = id;
@@ -1245,7 +1266,6 @@ function open_zoom_image(e){
                 manufacturer = 'esa';
             }
             break;
-        case 'aegis_dynamics':
         case 'corellian_engineering_corporation':
         case 'pr._calculus':
         case 'systems_alliance':
@@ -1256,7 +1276,6 @@ function open_zoom_image(e){
     }
     if(manufacturer != ''){
         rocket_zoom_background.src = 'assets/flags-logos/' + manufacturer + '.svg';
-        rocket_zoom_background.style.display = '';
     }
     else {
         rocket_zoom_background.style.display = 'none';
@@ -1301,10 +1320,16 @@ function open_zoom_image(e){
 
     image_zoom_open = true;
 }
+function on_background_load(){
+    this.style.display = '';
+}
+rocket_zoom_background.addEventListener('load', on_background_load)
+
 function close_zoom_image(){
     set_small_image_cursor('in');
 
     image_zoom_box.style.display = 'none';
+    rocket_zoom_background.style.display = 'none';
     image_zoom_open = false;
 }
 image_zoom_box.addEventListener('click', close_zoom_image);

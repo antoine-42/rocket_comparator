@@ -122,7 +122,7 @@ td p, td h4{
 /*collaps/expand buttons*/
 .setting_status_switch_button{
     position: absolute;
-    top: 0;
+    top: 50px;
     right: 0;
     margin: 20px;
 
@@ -130,7 +130,6 @@ td p, td h4{
 }
 #expand_button{
     position: fixed;
-    top: 50px;
     z-index: 7;
 }
 #collapse_button{
@@ -189,20 +188,27 @@ td p, td h4{
 
 
 #title_box{
-    width: 90%;
+    width: 100%;
+
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
 }
 #title_box h1{
     display: inline-block;
-    margin-right: 20px;
+}
+#main_title{
+    margin-right: 20px!important;
 }
 
 #status_legend_checkbox_wrap{
     display: none;
 }
 
+
+#button_container{
+    margin-left: -5px;
+}
 #static_checkboxes_container, #button_container{
     display: flex;
     flex-direction: row;
@@ -503,6 +509,21 @@ td p, td h4{
     padding: 10px 20px;
 }
 
+#zoom_icons{
+    position: absolute;
+    top: 20px;
+    right: 10px;
+
+    display: flex;
+    flex-direction: column;
+}
+#zoom_icons > *{
+    font-size: 36px;
+}
+#image_zoom_out{
+    margin-bottom: 30px;
+}
+
 
 
 @media (max-width: 1200px){ /*small desktop/big tablet*/
@@ -516,6 +537,12 @@ td p, td h4{
     }
 }
 @media (max-width: 1000px){ /*phone horizontal/tablet*/
+    .rocket_comp_cell:hover i {
+        display:none;
+    }
+
+
+
     #settings_window{
         right: -110%;
         width: 100vw;
@@ -579,8 +606,8 @@ td p, td h4{
     #add_remove_box{
         top: 70px;
     }
-    #rocket_zoom_name{
 
+    #rocket_zoom_name{
     }
 }
 @media (max-width: 650px){ /*big phone/phone horizontal*/
@@ -604,6 +631,10 @@ td p, td h4{
     }
 }
 @media (max-width: 500px){ /*phone*/
+    #collapse_button{
+        top: 0;
+    }
+
     .not_Rockets_type_content{
         -moz-column-count: 2;
         -webkit-column-count: 2;

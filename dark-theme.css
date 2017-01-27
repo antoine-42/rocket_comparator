@@ -39,6 +39,10 @@ input[type="date"], input[type="text"], input[type="number"] {
     color: #DDDDDD;
     box-shadow: 0px 0px 5px 0px black;
 }
+input[type="date"]:hover, input[type="date"]:focus, input[type="text"]:hover, input[type="text"]:focus, input[type="number"]:hover, input[type="number"]:focus{
+    background-color: #000000;
+    box-shadow: 0px 0px 10px 1px black;
+}
 
 i:hover{
     color: #FFFFFF;
