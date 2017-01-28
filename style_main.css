@@ -207,7 +207,7 @@ td p, td h4{
 
 
 #button_container{
-    margin-left: -5px;
+    margin-left: -5px!important;
 }
 #static_checkboxes_container, #button_container{
     display: flex;
