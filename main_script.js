@@ -1680,6 +1680,7 @@ function load_settings(){
     //if no rocket are loaded during loading or old rocket selection method is used (no way to know which rocket is selected), load the default ones.
     var version = get_cookie('cookie_version')
     var version_num = parseInt(version);
+    if(version_num < 1 || version === '' || !custom_rockets){
         remove_all_rocket();
         for (var i = 0; i < selected_list.length; i++) {
             switch_rocket_status(selected_list[i]);
