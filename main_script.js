@@ -123,7 +123,7 @@ back_to_top_button.addEventListener('click', settings_scroll_to_top);
 function update_selected_rocket_cookie(){
     var arg = '';
     for (var i = 0; i < selected_rockets.rockets.length; i++) {
-        arg += find_rocket_num(selected_rockets.rockets[i]) + '+';
+        arg += selected_rockets.rockets[i].id + '+';
     }
     arg = arg.substring(0, arg.length - 1);
 
@@ -1573,14 +1573,16 @@ function handle_parameter(name, value){
         case 'r':
             remove_all_rocket();
             var rocket_nums = value.split('+');
-            for (var i = 0; i < rocket_nums.length; i++) {
-                var num = parseInt(rocket_nums[i]);
-                if(!isNaN(rocket_nums[i]) && num >= 0){
-                    custom_rockets = true;
-                    var id = get_id(json_rockets.rockets[num]);
-                    force_activate_rocket(id);
+            for (var i = 0; i < json_rockets.rockets.length; i++) {
+                for (var j = 0; j < rocket_nums.length; j++) {
+                    if(json_rockets.rockets[i].id === rocket_nums[j]){
+                        custom_rockets = true;
+                        var id = get_id(json_rockets.rockets[i]);
+                        force_activate_rocket(id);
+                    }
                 }
             }
+
             update_selected_rocket_cookie();
             break;
 
@@ -1675,8 +1677,10 @@ function load_settings(){
     var parameters = parameters_rawr.substr(1).split('&');
     process_parameter_list(parameters);
 
-    //if no rocket ara loaded during loading, load the default ones.
-    if(!custom_rockets){
+    //if no rocket are loaded during loading or old rocket selection method is used (no way to know which rocket is selected), load the default ones.
+    var version = parseInt(get_cookie('cookie_version'));
+    if(version >= 1 && !custom_rockets){
+        remove_all_rocket();
         for (var i = 0; i < selected_list.length; i++) {
             switch_rocket_status(selected_list[i]);
         }
@@ -1741,7 +1745,7 @@ function share(){
         args += 'r=';
     }
     for (var i = 0; i < selected_rockets.rockets.length; i++) {
-        args += find_rocket_num(selected_rockets.rockets[i]) + '+';
+        args += selected_rockets.rockets[i].id + '+';
     }
     args = args.substring(0, args.length - 1);
 
@@ -1787,6 +1791,8 @@ function init(){
     load_settings();
     update_background_dimensions();
     sorting_method_change();
+
+    set_cookie('cookie_version', '1');
 
     settings_window.style.transitionDuration = '0.2s';
 
