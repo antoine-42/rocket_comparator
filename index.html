@@ -1,53 +1,76 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
+        <title>Rocket Comparator</title>
+        <meta charset="utf-8" />
     	<link rel="stylesheet" type="text/css" href="style.css">
     	<link rel="stylesheet" type="text/css" href="style_main.css">
         <!--<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">-->
-        <!--<link rel="shortcut icon" href="assets/logo/favicon.ico" type="image/x-icon">-->
-        <meta charset="utf-8" />
+        <meta name="keywords" content="Rocket Comparator, Rocket Comparison">
+        <meta name="description" content="Compare rockets on Rocket Comparator.">
+
+        <!--mobile-->
         <meta name="HandheldFriendly" content="true" />
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-        <title>Rocket Comparator</title>
+
+        <!--facebook open graph tags-->
+        <meta property="og:type" content="website" />
+        <meta property="og:url" content="https://antoine-42.github.io/rocket_comparator/" />
+        <meta property="og:title" content="Rocket Comparator" />
+        <meta property="og:description" content="Compare rockets on Rocket Comparator." />
+        <!--1,91:1 1200 x 630 min, max 8mb-->
+        <meta property="og:image" content="assets/preview/image_og.png" />
+
+        <!--twitter card tags-->
+        <meta name="twitter:card" content="summary_large_image">
+        <meta name="twitter:domain" value="antoine-42.github.io/rocket_comparator" />
+        <meta name="twitter:title" value="Rocket Comparator" />
+        <meta name="twitter:description" value="Compare rockets on Rocket Comparator." />
+        <!--280x150 min, max 1MB-->
+        <meta name="twitter:image" content="assets/preview/image_twitter.png" />
+        <meta name="twitter:url" value="https://antoine-42.github.io/rocket_comparator/" />
     </head>
     <body>
-        <table id="rocket_comp_table">
-            <tr id="rocket_img_row">
-                <th id="placeholder_img_cell" class="rocket_comp_cell"></th>
+        <div id="rocket_comp_wrap">
+            <table id="rocket_comp_table">
+                <tr id="rocket_img_row">
+                    <th id="placeholder_img_cell" class="rocket_comp_cell"></th>
 
-            </tr>
-            <tr id="rocket_manufacturer_row">
-                <th></th>
+                </tr>
+                <tr id="rocket_manufacturer_row">
+                    <th></th>
 
-            </tr>
-            <tr id="rocket_name_row">
-                <th></th>
+                </tr>
+                <tr id="rocket_name_row">
+                    <th></th>
 
-            </tr>
-            <tr id="rocket_date_row">
-                <th>First launch date</th>
+                </tr>
+                <tr id="rocket_date_row">
+                    <th>First launch date</th>
 
-            </tr>
-            <tr id="rocket_payload_leo_row">
-                <th>Payload to <a href="https://en.wikipedia.org/wiki/Low_Earth_orbit">LEO</a></th>
+                </tr>
+                <tr id="rocket_payload_leo_row">
+                    <th>Payload to <a href="https://en.wikipedia.org/wiki/Low_Earth_orbit">LEO</a></th>
 
-            </tr>
-            <tr id="rocket_payload_gto_row">
-                <th>Payload to <a href="https://en.wikipedia.org/wiki/Geostationary_transfer_orbit">GTO</a></th>
+                </tr>
+                <tr id="rocket_payload_gto_row">
+                    <th>Payload to <a href="https://en.wikipedia.org/wiki/Geostationary_transfer_orbit">GTO</a></th>
 
-            </tr>
-            <tr id="rocket_cost_row">
-                <th>Launch cost</th>
+                </tr>
+                <tr id="rocket_cost_row">
+                    <th>Launch cost</th>
 
-            </tr>
-            <tr id="basic_row">
-                <th>Payload</th>
+                </tr>
+                <tr id="basic_row">
+                    <th>Payload</th>
 
-            </tr>
-            <!--this is a very dirty solution to make sure the image row aligns on top if there are no other rows-->
-            <tr id="alignment_row">
-            </tr>
-        </table>
+                </tr>
+                <!--this is a very dirty solution to make sure the image row aligns on top if there are no other rows-->
+                <tr id="alignment_row">
+                </tr>
+            </table>
+        </div>
+
         <div id="comp_wrap">
             <canvas id="rocket_comp_background" width="300" height="300"></canvas>
             <div id="background_legend">
@@ -80,7 +103,7 @@
                         </div>
                         <div id="selec_div_container">
                             <div class="selec_div">
-                                <p>Sort according to:</p>
+                                <p>Sort by:</p>
                                 <select name="sorting_method_dropdown" id="sorting_method_dropdown">
                                     <option value="height">Height</option>
                                     <option value="family">Familly</option>

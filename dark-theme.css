@@ -17,36 +17,114 @@ a:hover {
 button{
     background-color: #404040;
     color: #DDDDDD;
-    box-shadow: 0px 0px 5px 0px black;
 }
 button:hover {
-    background-color: #000000;
-    box-shadow: 0px 0px 14px 2px black;
 }
 
 select{
     background-color: #404040;
     color: #DDDDDD;
-    box-shadow: 0px 0px 5px 0px black;
-}
-select:hover, select:focus{
-    background-color: #000000;
-    box-shadow: 0px 0px 10px 1px black;
 }
 
 input[type="date"], input[type="text"], input[type="number"] {
     background-color: #404040;
     color: #DDDDDD;
-    box-shadow: 0px 0px 5px 0px black;
 }
-input[type="date"]:hover, input[type="date"]:focus, input[type="text"]:hover, input[type="text"]:focus, input[type="number"]:hover, input[type="number"]:focus{
+
+button:hover, select:hover, input[type="date"]:hover, input[type="text"]:hover, input[type="number"]:hover{
+    background-color: #DDDDDD;
+    color: #000000;
+}
+button:active, button:focus, select:active, select:focus, input[type="date"]:active, input[type="date"]:focus, input[type="text"]:active, input[type="text"]:focus, input[type="number"]:active, input[type="number"]:focus{
     background-color: #000000;
-    box-shadow: 0px 0px 10px 1px black;
+    color: #DDDDDD;
 }
 
 i:hover{
     color: #FFFFFF;
     background-color: rgba(255, 255, 255, 0.2);
+}
+i:active, i:focus{
+    color: #000000;
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+
+/*whole thing*/
+::-webkit-scrollbar {
+}
+
+/*buttons*/
+::-webkit-scrollbar-button {
+    background-color: #404040;
+}
+::-webkit-scrollbar-button:hover {
+    background-color: #BBBBBB;
+}
+::-webkit-scrollbar-button:active {
+    background-color: #707070;
+}
+
+::-webkit-scrollbar-button:vertical:decrement{
+    background-image: url('assets/google-icons/svg/ic_arrow_drop_up_white_24px.svg');
+}
+::-webkit-scrollbar-button:vertical:decrement:hover {
+    background-image: url('assets/google-icons/svg/ic_arrow_drop_up_black_24px.svg');
+}
+::-webkit-scrollbar-button:vertical:decrement:active{
+    background-image: url('assets/google-icons/svg/ic_arrow_drop_up_white_24px.svg');
+}
+
+::-webkit-scrollbar-button:vertical:increment{
+    background-image: url('assets/google-icons/svg/ic_arrow_drop_down_white_24px.svg');
+}
+::-webkit-scrollbar-button:vertical:increment:hover {
+    background-image: url('assets/google-icons/svg/ic_arrow_drop_down_black_24px.svg');
+}
+::-webkit-scrollbar-button:vertical:increment:active{
+    background-image: url('assets/google-icons/svg/ic_arrow_drop_down_white_24px.svg');
+}
+
+::-webkit-scrollbar-button:horizontal:decrement{
+    background-image: url('assets/google-icons/svg/ic_arrow_drop_left_white_24px.svg');
+}
+::-webkit-scrollbar-button:horizontal:decrement:hover {
+    background-image: url('assets/google-icons/svg/ic_arrow_drop_left_black_24px.svg');
+}
+::-webkit-scrollbar-button:horizontal:decrement:active {
+    background-image: url('assets/google-icons/svg/ic_arrow_drop_left_white_24px.svg');
+}
+
+::-webkit-scrollbar-button:horizontal:increment{
+    background-image: url('assets/google-icons/svg/ic_arrow_drop_right_white_24px.svg');
+}
+::-webkit-scrollbar-button:horizontal:increment:hover {
+    background-image: url('assets/google-icons/svg/ic_arrow_drop_right_black_24px.svg');
+}
+::-webkit-scrollbar-button:horizontal:increment:active {
+    background-image: url('assets/google-icons/svg/ic_arrow_drop_right_white_24px.svg');
+}
+
+/*actual bar*/
+::-webkit-scrollbar-thumb {
+    background: #404040;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #BBBBBB;
+}
+::-webkit-scrollbar-thumb:active {
+    background: #707070;
+}
+
+/*bar background*/
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-track:hover {
+    background: #303030;
+}
+::-webkit-scrollbar-track:active {
+    background: #303030;
 }
 
 

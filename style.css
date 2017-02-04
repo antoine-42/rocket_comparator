@@ -66,13 +66,12 @@ label:hover {
     text-decoration: underline;
 }
 
-
 button{
     padding: 7px 15px;
     margin: 5px;
     border: none;
     background-color: #DDDDDD;
-    font-size: 17px;
+    font-size: 1em;
     box-shadow: 0px 0px 5px 0px black;
     transition-duration: 0.2s;
 }
@@ -117,17 +116,125 @@ input[type="text"] {
 input[type="number"] {
     width: 75px;
 }
-input[type="date"]:hover, input[type="date"]:focus, input[type="text"]:hover, input[type="text"]:focus, input[type="number"]:hover, input[type="number"]:focus{
+button:hover, select:hover, input[type="date"]:hover, input[type="text"]:hover, input[type="number"]:hover{
+    box-shadow: 0px 0px 10px 1px black;
+}
+button:active, button:focus, select:active, select:focus, input[type="date"]:active, input[type="date"]:focus, input[type="text"]:active, input[type="text"]:focus, input[type="number"]:active, input[type="number"]:focus{
     box-shadow: 0px 0px 10px 1px black;
 }
 
 i{
-    transition-duration: 0.2s;
+    transition-duration: 0.1s;
     border-radius: 50%;
 }
 i:hover {
     color: #000000;
     background-color: rgba(0, 0, 0, 0.2);
+}
+i:active, i:focus{
+    color: #FFFFFF;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+
+
+/*scroll bar, only on desktop*/
+@media (min-width: 1000px){
+    /*whole thing*/
+    ::-webkit-scrollbar {
+        width: 13px;
+        height: 13px;
+    }
+
+    /*buttons*/
+    ::-webkit-scrollbar-button {
+        width: 13px;
+        height: 13px;
+
+        background-color: #BBBBBB;
+        background-size: 16px 16px;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
+    ::-webkit-scrollbar-button:hover {
+        background-color: #909090;
+    }
+    ::-webkit-scrollbar-button:active {
+        background-color: #606060;
+    }
+
+    ::-webkit-scrollbar-button:vertical:decrement{
+        background-image: url('assets/google-icons/svg/ic_arrow_drop_up_black_24px.svg');
+    }
+    ::-webkit-scrollbar-button:vertical:decrement:hover {
+        background-image: url('assets/google-icons/svg/ic_arrow_drop_up_black_24px.svg');
+    }
+    ::-webkit-scrollbar-button:vertical:decrement:active{
+        background-image: url('assets/google-icons/svg/ic_arrow_drop_up_white_24px.svg');
+    }
+
+    ::-webkit-scrollbar-button:vertical:increment{
+        background-image: url('assets/google-icons/svg/ic_arrow_drop_down_black_24px.svg');
+    }
+    ::-webkit-scrollbar-button:vertical:increment:hover {
+        background-image: url('assets/google-icons/svg/ic_arrow_drop_down_black_24px.svg');
+    }
+    ::-webkit-scrollbar-button:vertical:increment:active{
+        background-image: url('assets/google-icons/svg/ic_arrow_drop_down_white_24px.svg');
+    }
+
+    ::-webkit-scrollbar-button:horizontal:decrement{
+        background-image: url('assets/google-icons/svg/ic_arrow_drop_left_black_24px.svg');
+    }
+    ::-webkit-scrollbar-button:horizontal:decrement:hover {
+        background-image: url('assets/google-icons/svg/ic_arrow_drop_left_black_24px.svg');
+    }
+    ::-webkit-scrollbar-button:horizontal:decrement:active {
+        background-image: url('assets/google-icons/svg/ic_arrow_drop_left_white_24px.svg');
+    }
+
+    ::-webkit-scrollbar-button:horizontal:increment{
+        background-image: url('assets/google-icons/svg/ic_arrow_drop_right_black_24px.svg');
+    }
+    ::-webkit-scrollbar-button:horizontal:increment:hover {
+        background-image: url('assets/google-icons/svg/ic_arrow_drop_right_black_24px.svg');
+    }
+    ::-webkit-scrollbar-button:horizontal:increment:active {
+        background-image: url('assets/google-icons/svg/ic_arrow_drop_right_white_24px.svg');
+    }
+
+    /*actual bar*/
+    ::-webkit-scrollbar-thumb {
+        background: #BBBBBB;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+        background: #909090;
+    }
+    ::-webkit-scrollbar-thumb:active {
+        background: #606060;
+    }
+
+    /*bar background*/
+    ::-webkit-scrollbar-track {
+        background: transparent;
+    }
+    ::-webkit-scrollbar-track:hover {
+        background: #D8D8D8;
+    }
+    ::-webkit-scrollbar-track:active {
+        background: #D8D8D8;
+    }
+
+    /*corner*/
+    ::-webkit-scrollbar-corner {
+        background: transparent;
+    }
+
+    /*resize*/
+    ::-webkit-resizer {
+        background: transparent;
+    }
+
 }
 
 

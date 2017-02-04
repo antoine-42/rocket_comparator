@@ -16,6 +16,12 @@ body{
     z-index: -1;
 }
 
+#rocket_comp_wrap{
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+    overflow-x: auto;
+}
 table{
     border-collapse: collapse;
 }
@@ -141,12 +147,13 @@ td p, td h4{
 
 
 #settings_window{
-    height: 100%;
-    width: 750px;
     position: fixed;
     top: 0;
     right: 0;
+    height: 100vh;
+    width: 750px;
     z-index: 10;
+
     background-color: #F5F5F5;
     box-shadow: 10px 0px 20px 10px black;
     transition: right 0s ease 0s;

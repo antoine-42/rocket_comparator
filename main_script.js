@@ -4,6 +4,7 @@
 //var initialisation
 var selected_rockets = JSON.parse('{"rockets" :[]}');
 
+var rocket_comp_wrap = document.getElementById('rocket_comp_wrap');
 var comp_wrap = document.getElementById('comp_wrap');
 var rocket_comp_background = document.getElementById('rocket_comp_background');
 var rocket_comp_table = document.getElementById('rocket_comp_table');
@@ -91,7 +92,7 @@ function horizontal_scroll(e){
         if (scroll > -10 && scroll < 10) {
             scroll = scroll * 100/3
         }
-        window.scrollBy(scroll, 0);
+        rocket_comp_wrap.scrollLeft += scroll;
     }
     else {
         check_if_display_back_to_top_button();
