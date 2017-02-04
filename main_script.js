@@ -1798,7 +1798,7 @@ function init(){
 
     settings_window.style.transitionDuration = '0.2s';
 
-    console.log('Rocket Comparator, made by Antoine Dujardin.\nGithub: https://github.com/antoine-42/rocket_scale');
+    console.log('Rocket Comparator, made by Antoine Dujardin.\nGithub: https://github.com/antoine-42/rocket_comparator');
 }
 init();
 
